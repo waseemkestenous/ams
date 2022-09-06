@@ -860,7 +860,7 @@
 
 .nav-sm .nav.child_menu li.active,
 .nav-sm .nav.side-menu li.active-sm {
-  border-right: 5px solid #1ABB9C; }
+  border-right: 5px solid #3e85fa; }
 
 .nav-sm ul.nav.child_menu ul,
 .nav-sm .nav.side-menu li.active-sm ul ul {
@@ -869,7 +869,7 @@
   background: none; }
 
 .nav-sm > .nav.side-menu > li.active-sm > a {
-  color: #1ABB9C !important; }
+  color: #3e85fa !important; }
 
 .nav-sm .nav.side-menu li a i.toggle-up {
   display: none !important; }
@@ -1382,7 +1382,7 @@ a:hover, a:focus {
   padding: 13px 15px 12px; }
 
 .nav.side-menu > li.current-page, .nav.side-menu > li.active {
-  border-right: 5px solid #1ABB9C; }
+  border-right: 5px solid #3e85fa; }
 
 .nav li.current-page {
   background: rgba(255, 255, 255, 0.05); }
@@ -1939,7 +1939,7 @@ table.jambo_table tbody tr.selected td {
 
 table.dataTable th.focus,
 table.dataTable td.focus {
-  outline: 2px solid #1ABB9C !important;
+  outline: 2px solid #3e85fa !important;
   outline-offset: -1px; }
 
 table.display {
@@ -3059,7 +3059,7 @@ textarea:focus {
 
 .bs-glyphicons li:hover {
   color: #fff;
-  background-color: #1ABB9C; }
+  background-color: #3e85fa; }
 
 @media (min-width: 768px) {
   .bs-glyphicons {
@@ -3085,7 +3085,7 @@ span.tag {
   float: left;
   padding: 5px 9px;
   text-decoration: none;
-  background: #1ABB9C;
+  background: #3e85fa;
   color: #F1F6F7;
   margin-right: 5px;
   font-weight: 500;
@@ -3215,7 +3215,7 @@ ul.timeline li {
 
 .tag {
   line-height: 1;
-  background: #1ABB9C;
+  background: #3e85fa;
   color: #fff !important; }
 
 .tag:after {
@@ -3229,7 +3229,7 @@ ul.timeline li {
   pointer-events: none;
   border-top: 14px solid transparent;
   border-bottom: 14px solid transparent;
-  border-left: 11px solid #1ABB9C; }
+  border-left: 11px solid #3e85fa; }
 
 .timeline h2.title {
   position: relative;
@@ -3297,7 +3297,7 @@ ul.social li {
   border-radius: 50%; }
 
 .chat .status.online {
-  background: #1ABB9C; }
+  background: #3e85fa; }
 
 .chat .status.away {
   background: #F39C12; }
@@ -3426,7 +3426,7 @@ ul.widget_profile_box li a {
   padding: 0px; }
 
 ul.widget_profile_box li a:hover {
-  color: #1ABB9C !important;
+  color: #3e85fa !important;
   border: 1px solid #26b99a; }
 
 ul.widget_profile_box li .profile_img {
@@ -3616,7 +3616,7 @@ ul.project_files li a i {
   background: #fff; }
 
 .pricing .title {
-  background: #1ABB9C;
+  background: #3e85fa;
   height: 110px;
   color: #fff;
   padding: 15px 0 0;
@@ -4223,15 +4223,15 @@ header {
 /** signup **/
 /** NProgress **/
 #nprogress .bar {
-  background: #1ABB9C; }
+  background: #3e85fa; }
 
 #nprogress .peg {
-  -webkit-box-shadow: 0 0 10px #1ABB9C, 0 0 5px #1ABB9C;
-          box-shadow: 0 0 10px #1ABB9C, 0 0 5px #1ABB9C; }
+  -webkit-box-shadow: 0 0 10px #3e85fa, 0 0 5px #3e85fa;
+          box-shadow: 0 0 10px #3e85fa, 0 0 5px #3e85fa; }
 
 #nprogress .spinner-icon {
-  border-top-color: #1ABB9C;
-  border-left-color: #1ABB9C; }
+  border-top-color: #3e85fa;
+  border-left-color: #3e85fa; }
 
 /** /NProgress **/
 /** bootstrap-wysiwyg **/
@@ -4520,7 +4520,7 @@ fieldset {
   color: #fff; }
 
 .wizard_horizontal ul.wizard_steps li a.done:before, .wizard_horizontal ul.wizard_steps li a.done .step_no {
-  background: #1ABB9C;
+  background: #3e85fa;
   color: #fff; }
 
 .wizard_horizontal ul.wizard_steps li:first-child a:before {
@@ -4615,7 +4615,7 @@ fieldset {
   color: #fff; }
 
 .wizard_verticle ul.wizard_steps li a.done:before, .wizard_verticle ul.wizard_steps li a.done .step_no {
-  background: #1ABB9C;
+  background: #3e85fa;
   color: #fff; }
 
 .wizard_verticle ul.wizard_steps li:first-child a:before {
@@ -4923,7 +4923,7 @@ ul.notifications {
     .daterangepicker.picker_1 .calendar-table thead tr {
       background: #213345; }
     .daterangepicker.picker_1 .calendar-table thead tr:first-child {
-      background: #1ABB9C; }
+      background: #3e85fa; }
     .daterangepicker.picker_1 .calendar-table td.off {
       background: #34495E;
       color: #999; }
@@ -4931,14 +4931,14 @@ ul.notifications {
       color: #34495E; }
 
 .daterangepicker.picker_2 .calendar-table thead tr {
-  color: #1ABB9C; }
+  color: #3e85fa; }
 
 .daterangepicker.picker_2 .calendar-table thead tr:first-child {
   color: #73879C; }
 
 .daterangepicker.picker_3 .calendar-table thead tr:first-child {
   color: #fff;
-  background: #1ABB9C; }
+  background: #3e85fa; }
 
 .daterangepicker.picker_4 .calendar-table thead tr:first-child {
   color: #fff;

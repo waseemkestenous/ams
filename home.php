@@ -6,17 +6,17 @@ document.getElementById("link1").classList.add("current-page");
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
         <div class="count">2500</div>
-        <span class="count_bottom"><i class="green">4% </i> From last Week</span>
+        <span class="count_bottom"><i class="blue">4% </i> From last Week</span>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
         <div class="count">123.50</div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+        <span class="count_bottom"><i class="blue"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
-        <div class="count green">2,500</div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+        <div class="count blue">2,500</div>
+        <span class="count_bottom"><i class="blue"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
@@ -26,12 +26,12 @@ document.getElementById("link1").classList.add("current-page");
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
         <div class="count">2,315</div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+        <span class="count_bottom"><i class="blue"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
         <div class="count">7,325</div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+        <span class="count_bottom"><i class="blue"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
     </div>
 </div> 
 <!-- /top tiles -->
