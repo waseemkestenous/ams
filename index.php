@@ -24,11 +24,9 @@ if($session_exist) {
     $session = get_session_by_info($_SESSION["login"]);
     if(!empty($session)) $currentuserid = $session["user_id"]; else die();
     
-    // get current user permission array using current userid
-    $currentuserpermissions = get_user_permission($currentuserid);
+    // get current user using current userid
     $user = get_user_by_id($currentuserid);
-    // get permission list
-    $perms = get_permission_list();
+
     // include requird functions
     include "functions.php";
 

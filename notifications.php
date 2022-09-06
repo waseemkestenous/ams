@@ -32,7 +32,7 @@
             <div class="text-center">
                 <a class="dropdown-item">
                     <strong><?php echo _see_all_alerts; ?></strong>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-left"></i>
                 </a>
             </div>
         </li>

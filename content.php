@@ -33,6 +33,7 @@ echo "List : " . $sqltxt;
 <?php        
 }
 ?>
+
 <?php 
 if($debug['print_headers']) { 
 ?>

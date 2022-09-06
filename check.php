@@ -10,7 +10,7 @@ if(isset($_POST['username']) && isset($_POST['pass'])){
         if($enable_loging) user_log($session['session_id'],'login');
     }
 }
-
+// redirect
 if($_SESSION["login"] <> "LOGIN_ERROR" ) {
     header("Location: ?page=home");
 } else {
