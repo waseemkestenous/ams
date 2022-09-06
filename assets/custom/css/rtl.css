@@ -2,3 +2,6 @@ body {
 	direction: rtl;
 	text-align: right;
 }
+.pull-right {
+	float: left;
+}
