@@ -18,8 +18,16 @@
     <link href="assets/gentela/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- jQuery custom content scroller -->
     <link href="assets/gentela/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
+    <?php 
+    $ltr = "";
+    if(isset($rtl) && $rtl) { 
+    $ltr = "-rtl";
+    ?>
+    <!-- rtl Style -->
+    <link href="assets/custom/css/rtl.css" rel="stylesheet">
+    <?php } ?>
     <!-- Custom Theme Style -->
-    <link href="assets/gentela/build/css/custom.css" rel="stylesheet">
+    <link href="assets/gentela/build/css/custom<?php  echo $ltr; ?>.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="assets/gentela/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- iCheck -->
@@ -38,10 +46,6 @@
     <link href="assets/gentela/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="assets/gentela/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="assets/gentela/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-    <?php if(isset($rtl) && $rtl) { ?>
-    <!-- rtl Style -->
-    <link href="assets/custom/css/rtl.css" rel="stylesheet">
-    <?php } ?>
 </head>
 <body class="nav-md">
     <div class="container body">
