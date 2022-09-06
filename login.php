@@ -26,6 +26,10 @@
     <link rel="stylesheet" type="text/css" href="assets/login/css/util.css">
     <link rel="stylesheet" type="text/css" href="assets/login/css/main.css">
     <!--===============================================================================================-->
+    <?php if(isset($rtl) && $rtl) { ?>
+    <!-- rtl Style -->
+    <link href="assets/custom/css/rtl.css" rel="stylesheet">
+    <?php } ?>
 </head>
 <body>
 

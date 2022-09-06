@@ -12,6 +12,7 @@ $co = "Egypt Assist";
 $co_sys = "Egypt Assist Portal";
 $ver = "V1.0";
 $lang = "en";
+$rtl = True;
 $enable_loging = 0;
 $debug['print_sql'] = 1;
 $debug['print_headers'] = 1;

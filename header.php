@@ -38,6 +38,10 @@
     <link href="assets/gentela/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="assets/gentela/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="assets/gentela/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    <?php if(isset($rtl) && $rtl) { ?>
+    <!-- rtl Style -->
+    <link href="assets/custom/css/rtl.css" rel="stylesheet">
+    <?php } ?>
 </head>
 <body class="nav-md">
     <div class="container body">
