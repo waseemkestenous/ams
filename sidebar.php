@@ -26,6 +26,65 @@
                 <!--<h3>General</h3>-->
                 <ul class="nav side-menu">
                     <li id="link1"><a href="?page=home"><i class="fa fa-home"></i><?php echo _home; ?><span class="fa"></span></a></li>    
+                    <li id="gro1"><a><i class="fa fa-cubes-stacked"></i><?php echo _stores_managment; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">   
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _categories; ?><span class="fa"></span></a>
+                            </li>
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _items; ?><span class="fa"></span></a>
+                            </li>                         
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _stores; ?><span class="fa"></span></a>
+                            </li>
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _stock; ?><span class="fa"></span></a>
+                            </li>                         
+                        </ul>
+                    </li>
+                    <li id="gro1"><a><i class="fa fa-id-card"></i><?php echo _suppliers_and_clients; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _suppliers; ?><span class="fa"></span></a>
+                            </li>  
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _clients; ?><span class="fa"></span></a>
+                            </li>                                                     
+                        </ul>
+                    </li>
+                    <li id="gro1"><a><i class="fa fa-file-invoice-dollar"></i><?php echo _sells_and_purchases; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _sells; ?><span class="fa"></span></a>
+                            </li>    
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _purchases; ?><span class="fa"></span></a>
+                            </li>                        
+                        </ul> 
+                    </li>
+                    <li id="gro1"><a><i class="fa fa-calculator"></i><?php echo _accounting; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _suppliers; ?><span class="fa"></span></a>
+                            </li>                          
+                        </ul> 
+                    </li>
+                    <li id="gro1"><a><i class="fa fa-people-group"></i><?php echo _emps_managment; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _suppliers; ?><span class="fa"></span></a>
+                            </li>                          
+                        </ul>
+                    </li>    
+                    <li id="gro1"><a><i class="fa fa-file-pdf"></i><?php echo _reports; ?><span class="fa fa-chevron-down"></span></a>
+                        <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
+                            <li id="link3">
+                                <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _suppliers; ?><span class="fa"></span></a>
+                            </li>                          
+                        </ul> 
+                    </li> 
+                    <li id="link1"><a href="?page=home"><i class="fa fa-building"></i><?php echo _companies; ?><span class="fa"></span></a></li> 
+                    <li id="link1"><a href="?page=home"><i class="fa fa-users"></i><?php echo _users_managment; ?><span class="fa"></span></a></li> 
                 </ul>
             </div>
 

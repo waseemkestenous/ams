@@ -15,7 +15,7 @@
     <link href="assets/gentela/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--===============================================================================================-->
     <!-- Font Awesome -->
-    <link href="assets/gentela/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/gentela/vendors/fontawesome_6.2/css/all.css" rel="stylesheet">
     <!-- Animate CSS -->
     <link href="assets/gentela/vendors/animate.css/animate.min.css" rel="stylesheet">
     <!--===============================================================================================-->
@@ -30,8 +30,6 @@ if(isset($rtl) && $rtl) {
     <!-- Custom Theme Style -->
     <link href="assets/gentela/build/css/custom<?php  echo $ltr; ?>.css" rel="stylesheet">
     <!--===============================================================================================-->
-
-
 </head>
 <body class="nav-md">
     <div class="container body">

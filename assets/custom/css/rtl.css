@@ -1,7 +1,25 @@
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
+
+@font-face {
+  font-family: 'Janna LT Bold';
+  src: url('../fonts/Janna_LT_Bold.ttf'); 
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+
 body {
 	direction: rtl;
 	text-align: right;
+	font-family: 'Janna LT Bold';
+}
+body a, body span, body h2{
+	font-family: 'Janna LT Bold';
 }
 .pull-right {
 	float: left;
+}
+.nav.side-menu > li > a, ul.nav.child_menu > li > a {
+    font-size: 14px;
 }

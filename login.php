@@ -48,7 +48,7 @@
                                 <?php echo _login; ?>
                             </button>
                         </div>
-                        <div><center><?php echo _poweredby; ?></center></div>
+                        <div class="copyrights"><center><?php echo _poweredby; ?></center></div>
                     </form>
                 </div>
             </div>

@@ -25,9 +25,20 @@
   src: url('../fonts/poppins/Poppins-SemiBold.ttf'); 
 }
 
+@font-face {
+  font-family: 'Janna LT Bold';
+  src: url('../../custom/fonts/Janna_LT_Bold.ttf'); 
+}
 
+@font-face {
+  font-family: 'Khebrat Musamim Bold';
+  src: url('../../custom/fonts/18_Khebrat_Musamim_Bold.ttf'); 
+}
 
-
+@font-face {
+  font-family: 'Arslan Wessam';
+  src: url('../../custom/fonts/Arslan_Wessam.ttf'); 
+}
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
@@ -44,7 +55,7 @@ body, html {
 
 /*---------------------------------------------*/
 a {
-	font-family: Poppins-Regular;
+	font-family: 'Janna LT Bold';
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -70,7 +81,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: Poppins-Regular;
+  font-family: 'Janna LT Bold';
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -137,14 +148,14 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Poppins-Regular;
+  font-family: 'Janna LT Bold';
   font-size: 15px;
   color: #999999;
   line-height: 1.5;
 }
 
 .txt2 {
-  font-family: Poppins-Regular;
+  font-family: 'Janna LT Bold';
   font-size: 15px;
   color: #3e85fa;
   line-height: 1.5;
@@ -188,8 +199,8 @@ iframe {
 
 .login100-form-title {
   display: block;
-  font-family: Poppins-Bold;
-  font-size: 39px;
+  font-family: 'Khebrat Musamim Bold';
+  font-size: 50px;
   color: #333333;
   line-height: 1.2;
   text-align: center;
@@ -218,7 +229,7 @@ iframe {
 }
 
 .input100 {
-  font-family: Poppins-SemiBold;
+  font-family: 'Janna LT Bold';
   font-size: 18px;
   color: #555555;
   line-height: 1.2;
@@ -259,7 +270,7 @@ iframe {
 }
 
 .focus-input100::after {
-  font-family: Poppins-Medium;
+  font-family: 'Janna LT Bold';
   font-size: 18px;
   color: #999999;
   line-height: 1.2;
@@ -311,7 +322,7 @@ iframe {
 }
 
 .login100-form-btn {
-  font-family: Poppins-Medium;
+  font-family: 'Janna LT Bold';
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
@@ -377,7 +388,7 @@ iframe {
   right: 0px;
   pointer-events: none;
 
-  font-family: Poppins-Regular;
+  font-family: 'Janna LT Bold';
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;
@@ -394,7 +405,7 @@ iframe {
 
 .alert-validate::after {
   content: "\f06a";
-  font-family: FontAwesome;
+  font-family: 'Janna LT Bold';
   font-size: 16px;
   color: #c80000;
 
@@ -448,7 +459,7 @@ iframe {
 }
 /*//////////////////////////////////////////////////////////////////*/
 .login_error {
-	font-family: Poppins-Regular;
+  font-family: 'Janna LT Bold';
 	color: #c80000;
 	font-size: 13px;
 	line-height: 1.4;
@@ -457,4 +468,8 @@ iframe {
 	display: block;
 	width: 100%;
 	margin-top: 15px;
+}
+.copyrights center, .copyrights a{
+  font-family: 'Arslan Wessam';   
+  font-size: 28px;
 }

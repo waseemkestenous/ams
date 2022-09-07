@@ -15,6 +15,24 @@ define('_logout','تسجيل خروج');
 define('_profile','الملف الشخصي');
 define('_help','المساعدة');
 define('_see_all_alerts','مشاهدة جميع التنبيهات');
-
-
-
+define('_stores_managment','المخازن');
+define('_stores','المخازن');
+define('_items','بيانات الاصناف');
+define('_stock','المخزون');
+define('_categories','التصنيفات');
+define('_suppliers_and_clients','العملاء والموردين');
+define('_suppliers','الموردين');
+define('_clients','العملاء');
+define('_sells_and_purchases','المبيعات والمشتريات');
+define('_sells','المبيعات');
+define('_purchases','المشتريات');
+define('_accounting','الحسابات');
+define('_users_managment','المستخدمين');
+define('_users','بيانات المستخدمين');
+define('_emps_managment','العاملين');
+define('_emps','العاملين');
+define('_reports','التقارير');
+define('_admin','الشركات');
+define('_co_info','بيانات الشركة');
+define('_companies','الشركات');
+define('_co_settings','اعدادات الشركة');
