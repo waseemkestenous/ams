@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col menu_fixed">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="?page=home" class="site_title"><i class="fa fa-paw"></i> <span><?php echo $co; ?> !</span></a>
+            <a href="?page=home" class="site_title"><i class="fa fa-chart-line"></i> <span><?php echo $co; ?></span></a>
         </div>
 
         <div class="clearfix"></div>
@@ -42,7 +42,7 @@
                             </li>                         
                         </ul>
                     </li>
-                    <li id="gro1"><a><i class="fa fa-id-card"></i><?php echo _suppliers_and_clients; ?><span class="fa fa-chevron-down"></span></a>
+                    <li id="gro1"><a><i class="fa fa-users"></i><?php echo _suppliers_and_clients; ?><span class="fa fa-chevron-down"></span></a>
                         <ul id="ulgro1" class="nav child_menu" style="display: none;">                            
                             <li id="link3">
                                 <a href="?page=caselist&status=9"><i class="fa"></i><?php echo _suppliers; ?><span class="fa"></span></a>
@@ -84,7 +84,7 @@
                         </ul> 
                     </li> 
                     <li id="link1"><a href="?page=home"><i class="fa fa-building"></i><?php echo _companies; ?><span class="fa"></span></a></li> 
-                    <li id="link1"><a href="?page=home"><i class="fa fa-users"></i><?php echo _users_managment; ?><span class="fa"></span></a></li> 
+                    <li id="link1"><a href="?page=home"><i class="fa fa-user-lock"></i><?php echo _users_managment; ?><span class="fa"></span></a></li> 
                 </ul>
             </div>
 
@@ -102,7 +102,7 @@
             <a data-toggle="tooltip" data-placement="top" title="<?php echo _lock; ?>">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="<?php echo _logout; ?>" href="?page=logout">
+            <a data-toggle="tooltip" data-placement="top" title="<?php echo _logout; ?>" href="?action=logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
         </div>

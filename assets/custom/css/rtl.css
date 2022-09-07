@@ -23,3 +23,11 @@ body a, body span, body h2{
 .nav.side-menu > li > a, ul.nav.child_menu > li > a {
     font-size: 14px;
 }
+
+ul.nav.side-menu > li > a {
+    margin-bottom: 0px;
+}
+
+ul.nav > li > a {
+    padding: 10px 15px 10px;
+}

@@ -30,12 +30,19 @@ if($session_exist) {
     // include requird functions
     include "functions.php";
 
+    if (isset($_GET['action'])){
+        $action = $_GET['action'];
+    } else {
+        $action = '';
+    }
+
     if (isset($_GET['page'])){
         $page = $_GET['page'];
     } else {
         $page = 'home';
     }
-    if($page == "logout") {
+
+    if($action == "logout") {
         include "logout.php";
     } else {
         include "header.php";
@@ -44,8 +51,9 @@ if($session_exist) {
         include "content.php";
         include "footer.php";
     }
+
 } else {
-    if(isset($_GET['page']) and $_GET['page'] == "check") {
+    if(isset($_GET['action']) and $_GET['action'] == "check") {
         include "check.php";
     } else {
         include "login.php";

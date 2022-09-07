@@ -19,7 +19,7 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-t-85 p-b-20">
-                    <form class="login100-form validate-form" action="?page=check" method="post">
+                    <form class="login100-form validate-form" action="?action=check" method="post">
                         <span class="login100-form-title p-b-30">
                             <?php echo $co_sys; ?><br><?php echo $sys; ?>
                         </span>

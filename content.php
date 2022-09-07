@@ -2,10 +2,12 @@
 <div class="right_col" role="main">
     <div class="">
 <?php
-if($page == "home") {
-    include "home.php";        
-} else {
-    include "home.php";
+switch ($page) {
+    case "home":
+        include "home.php";  
+    break;
+    default:
+        include "home.php";
 }
 ?>
 

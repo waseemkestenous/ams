@@ -14,6 +14,6 @@ if(isset($_POST['username']) && isset($_POST['pass'])){
 if($_SESSION["login"] <> "LOGIN_ERROR" ) {
     header("Location: ?page=home");
 } else {
-    header("Location:?page=login");
+    header("Location:?action=login");
 }
 die();
