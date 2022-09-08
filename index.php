@@ -19,6 +19,9 @@ if(isset($_SESSION["login"]) && $_SESSION["login"] <> "LOGIN_ERROR") {
 }
 
 if($session_exist) {
+    // include requird functions
+    include "functions.php";
+
     // get current user id using open user session info
     update_session_by_sessioninfo($_SESSION["login"]);
     $session = get_session_by_info($_SESSION["login"]);
@@ -27,19 +30,32 @@ if($session_exist) {
     // get current user using current userid
     $user = get_user_by_id($currentuserid);
 
-    // include requird functions
-    include "functions.php";
-
     if (isset($_GET['action'])){
         $action = $_GET['action'];
     } else {
         $action = '';
+    }
+    if (isset($_GET['mod'])){
+        $mod = $_GET['mod'];
+    } else {
+        $mod = '';
     }
 
     if (isset($_GET['page'])){
         $page = $_GET['page'];
     } else {
         $page = 'home';
+    }
+    // build menu from modules
+    $menu = array();
+    build_menu(1,0,_home,'?page=home','home','item');
+
+    $modules = scandir('modules');
+    unset($modules[0]);
+    unset($modules[1]);
+    foreach ($modules as $value) {
+        $menu_file_path = 'modules/' . $value . '/menu.php';
+        if(file_exists($menu_file_path)) include($menu_file_path);
     }
 
     if($action == "logout") {

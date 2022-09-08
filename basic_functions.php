@@ -33,19 +33,6 @@ function user_login($user, $pass) {
     return $userid;
 }
 
-function get_user_by_id($userid) {
-    global $conn;
-
-    $sql = "SELECT * FROM `users` Where `user_id` = " . $userid . ";";
-
-    $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
-
-    log_sql($sql);
-
-    return $row;
-}
-
 function user_log($sessionid,$activity) {
     global $conn;
     global $currenttime;

@@ -24,7 +24,7 @@
                             <?php echo $co_sys; ?><br><?php echo $sys; ?>
                         </span>
                         <span class="login100-form-avatar">
-                            <img src="images/logo.jpg" alt="AVATAR">
+                            <img src="assets/custom/images/logo.jpg" alt="AVATAR">
                         </span>
                         <?php
                         if(isset($_SESSION["login"]) and $_SESSION["login"] == "LOGIN_ERROR") {

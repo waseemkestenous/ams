@@ -1,13 +1,17 @@
+<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
 <!-- page content -->
 <div class="right_col" role="main">
     <div class="">
 <?php
-switch ($page) {
-    case "home":
-        include "home.php";  
-    break;
-    default:
+if(in_array($mod, $modules)) {
+    if(file_exists("modules/" . $mod . "/" . $page . "php")) 
+        include "modules/" . $mod . "/" . $page . "php";
+    else if(file_exists("modules/" . $mod . "/index.php")) 
+        include "modules/" . $mod . "/index.php";    
+    else 
         include "home.php";
+} else {
+    include "home.php";
 }
 ?>
 

@@ -1,3 +1,4 @@
+<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
     <!--===============================================================================================-->
     <title><?php echo $co_sys; ?> | <?php echo $sys; ?> - <?php echo $ver; ?> </title>
     <!--===============================================================================================-->    
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <link rel="icon" type="image/png" href="assets/custom/images/icons/favicon.ico"/>
     <!--===============================================================================================-->
     <!-- Bootstrap -->
     <link href="assets/gentela/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

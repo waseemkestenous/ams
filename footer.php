@@ -1,3 +1,4 @@
+<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">

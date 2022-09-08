@@ -1,5 +1,6 @@
+<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
 <script>
-document.getElementById("link1").classList.add("current-page");
+document.getElementById("link-1").classList.add("current-page");
 </script>
 <!-- top tiles -->
 <div class="row tile_count">
