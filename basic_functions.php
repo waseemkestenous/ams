@@ -37,7 +37,7 @@ function user_log($sessionid,$activity) {
     global $conn;
     global $currenttime;
 
-    $sql = "INSERT INTO `user_log` (`user_log_session_id`, `user_log_timestamp`, `user_log_data`) VALUES ('". addslashes($sessionid) . "', '" . addslashes($currenttime) . "', '" . addslashes($activity) . "');";
+    $sql = "INSERT INTO `userlog` (`userlog_session_id`, `userlog_timestamp`, `userlog_data`) VALUES ('". addslashes($sessionid) . "', '" . addslashes($currenttime) . "', '" . addslashes($activity) . "');";
 
     $conn->query($sql);
 
@@ -71,7 +71,7 @@ function open_session($userid) {
 
     close_session_by_userid($userid);
 
-    $sql = "INSERT INTO `sessions` (`user_id`, `session_start_timestamp`, `session_close`, `session_lastact_timestamp`, `session_info`) VALUES ('". addslashes($userid) . "', '" . addslashes($currenttime) . "', '0', '" . addslashes($currenttime) . "', MD5('" . addslashes($currenttimestamp) . "'));";
+    $sql = "INSERT INTO `sessions` (`session_user_id`, `session_start_timestamp`, `session_close`, `session_lastact_timestamp`, `session_info`) VALUES ('". addslashes($userid) . "', '" . addslashes($currenttime) . "', '0', '" . addslashes($currenttime) . "', MD5('" . addslashes($currenttimestamp) . "'));";
 
     $conn->query($sql);
     $rowid = $conn->insert_id; 
@@ -156,7 +156,7 @@ function close_expire_sessions() {
 function close_session_by_userid($userid) {
     global $conn;
     
-    $sql = "UPDATE `sessions` SET `session_close` = '1' WHERE `user_id` = " . $userid . ";";
+    $sql = "UPDATE `sessions` SET `session_close` = '1' WHERE `session_user_id` = " . $userid . ";";
 
     $conn->query($sql);
 

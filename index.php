@@ -27,7 +27,7 @@ if($session_exist) {
     // get current user id using open user session info
     update_session_by_sessioninfo($_SESSION["login"]);
     $session = get_session_by_info($_SESSION["login"]);
-    if(!empty($session)) $currentuserid = $session["user_id"]; else die();
+    if(!empty($session)) $currentuserid = $session["session_user_id"]; else die();
     
     // get current user using current userid
 
@@ -41,19 +41,20 @@ if($session_exist) {
     $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
     $user = $records[$currentuserid]; //var_dump($records);
 
-    $tablename = 'user_types'; //Required
-    $key = 'user_type_id'; //Optional
+    $tablename = 'usertypes'; //Required
+    $key = 'usertype_id'; //Optional
     $fields = array(); //Optional
     $conditions = array(); //Optional
     $orderfields = array(); //Optional
     $ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
 
     $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype); 
-    $usertype = convert_title_list($records, 'user_type_title'); //var_dump($usertype);
-
-    // build menu from modules
+    $usertype = convert_title_list($records, 'usertype_title'); //var_dump($usertype);
+    
+    $allowed_usertype_id = array_keys($usertype);
+    
     $menu = array();
-    build_menu(1,0,T('_home'),'?page=list','home','item');
+    build_menu(1,0,T('_home'),'?page=list','home','item',0);
 
     $modules = scandir('modules');
     unset($modules[0]);
@@ -64,6 +65,10 @@ if($session_exist) {
     if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
 
     foreach ($modules as $value) {
+        $req_modules = array();
+        $related_tables = array();
+        $allowed_usertype_id = array_keys($usertype);
+        
         // load module basic lang files
         if(file_exists("modules/" . $value . "/basic_lang/" . $lang . ".php")) 
             include "modules/" . $value . "/basic_lang/" . $lang . ".php";
@@ -73,13 +78,14 @@ if($session_exist) {
         $var_file_path = 'modules/' . $value . '/var.php';
         if(file_exists($var_file_path)) 
             include($var_file_path);
-        
-        $menu_file_path = 'modules/' . $value . '/menu.php';
-        if(file_exists($menu_file_path)) 
-            include($menu_file_path);
 
         $mods[$modulename]['id'] = $moduleid;
         $mods[$modulename]['req_modules'] = $req_modules;
+        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
+
+        $menu_file_path = 'modules/' . $value . '/menu.php';
+        if(file_exists($menu_file_path)) 
+            include($menu_file_path);
     }
     if($action == "logout") {
         include "logout.php";
@@ -107,6 +113,9 @@ if($session_exist) {
                 include "modules/" . $current_modulename . "/basic.php";
             
             if(!in_array($action, $actionlist)) $action = 'no';
+        }
+        foreach ($modules as $value) {                
+
         }
         include "header.php";
         include "sidebar.php";

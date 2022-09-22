@@ -1,13 +1,15 @@
 <?php
-$actionlist = array('view','dash','add','edit','del','lock','unlock');
 $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
 
 if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
     foreach (array_keys($usertype) as $key) {
-        if($user['user_type_id'] >= $key) 
-            unset($usertype[$key]); 
+        if($user['user_usertype_id'] > $key) 
+            if($user['user_usertype_id'] <> 1 ) 
+                unset($usertype[$key]); 
     }
 }
+
+$actionlist = array('view','dash','add','edit','del','lock','unlock');
 
 $entity = array(
     'page' => 81,
@@ -31,11 +33,11 @@ $entity = array(
         'user_name' => array('req' => 1, 'type' => 'text', 'title' => '_user_name','placeholder' => '_user_name_ex','link' => 1,'dvlr1' => 5,'dvlr2' => 30),
         'user_username' => array('req' => 1, 'type' => 'text', 'title' => '_user_username','unique' => 1,'placeholder' => '_user_username_ex','dvlr1' => 4,'dvlr2' => 30),
         'user_password' => array('req' => 1, 'type' => 'password', 'title' => '_user_password','basicview' => 0,'dvlr1' => 8,'dvlr2' => 30),
-        'p_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
-        'user_type_id' => array('req' => 1, 'type' => 'list', 'array' => $usertype, 'title' => '_user_type'), 
+        'user_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
+        'user_usertype_id' => array('req' => 1, 'type' => 'list', 'array' => $usertype, 'title' => '_user_type'), 
         'user_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_user_timestamp','placeholder' => '_auto'),
         'user_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_user_lock','basicview' => 0),
-    )
+    ),
 );
 
 $Datatables_headers = '
@@ -135,7 +137,9 @@ if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $
 if($id == 1) {
     $entity['allowdel'] = false;
     $entity['allowlock'] = false;   
+    if($currentuserid <> 1) $entity['allowedit'] = false;      
     $entity['tablefields']['user_username']['readonly'] = true;
-    $entity['tablefields']['user_type_id']['readonly'] = true;  
+    $entity['tablefields']['user_usertype_id']['readonly'] = true;  
     $entity['tablefields']['user_lock']['readonly'] = true;       
 }
+

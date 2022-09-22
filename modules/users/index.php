@@ -1,13 +1,15 @@
 <?php 
 if(!isset($currentuserid)) header("Location:index.php");
 
+check_perms();
+
 if($action == 'no') {
     if(!(isset($entity['allowview']) && $entity['allowview'])) header("Location:index.php");
 
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
-    if($user['user_type_id'] == 1) $conditions = array();
-    else $conditions = array('p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array();
+    else $conditions = array('user_user_id' => $currentuserid);
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
     $data = get_records($tablename, $key, $tablefields, $conditions);
 
@@ -20,8 +22,8 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_type_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
+    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     if(empty($data)) {
         header("Location:index.php");
@@ -36,8 +38,8 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_type_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
+    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     if(empty($data)) {
         header("Location:index.php");
@@ -51,8 +53,8 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_type_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
+    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     if(empty($data)) {
         header("Location:index.php");
@@ -68,8 +70,8 @@ if($action == 'no') {
     $key = $entity['idname'];//Optional
     $title = $entity['titlename'];//Optional
     $tablefields = array($key,$title);
-    if($user['user_type_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
+    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     if(empty($data)) {
         header("Location:index.php");
@@ -110,8 +112,8 @@ if($action == 'no') {
     $key = $entity['idname'];//Optional
     $lock = $entity['lockname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_type_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'p_id' => $currentuserid);
+    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
+    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
@@ -134,7 +136,7 @@ if($action == 'no') {
             //check password strength if changed
             check_length_edit_password('user_password', $data['user_password'], $entity, $fields, $fields_temp, $check, $checkerror);
             //check user type selection.
-            check_select_edit_field('user_type_id', $data['user_type_id'], $entity, $fields, $fields_temp, $check, $checkerror);
+            check_select_edit_field('user_usertype_id', $data['user_usertype_id'], $entity, $fields, $fields_temp, $check, $checkerror);
             //check field lock if changed
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
@@ -177,9 +179,9 @@ if($action == 'no') {
             //check password strength if changed
             check_length_add_password('user_password', $entity, $fields, $fields_temp, $check, $checkerror);
             //check user parent selection.
-            add_default_field('p_id', $entity , $fields, $fields_temp);
+            add_default_field('user_user_id', $entity , $fields, $fields_temp);
             //check user type selection.
-            check_select_add_field('user_type_id', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_select_add_field('user_usertype_id', $entity, $fields, $fields_temp, $check, $checkerror);
             //check field lock if changed               
             check_add_lock_field($lock, $fields, $fields_temp);
             update_data($fields_temp, $data);

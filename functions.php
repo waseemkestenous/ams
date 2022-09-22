@@ -1,20 +1,29 @@
 <?php
-function build_menu($menux, $menuy,$title, $link = '', $icon ='', $type = 'sub') {
-	global $menu;
-	if($type == 'item') {
-		$menu[$menux]['id'] = $menux;		
-		$menu[$menux]['link'] = $link;
-		$menu[$menux]['title'] = $title;
-		$menu[$menux]['icon'] = $icon;
-	} else if($type == 'gro') {
-		$menu[$menux]['id'] = $menux;	
-		$menu[$menux]['type'] = 'gro';
-		$menu[$menux]['title'] = $title;
-		$menu[$menux]['icon'] = $icon;
+function check_perms(){
+	global $user, $mod, $mods;
+	if(!in_array($user['user_usertype_id'],$mods[$mod]['allowed_usertype_id'])) header("Location:index.php");
+}
+function build_menu($menux, $menuy,$title, $link = '', $icon ='', $type = 'sub',$perm = 1) {
+	global $menu, $user, $allowed_usertype_id;
+
+	if(!in_array($user['user_usertype_id'], $allowed_usertype_id) && $perm){
+		return;
 	} else {
-		$menu[$menux]['submenu'][$menuy]['id'] = $menuy;		
-		$menu[$menux]['submenu'][$menuy]['link'] = $link;
-		$menu[$menux]['submenu'][$menuy]['title'] = $title;
+		if($type == 'item') {
+			$menu[$menux]['id'] = $menux;		
+			$menu[$menux]['link'] = $link;
+			$menu[$menux]['title'] = T($title);
+			$menu[$menux]['icon'] = $icon;
+		} else if($type == 'gro') {
+			$menu[$menux]['id'] = $menux;	
+			$menu[$menux]['type'] = 'gro';
+			$menu[$menux]['title'] = $title;
+			$menu[$menux]['icon'] = $icon;
+		} else {
+			$menu[$menux]['submenu'][$menuy]['id'] = $menuy;		
+			$menu[$menux]['submenu'][$menuy]['link'] = $link;
+			$menu[$menux]['submenu'][$menuy]['title'] = $title;
+		}
 	}
 }
 /* ============================== Example To call Function ==============================
@@ -350,7 +359,7 @@ function print_data_table($entity,$data, $with_opts = false) {
 	if(isset($entity['allowdel'])) $allowdel = $entity['allowdel']; else $allowdel = True;
 	if(isset($entity['allowlock'])) $allowlock = $entity['allowlock']; else $allowlock = False;
     if($allowadd) {
-        print_lbtn($page_link . "&action=add", '_add', '_add_record', 'success', 'user-plus',''); 
+        print_lbtn($page_link . "&action=add", '_add', '_add_record', 'success', 'plus',''); 
         echo "<br><br> \n"; 
     }
 	echo "<table id=\"datatable-buttons\" class=\"table table-striped table-bordered\" style=\"width:100%\"> \n";
@@ -760,8 +769,8 @@ function create_form_code(){
 	global $session;
 	if(isset($_POST['formid'])) del_record('forms', array('form_code' => $_POST['form_code']));
 	$form_code = GRS(50);
-	del_record('forms', array('session_id' => $session['session_id']));
-	add_record('forms', array('form_code' => $form_code,'session_id' => $session['session_id'],'form_query' => $_SERVER['QUERY_STRING']));
+	del_record('forms', array('form_session_id' => $session['session_id']));
+	add_record('forms', array('form_code' => $form_code,'form_session_id' => $session['session_id'],'form_query' => $_SERVER['QUERY_STRING']));
 	
 	return $form_code;
 }
