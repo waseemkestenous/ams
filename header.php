@@ -1,6 +1,6 @@
 <?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $lang; ?>">
 <head>
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -31,6 +31,7 @@ if(isset($rtl) && $rtl) {
     <!-- Custom Theme Style -->
     <link href="assets/gentela/build/css/custom<?php  echo $ltr; ?>.css" rel="stylesheet">
     <!--===============================================================================================-->
+    <?php echo $header_code; ?>
 </head>
 <body class="nav-md">
     <div class="container body">

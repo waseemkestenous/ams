@@ -1,3 +1,4 @@
 <?php
-$menuid = 31;
+$moduleid = 31;
 $modulename ='bills';
+$req_modules = array('users','companies','stores','contacts');

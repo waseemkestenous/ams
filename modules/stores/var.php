@@ -1,3 +1,4 @@
 <?php
-$menuid = 11;
+$moduleid = 11;
 $modulename ='stores';
+$req_modules = array('users','companies');

@@ -13,13 +13,11 @@
                 <img src="assets/gentela/production/images/img.jpg" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span><?php echo _welcome; ?>,</span>
+                <span><?php echo T('_welcome'); ?>,</span>
                 <h2><?php echo $user['user_name']; ?></h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
-
-        <br />
 
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -72,7 +70,7 @@ foreach ($menu as $key => $value) {
             <a data-toggle="tooltip" data-placement="top" title="<?php echo _fullscreen; ?>">
                 <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="<?php echo _lock; ?>">
+            <a data-toggle="tooltip" data-placement="top" title="<?php echo _lock; ?>" href="?action=lockscreen">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
             <a data-toggle="tooltip" data-placement="top" title="<?php echo _logout; ?>" href="?action=logout">

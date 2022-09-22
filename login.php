@@ -30,25 +30,25 @@
                         if(isset($_SESSION["login"]) and $_SESSION["login"] == "LOGIN_ERROR") {
                         ?>
                         <span class="login_error">
-                            Sorry, Cannot log in to Admin Panel.
+                        <?php echo T('_error_login'); ?>
                         </span>
                         <?php
                         }
                         ?>
-                        <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "<?php echo _enter_username; ?>">
+                        <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "<?php echo T('_enter_username'); ?>">
                             <input autocomplete="off" class="input100" type="text" name="username">
-                            <span class="focus-input100" data-placeholder="<?php echo _username; ?>"></span>
+                            <span class="focus-input100" data-placeholder="<?php echo T('_username'); ?>"></span>
                         </div>
-                        <div class="wrap-input100 validate-input m-b-50" data-validate="<?php echo _enter_pass; ?>">
+                        <div class="wrap-input100 validate-input m-b-50" data-validate="<?php echo T('_enter_pass'); ?>">
                             <input class="input100" type="password" name="pass">
-                            <span class="focus-input100" data-placeholder="<?php echo _pass; ?>"></span>
+                            <span class="focus-input100" data-placeholder="<?php echo T('_pass'); ?>"></span>
                         </div>
                         <div class="container-login100-form-btn">
                             <button class="login100-form-btn">
                                 <?php echo _login; ?>
                             </button>
                         </div>
-                        <div class="copyrights"><center><?php echo _poweredby; ?></center></div>
+                        <div class="copyrights"><center><?php echo T('_poweredby'); ?></center></div>
                     </form>
                 </div>
             </div>

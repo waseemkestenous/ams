@@ -4982,3 +4982,18 @@ ul.notifications {
 
 .calendar-exibit .calendar-table {
   padding: 0 0 4px 0; }
+
+.pass_eye {
+  position: absolute;
+  left:20px;
+  top:12px;
+}
+.del_msg {
+  color: #F00;
+}
+.note_msg {
+  
+}
+.alert ul {
+  margin-bottom: 0;
+}

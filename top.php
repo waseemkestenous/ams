@@ -13,13 +13,13 @@
                         <img src="assets/gentela/production/images/img.jpg" alt=""><?php echo $user['user_name']; ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <!--<a class="dropdown-item"  href="javascript:;"> <?php echo _profile; ?></a>
+                        <!--<a class="dropdown-item"  href="javascript:;"> <?php echo T('_profile'); ?></a>
                         <a class="dropdown-item"  href="javascript:;">
                             <span class="badge bg-red pull-right">50%</span>
-                            <span><?php echo _settings; ?></span>
+                            <span><?php echo T('_settings'); ?></span>
                         </a>
-                        <a class="dropdown-item"  href="javascript:;"><?php echo _help; ?></a>-->
-                        <a class="dropdown-item"  href="?page=logout"><i class="fa fa-sign-out pull-right"></i><?php echo _logout; ?></a>
+                        <a class="dropdown-item"  href="javascript:;"><?php echo T('_help'); ?></a>-->
+                        <a class="dropdown-item"  href="?action=logout"><i class="fa fa-sign-out pull-right"></i><?php echo T('_logout'); ?></a>
                     </div>
                 </li>
 

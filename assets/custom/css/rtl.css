@@ -12,9 +12,8 @@
 body {
 	direction: rtl;
 	text-align: right;
-	font-family: 'Janna LT Bold';
 }
-body a, body span, body h2{
+body a, body span, body h2, .table, button{
 	font-family: 'Janna LT Bold';
 }
 .pull-right {
@@ -23,11 +22,47 @@ body a, body span, body h2{
 .nav.side-menu > li > a, ul.nav.child_menu > li > a {
     font-size: 14px;
 }
-
 ul.nav.side-menu > li > a {
     margin-bottom: 0px;
 }
-
 ul.nav > li > a {
     padding: 10px 15px 10px;
+}   
+.table{
+	font-size: 15px;
+}
+td button, td .buttons,td .btn {
+    margin-bottom: 0px;
+}
+.table thead th {
+	text-align: center;
+}
+.table td {
+	vertical-align: middle;
+}
+table.table td {
+    padding: 5px;
+}
+table.table td.data a{
+    color: #00F;
+}
+tr.locked td.data{
+    background-color: #4B5F71;
+}
+tr.locked td.data, tr.locked td.data a{
+    color: #fff;
+    text-decoration: line-through;
+}
+#datatable-buttons_length {
+	float : right;
+}
+#datatable-buttons_wrapper .dt-buttons  {
+	float : left;
+}
+#datatable-buttons_filter {
+	width: 100%;
+	float : right;
+}
+.form-group .offset-md-3 {
+    margin-right: 25%;
 }

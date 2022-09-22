@@ -1,73 +1,49 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
-<!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
-<?php
+<?php 
+if(!isset($currentuserid)) header("Location:index.php");
+echo "<!-- page content -->";
+echo "<div class=\"right_col\" role=\"main\">";
+echo "<div class=\"\">";
+
+$not_load_error = false;
 if(in_array($mod, $modules)) {
-    if(file_exists("modules/" . $mod . "/" . $page . "php")) 
-        include "modules/" . $mod . "/" . $page . "php";
-    else if(file_exists("modules/" . $mod . "/index.php")) 
-        include "modules/" . $mod . "/index.php";    
-    else 
-        include "home.php";
+    
+    foreach ($mods[$mod]['req_modules'] as $value) {
+    if(!in_array($value,$modules))
+        $not_load_error = $not_load_error . "* " . $value . " is not exist.<br>";
+    }
+    if(!$not_load_error) {
+        // include module action file
+        if(file_exists("modules/" . $current_modulename  . "/" . $page . ".php")) 
+            include "modules/" . $current_modulename  . "/" . $page . ".php";
+        else if(file_exists("modules/" . $current_modulename  . "/index.php")) 
+            include "modules/" . $current_modulename  . "/index.php";  
+    }  
 } else {
     include "home.php";
 }
-?>
 
-<?php 
+if($not_load_error) { 
+    print_open_xpanel_container('Modules Required');
+    echo $not_load_error; 
+    print_close_xpanel_container();      
+}
+
 if($debug['print_sql']) { 
-?>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="x_title">
-            <h2>SQL Query List</h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content" style="display: none;">
-<?php
-echo "List : " . $sqltxt; 
-?>
-        </div>
-    </div>
-</div>
-<?php        
+    print_open_xpanel_container('SQL Query List',0);
+    echo "List : " . $sqltxt; 
+    print_close_xpanel_container();         
 }
-?>
 
-<?php 
 if($debug['print_headers']) { 
-?>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="x_title">
-            <h2>Server Headers Data</h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content" style="display: none;">
-<?php
-foreach ($_SERVER as $header => $value) {
-    echo "$header: $value <br />\n";
+    print_open_xpanel_container('Server Headers Data',0);
+    foreach ($_SERVER as $header => $value) {
+        echo "$header: $value <br />\n";
+    }
+    print_close_xpanel_container();         
 }
-?>
-        </div>
-    </div>
-</div>
-<?php        
-}
-?>
-    </div>
-</div>
-<!-- /page content -->
+
+echo " </div>";
+echo "</div>";
+echo "<!-- /page content -->";
 
 

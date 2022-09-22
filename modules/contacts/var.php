@@ -1,3 +1,4 @@
 <?php
-$menuid = 21;
+$moduleid = 21;
 $modulename ='contacts';
+$req_modules = array('users','companies');

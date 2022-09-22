@@ -18,13 +18,6 @@ $debug['print_sql'] = 1;
 $debug['print_headers'] = 1;
 $target_dir = "/var/www/html/ega/files/";
 
-$usertype = array(
-    0 => 'Admin',
-    1 => 'General Manager',
-    2 => 'Accounting Manager',
-    3 => 'editor',  
-);
-
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection

@@ -11,9 +11,20 @@ define('_home','Home');
 define('_settings','Settings');
 define('_fullscreen','FullScreen');
 define('_lock','Lock');
+define('_unlock','Unlock');
 define('_logout','Logout');
 define('_profile','Profile');
 define('_help','Help');
 define('_see_all_alerts','See All Alerts');
-
-
+define('_option','Options');
+define('_edit','Edit');
+define('_add','Add');
+define('_view','View');
+define('_delete','Delete');
+define('_confirm_delete','Delete Confirmation');
+define('_del_record','Delete Record');
+define('_edit_record','Edit Record');
+define('_add_record','Add Record');
+define('_view_record','View Record');
+define('_lock_record','Lock Record');
+define('_unlock_record','Unlock Record');
