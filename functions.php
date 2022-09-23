@@ -291,32 +291,7 @@ function print_cancel_btn_gro($cancellink, $text = '_cancel', $class = 'dark'){
 	echo "</div> \n";
 	echo "</div> \n";
 }
-function print_data_record($entity,$data, $with_opts = false) {
-	global $mod, $page, $action, $id;
-
-	$page_link = "?mod=" . $mod . "&page=" . $page;	
-
-	if(isset($entity['allowedit'])) $allowedit = $entity['allowedit']; else $allowedit = True;
-	if(isset($entity['allowadd'])) $allowadd = $entity['allowadd']; else $allowadd = True;
-	if(isset($entity['allowdel'])) $allowdel = $entity['allowdel']; else $allowdel = True;
-	if(isset($entity['allowlock'])) $allowlock = $entity['allowlock']; else $allowlock = False;
-	
-	if($with_opts) {
-        if($allowedit) {
-        	print_lbtn($page_link . "&id=" . $id . "&action=edit", T('_edit'), T('_edit_record'), 'primary', 'pencil');  
-        }
-        if($allowlock) {
-            if($data[$id][$entity['lockname']]) {  
-                print_lbtn($page_link . "&id=" . $id . "&action=unlock", T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
-            } else {
-                print_lbtn($page_link . "&id=" . $id . "&action=lock", T('_lock'), T('_lock_record'), 'dark', 'lock');
-            }
-        }
-        if($allowdel) {
-        	print_lbtn($page_link . "&id=" . $id . "&action=del", T('_delete'), T('_del_record'), 'danger', 'trash-can');
-        }
-	}
-	echo "<br><br>";
+function print_data_record($entity,$data) {
 	foreach ($entity['tablefields'] as $field => $properties) {
         if(isset($properties['type']) && $properties['type'] == 'fkey') {
             if(!isset($getjoin[$field])) $getjoin[$field] = True;
@@ -333,35 +308,26 @@ function print_data_record($entity,$data, $with_opts = false) {
                 $list = convert_title_list($records, $properties['titlename']);
                 $getjoin[$field] = False;
             }
-            if(isset($list[$data[$id][$field]])) 
-                $txt = $list[$data[$id][$field]]; 
+            if(isset($list[$data[$field]])) 
+                $txt = $list[$data[$field]]; 
             else 
                 $txt = 'N/A';
         } else if(isset($properties['type']) &&($properties['type'] == 'list' || $properties['type'] == 'yesno')) {
-            if(isset($properties['array'][$data[$id][$field]])) 
-                $txt = $properties['array'][$data[$id][$field]]; 
+            if(isset($properties['array'][$data[$field]])) 
+                $txt = $properties['array'][$data[$field]]; 
             else 
                 $txt = 'N/A';
         } else {
-            $txt = $data[$id][$field];
+            $txt = $data[$field];
         }
         if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt));
     }
 }
-function print_data_table($entity,$data, $with_opts = false) {
+function print_data_table($entity,$data,$allow, $with_opts = false) {
 	global $mod, $page, $action, $id;
 
 	$page_link = "?mod=" . $mod . "&page=" . $page;
 
-	if(isset($entity['allowview'])) $allowview = $entity['allowview']; else $allowview = False;
-	if(isset($entity['allowedit'])) $allowedit = $entity['allowedit']; else $allowedit = True;
-	if(isset($entity['allowadd'])) $allowadd = $entity['allowadd']; else $allowadd = True;
-	if(isset($entity['allowdel'])) $allowdel = $entity['allowdel']; else $allowdel = True;
-	if(isset($entity['allowlock'])) $allowlock = $entity['allowlock']; else $allowlock = False;
-    if($allowadd) {
-        print_lbtn($page_link . "&action=add", '_add', '_add_record', 'success', 'plus',''); 
-        echo "<br><br> \n"; 
-    }
 	echo "<table id=\"datatable-buttons\" class=\"table table-striped table-bordered\" style=\"width:100%\"> \n";
 	echo "<thead> \n";
 	echo "<tr> \n";
@@ -372,7 +338,7 @@ function print_data_table($entity,$data, $with_opts = false) {
 	    if($basicview) echo "<th>" . T($properties['title']) . "</th> \n";
 	}
 	if($with_opts) {
-		if($allowedit OR $allowlock OR $allowdel) 
+		if($allow['edit'] || $allow['lock'] || $allow['del'] || $allow['view']) 
 			echo "<th>#" . T('_option') . "</th> \n";
 	}
 	echo "</tr> \n";
@@ -382,7 +348,7 @@ function print_data_table($entity,$data, $with_opts = false) {
 	foreach ($data as $id => $value) {
 		if($value[$entity['lockname']]) $lock_rec_css = " class='locked'"; else $lock_rec_css = "";
 	    echo "<tr" . $lock_rec_css . "> \n";
-		if($allowview) {
+		if($allow['view']) {
 			$txt = "<a href=\"" . $page_link . "&id=" . $id . "&action=view\">" . $id . "</a> \n";
 		} else $txt = $id;
 	    echo "<td class='data'>" . $txt . "</td> \n"; 
@@ -417,7 +383,7 @@ function print_data_table($entity,$data, $with_opts = false) {
 	            	$txt = $value[$field];
 	            }
 	            if(isset($properties['link']) && $properties['link']) {
-	            	if($allowview) {
+	            	if($allow['view']) {
 	            		$txt = "<a href=\"" . $page_link . "&id=" . $id . "&action=view\">" . $txt . "</a> \n";
 	            	}
 	            }
@@ -425,23 +391,23 @@ function print_data_table($entity,$data, $with_opts = false) {
 	        }
 	    }
 	    if($with_opts) {
-		    if($allowedit || $allowlock || $allowdel || $allowview) {
+		    if($allow['edit'] || $allow['lock'] || $allow['del'] || $allow['view']) {
 		        echo "<td class='opts'> \n";
-			    if($allowview) {
+			    if($allow['view']) {
 			        print_lbtn($page_link . "&id=" . $id . "&action=view", '_view', '_view_record', 'info', 'eye'); 
 			    }
-		        if($allowedit) {
+		        if($allow['edit']) {
 		        	print_lbtn($page_link . "&id=" . $id . "&action=edit", '_edit', '_edit_record', 'primary', 'pencil');  
 		        }
-		        if($allowlock) {
-		            if($value[$entity['lockname']]) {  
-		                print_lbtn($page_link . "&id=" . $id . "&action=unlock", '_unlock', '_unlock_record', 'success', 'lock-open');  
-		            } else {
-		                print_lbtn($page_link . "&id=" . $id . "&action=lock", '_lock', '_lock_record', 'dark', 'lock');
-		            }
-		        }
-		        if($allowdel) {
+		        if($allow['del']) {
 		        	print_lbtn($page_link . "&id=" . $id . "&action=del", '_delete', '_del_record', 'danger', 'trash-can');
+		        }
+		        if($allow['lock']) {
+		            if($value[$entity['lockname']]) {  
+		                print_lbtn($page_link . "&id=" . $id . "&action=unlock&rel=1", '_unlock', '_unlock_record', 'success', 'lock-open');  
+		            } else {
+		                print_lbtn($page_link . "&id=" . $id . "&action=lock&rel=1", '_lock', '_lock_record', 'dark', 'lock');
+		            }
 		        }
 		        echo"</td> \n";
 		    }

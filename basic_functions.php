@@ -37,7 +37,7 @@ function user_log($sessionid,$activity) {
     global $conn;
     global $currenttime;
 
-    $sql = "INSERT INTO `userlog` (`userlog_session_id`, `userlog_timestamp`, `userlog_data`) VALUES ('". addslashes($sessionid) . "', '" . addslashes($currenttime) . "', '" . addslashes($activity) . "');";
+    $sql = "INSERT INTO `userlogs` (`userlog_session_id`, `userlog_timestamp`, `userlog_data`) VALUES ('". addslashes($sessionid) . "', '" . addslashes($currenttime) . "', '" . addslashes($activity) . "');";
 
     $conn->query($sql);
 
@@ -184,7 +184,7 @@ function log_sql($sql = '') {
 }
 
 function T($text){
-    if(defined($text)) {
+    if(!empty($text) && defined($text)) {
         eval('$text = ' . $text .';'); 
     }
     return $text;

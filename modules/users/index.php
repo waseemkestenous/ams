@@ -3,8 +3,14 @@ if(!isset($currentuserid)) header("Location:index.php");
 
 check_perms();
 
+if(isset($entity['allowview'])) $allow['view'] = $entity['allowview']; else $allow['view'] = False;
+if(isset($entity['allowedit'])) $allow['edit'] = $entity['allowedit']; else $allow['edit'] = False;
+if(isset($entity['allowadd'])) $allow['add'] = $entity['allowadd']; else $allow['add'] = False;
+if(isset($entity['allowdel'])) $allow['del'] = $entity['allowdel']; else $allow['del'] = False;
+if(isset($entity['allowlock'])) $allow['lock'] = $entity['allowlock']; else $allow['lock'] = False;
+
 if($action == 'no') {
-    if(!(isset($entity['allowview']) && $entity['allowview'])) header("Location:index.php");
+    if(!$allow['view']) header("Location:index.php");
 
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
@@ -12,13 +18,21 @@ if($action == 'no') {
     else $conditions = array('user_user_id' => $currentuserid);
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
     $data = get_records($tablename, $key, $tablefields, $conditions);
-
     print_open_xpanel_container($entity['pagetitle']);
-    print_data_table ($entity, $data, 0);
+    if($allow['add']) {
+        $link = "?mod=" . $mod . "&page=" . $page;
+        print_lbtn($link . "&action=add", '_add', '_add_record', 'success', 'plus',''); 
+        print_ln_solid();
+    }
+    print_data_table ($entity, $data,$allow, 1);
     print_close_xpanel_container();
 } else if($action == 'lock') {
-    if(!(isset($entity['allowlock']) && $entity['allowlock'])) header("Location:index.php");
-
+    $act = 1;
+    if(!$allow['lock']) header("Location:index.php");
+    if(isset($_GET['rel'])){
+        if($_GET['rel'] == 1) $rel = 1; 
+        else $rel = 0;
+    }
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
@@ -30,11 +44,16 @@ if($action == 'no') {
         die();
     }
 
-    upd_record($entity['tablename'], array($entity['lockname'] => 1), array($entity['idname'] => $id));
-    header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+    upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
+    if($rel == 0) header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+    if($rel == 1) header("Location:?mod=" . $mod . "&page=" . $page);
 } else if($action == 'unlock') {
-    if(!(isset($entity['allowlock']) && $entity['allowlock'])) header("Location:index.php");
-
+    $act = 0;
+    if(!$allow['lock']) header("Location:index.php");
+    if(isset($_GET['rel'])){
+        if($_GET['rel'] == 1) $rel = 1; 
+        else $rel = 0;
+    }
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
@@ -45,10 +64,12 @@ if($action == 'no') {
         header("Location:index.php");
         die();
     }
-    upd_record($entity['tablename'], array($entity['lockname'] => 0), array($entity['idname'] => $id));
-    header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+
+    upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
+    if($rel == 0) header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+    if($rel == 1) header("Location:?mod=" . $mod . "&page=" . $page);
 }else if($action == 'view'){
-    if(!(isset($entity['allowview']) && $entity['allowview'])) header("Location:index.php");
+    if(!$allow['view']) header("Location:index.php");
 
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
@@ -56,15 +77,33 @@ if($action == 'no') {
     if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
     else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
+    $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");
         die();
     }
     print_open_xpanel_container($entity['viewpagetitle']);
-    print_data_record($entity, $data, true);
+    if($allow['edit'] || $allow['lock'] || $allow['del']) {
+        $link = "?mod=" . $mod . "&page=" . $page . "&id=" . $id;
+        if($allow['edit']) {
+            print_lbtn($link . "&action=edit", T('_edit'), T('_edit_record'), 'primary', 'pencil');  
+        }
+        if($allow['lock']) {
+            if($data[$entity['lockname']]) {  
+                print_lbtn($link . "&action=unlock", T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
+            } else {
+                print_lbtn($link . "&action=lock", T('_lock'), T('_lock_record'), 'dark', 'lock');
+            }
+        }
+        if($allow['del']) {
+            print_lbtn($link . "&action=del", T('_delete'), T('_del_record'), 'danger', 'trash-can');
+        }
+        print_ln_solid();
+    }
+    print_data_record($entity, $data);
     print_close_xpanel_container();
 }else if($action == 'del'){
-    if(!(isset($entity['allowdel']) && $entity['allowdel'])) header("Location:index.php");
+    if(!$allow['del']) header("Location:index.php");
 
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
@@ -73,6 +112,7 @@ if($action == 'no') {
     if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
     else $conditions = array($key => $id,'user_user_id' => $currentuserid);
     $data = get_records($tablename, $key, $tablefields, $conditions);
+    $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");
         die();
@@ -83,9 +123,9 @@ if($action == 'no') {
         $exist = check_form();
         if($exist) {
             //check record tables relations
-            $check = check_record_relation($tablename, $id, $check);
+            $check = check_record_relation($entity['tablename'], $id, $check);
             if($check) {
-                confirm_del($tablename, array($key => $id), 'index.php?mod=' . $mod . '&page=' . $page);
+                confirm_del($entity['tablename'], array($key => $id), 'index.php?mod=' . $mod . '&page=' . $page);
             }
         } else {
             expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
@@ -96,7 +136,7 @@ if($action == 'no') {
     $form_code = create_form_code();
     print_open_xpanel_container($entity['delpagetitle']);
     if(!isset($check)){
-        print_del_record($entity,$data[$id],$form_code);
+        print_del_record($entity,$data,$form_code);
     }
     else {
         print_alert('danger', $checkerror);
@@ -105,8 +145,7 @@ if($action == 'no') {
     }
     print_close_xpanel_container();
 }else if($action == 'edit'){
-
-    if(!(isset($entity['allowedit']) && $entity['allowedit'])) header("Location:index.php");
+    if(!$allow['edit']) header("Location:index.php");
     
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
@@ -142,7 +181,7 @@ if($action == 'no') {
             update_data($fields_temp, $data);
             //if edit correctly save data and redirect to rec view else stay in editing form with passing the post data.
             if($check) {
-                confirm_edit($tablename, $fields, array($key => $id), 'index.php?mod='.$mod.'&page='.$page.'&id='.$id.'&action=view');
+                confirm_edit($entity['tablename'], $fields, array($key => $id), 'index.php?mod='.$mod.'&page='.$page.'&id='.$id.'&action=view');
             }
         } else {
             expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
@@ -156,11 +195,7 @@ if($action == 'no') {
     print_edit_record($entity, $data,$form_code, 1);
     print_close_xpanel_container();
 }else if($action == 'add'){
-
-    if(!(isset($entity['allowadd']) && $entity['allowadd'])) header("Location:index.php");
-    
-    $tablename = $entity['tablename'];// Required
-    $key = $entity['idname'];//Optional
+    if(!$allow['add']) header("Location:index.php");
     $lock = $entity['lockname'];//Optional
     $data = array();
     
@@ -187,7 +222,7 @@ if($action == 'no') {
             update_data($fields_temp, $data);
             //if edit correctly save data and redirect to rec view else stay in editing form with passing the post data.
             if($check) {
-                confirm_add($tablename, $fields, 'index.php?mod=' . $mod . '&page=' . $page);
+                confirm_add($entity['tablename'], $fields, 'index.php?mod=' . $mod . '&page=' . $page);
             }
         } else {
             expire_form('index.php?mod=' . $mod . '&page=' . $page.'&action=add');

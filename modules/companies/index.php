@@ -1,2 +1,231 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
-<?php
+<?php 
+if(!isset($currentuserid)) header("Location:index.php");
+
+check_perms();
+
+if(isset($entity['allowview'])) $allow['view'] = $entity['allowview']; else $allow['view'] = False;
+if(isset($entity['allowedit'])) $allow['edit'] = $entity['allowedit']; else $allow['edit'] = False;
+if(isset($entity['allowadd'])) $allow['add'] = $entity['allowadd']; else $allow['add'] = False;
+if(isset($entity['allowdel'])) $allow['del'] = $entity['allowdel']; else $allow['del'] = False;
+if(isset($entity['allowlock'])) $allow['lock'] = $entity['allowlock']; else $allow['lock'] = False;
+
+if($action == 'no') {
+    if(!$allow['view']) header("Location:index.php");
+
+    $tablename = 'usercompanies_view';// Required
+    $key = $entity['idname'];//Optional
+    if($user['user_usertype_id'] == 1) $conditions = array(); 
+    else $conditions = array('userco_user_id'=>$currentuserid); 
+
+    if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
+    $data = get_records($tablename, $key, $tablefields, $conditions);
+
+    print_open_xpanel_container($entity['pagetitle']);
+    if($allow['add']) {
+        $link = "?mod=" . $mod . "&page=" . $page;
+        print_lbtn($link . "&action=add", '_add', '_add_record', 'success', 'plus',''); 
+        print_ln_solid();
+    }
+    print_data_table ($entity, $data,$allow, 1);
+    print_close_xpanel_container();
+} else if($action == 'lock') {
+    $act = 1;
+	if(!$allow['lock']) header("Location:index.php");
+	if(isset($_GET['rel'])){
+	    if($_GET['rel'] == 1) $rel = 1; 
+	    else $rel = 0;
+	}
+	$tablename = 'usercompanies_view';// Required
+	$key = $entity['idname'];//Optional
+	if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
+	if($user['user_usertype_id'] == 1) $conditions = array($key => $id); 
+    else $conditions = array($key => $id,'userco_user_id'=>$currentuserid); 
+	$data = get_records($tablename, $key, $tablefields, $conditions);
+	if(empty($data)) {
+	    header("Location:index.php");
+	    die();
+	}
+
+	upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
+	if($rel == 0) header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+	if($rel == 1) header("Location:?mod=" . $mod . "&page=" . $page);
+} else if($action == 'unlock') {
+    $act = 0;
+	if(!$allow['lock']) header("Location:index.php");
+	if(isset($_GET['rel'])){
+	    if($_GET['rel'] == 1) $rel = 1; 
+	    else $rel = 0;
+	}
+	$tablename = 'usercompanies_view';// Required
+	$key = $entity['idname'];//Optional
+	if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
+	if($user['user_usertype_id'] == 1) $conditions = array($key => $id); 
+    else $conditions = array($key => $id,'userco_user_id'=>$currentuserid); 
+	$data = get_records($tablename, $key, $tablefields, $conditions);
+	if(empty($data)) {
+	    header("Location:index.php");
+	    die();
+	}
+
+	upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
+	if($rel == 0) header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+	if($rel == 1) header("Location:?mod=" . $mod . "&page=" . $page);
+}else if($action == 'view'){
+    if(!$allow['view']) header("Location:index.php");
+
+    $tablename = 'usercompanies_view';// Required
+    $key = $entity['idname'];//Optional
+    if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
+	if($user['user_usertype_id'] == 1) $conditions = array($key => $id); 
+    else $conditions = array($key => $id,'userco_user_id'=>$currentuserid); 
+    $data = get_records($tablename, $key, $tablefields, $conditions);
+    $data = $data[$id];
+    if(empty($data)) {
+        header("Location:index.php");
+        die();
+    }
+    print_open_xpanel_container($entity['viewpagetitle']);
+    if($allow['edit'] || $allow['lock'] || $allow['del']) {
+    	$link = "?mod=" . $mod . "&page=" . $page . "&id=" . $id;
+	    if($allow['edit']) {
+	    	print_lbtn($link . "&action=edit", T('_edit'), T('_edit_record'), 'primary', 'pencil');  
+	    }
+	    if($allow['lock']) {
+	        if($data[$entity['lockname']]) {  
+	            print_lbtn($link . "&action=unlock", T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
+	        } else {
+	            print_lbtn($link . "&action=lock", T('_lock'), T('_lock_record'), 'dark', 'lock');
+	        }
+	    }
+	    if($allow['del']) {
+	    	print_lbtn($link . "&action=del", T('_delete'), T('_del_record'), 'danger', 'trash-can');
+	    }
+    	print_ln_solid();
+    }
+    print_data_record($entity, $data);
+    print_close_xpanel_container();
+}else if($action == 'del'){
+    if(!$allow['del']) header("Location:index.php");
+
+    $tablename = 'usercompanies_view';// Required
+    $key = $entity['idname'];//Optional
+    $title = $entity['titlename'];//Optional
+    $tablefields = array($key,$title);
+	if($user['user_usertype_id'] == 1) $conditions = array($key => $id); 
+    else $conditions = array($key => $id,'userco_user_id'=>$currentuserid); 
+    $data = get_records($tablename, $key, $tablefields, $conditions);
+    $data = $data[$id];
+    if(empty($data)) {
+        header("Location:index.php");
+        die();
+    }
+    if(isset($_POST) && !empty($_POST)) {
+        $check = true;
+        $checkerror =array();
+        $exist = check_form();
+        if($exist) {
+            //check record tables relations
+            $check = check_record_relation($entity['tablename'], $id, $check);
+            if($check) {
+                confirm_del($entity['tablename'], array($key => $id), 'index.php?mod=' . $mod . '&page=' . $page);
+            }
+        } else {
+            expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
+            die();
+        }
+    }
+
+    $form_code = create_form_code();
+    print_open_xpanel_container($entity['delpagetitle']);
+    if(!isset($check)){
+        print_del_record($entity,$data,$form_code);
+    }
+    else {
+        print_alert('danger', $checkerror);
+        $cancellink = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view";
+        print_lbtn($cancellink, '_go_back', '', 'info');
+    }
+    print_close_xpanel_container();
+}else if($action == 'edit'){
+    if(!$allow['edit']) header("Location:index.php");
+    
+    $tablename = 'usercompanies_view';// Required
+    $key = $entity['idname'];//Optional
+    $lock = $entity['lockname'];//Optional
+    if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
+	if($user['user_usertype_id'] == 1) $conditions = array($key => $id); 
+    else $conditions = array($key => $id,'userco_user_id'=>$currentuserid); 
+    $data = get_records($tablename, $key, $tablefields, $conditions);
+    $data = $data[$id];
+    if(empty($data)) {
+        header("Location:index.php");
+        die();
+    }
+    $check = true;
+    $checkerror = array();
+    $fields = array();
+    $fields_temp = array();
+    if(isset($_POST) && !empty($_POST)) {
+        $exist = check_form();
+        if($exist) {
+            //check name length if changed
+            check_length_edit_field('co_name', $data['co_name'], $entity, $fields, $fields_temp, $check, $checkerror);
+
+            //check_length_edit_field('co_email', $data['co_email'], $entity, $fields, $fields_temp, $check, $checkerror);
+            //check_length_edit_field('co_tel', $data['co_tel'], $entity, $fields, $fields_temp, $check, $checkerror);
+
+            //check field lock if changed
+            check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
+            update_data($fields_temp, $data);
+            if($check) {
+                confirm_edit($entity['tablename'], $fields, array($key => $id), 'index.php?mod='.$mod.'&page='.$page.'&id='.$id.'&action=view');
+            }
+        } else {
+            expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
+            die();
+        }
+    }
+
+    $form_code = create_form_code();
+    print_open_xpanel_container($entity['editpagetitle']);
+    print_alert('danger', $checkerror);
+    print_edit_record($entity, $data,$form_code, 1);
+    print_close_xpanel_container();
+}else if($action == 'add'){
+    if(!$allow['add']) header("Location:index.php");
+    $lock = $entity['lockname'];//Optional
+    $data = array();
+    
+    $check = true;
+    $checkerror = array();
+    $fields = array();
+    if(isset($_POST) && !empty($_POST)) {
+        $exist = check_form();
+        if($exist) {
+            //check name length
+            check_length_add_field('co_name', $entity , $fields, $fields_temp, $check, $checkerror);
+
+            //check_length_add_field('co_email', $entity , $fields, $fields_temp, $check, $checkerror);
+            //check_length_add_field('co_tel', $entity , $fields, $fields_temp, $check, $checkerror);
+
+            //check user parent selection.
+            add_default_field('co_user_id', $entity , $fields, $fields_temp);
+            //check field lock if changed               
+            check_add_lock_field($lock, $fields, $fields_temp);
+            update_data($fields_temp, $data);
+            if($check) {
+                confirm_add($entity['tablename'], $fields, 'index.php?mod=' . $mod . '&page=' . $page);
+            }
+        } else {
+            expire_form('index.php?mod=' . $mod . '&page=' . $page.'&action=add');
+            die();
+        }
+    }
+
+    $form_code = create_form_code();
+
+    print_open_xpanel_container($entity['addpagetitle']);
+    print_alert('danger', $checkerror); 
+    print_add_record($entity,$data,$form_code, 1);
+    print_close_xpanel_container();
+}

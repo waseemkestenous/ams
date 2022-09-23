@@ -63,10 +63,12 @@ if($session_exist) {
     if (isset($_GET['mod']) && in_array($_GET['mod'], $modules)) $mod = $_GET['mod']; else $mod = 'home';
     if (isset($_GET['page'])) $page = $_GET['page']; else $page = 'dash';
     if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
+    
+    $related_tables = array();
 
     foreach ($modules as $value) {
         $req_modules = array();
-        $related_tables = array();
+        
         $allowed_usertype_id = array_keys($usertype);
         
         // load module basic lang files
