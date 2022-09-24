@@ -13,8 +13,12 @@ body {
 	direction: rtl;
 	text-align: right;
 }
-body a, body span, body h2, .table, button{
+body a, body span, body h2, .table, button, .form-control, .control-label{
 	font-family: 'Janna LT Bold';
+}
+label span, body h2, .table, button, .form-control:read-write, .control-label{
+	font-family: 'Janna LT Bold';
+	color:  #000;
 }
 .pull-right {
 	float: left;

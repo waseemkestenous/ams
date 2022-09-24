@@ -1,10 +1,10 @@
 <?php
 $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
 
-$actionlist = array('view','dash','add','edit','del','lock','unlock');
+$actionlist = array('view','no','add','edit','del','lock','unlock');
 
 $entity = array(
-    'page' => 81,
+    'page' => 71,
     'tablename' => 'companies',
     'idname' => 'co_id',
     'titlename' => 'co_name',
@@ -35,6 +35,32 @@ $entity = array(
     ),
 );
 
+$subentity = array(
+    'tablename' => 'usercompanies',
+    'idname' => 'userco_id',
+    'titlename' => 'user_name',
+    'lockname' => 'userco_lock',
+    'pagetitle' => '_usercompanieslist',
+    'editpagetitle' => '_edit_usercompany',
+    'addpagetitle' => '_add_new_usercompany',
+    'delpagetitle' => '_del_usercompany', 
+    'viewpagetitle' => '_view_usercompany', 
+    'lockpagetitle' => '_lock_usercompany',  
+    'allowview' => True,    
+    'allowedit' => false,
+    'allowadd' => True,
+    'allowdel' => True,    
+    'allowlock' => True,
+    'tablefields' => array(
+'userco_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_userco_id','placeholder' => '_auto','basicview' => 0),
+'userco_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user'),
+'userco_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0),
+'userco_notes' => array('req' => 0, 'type' => 'text', 'title' => '_notes','basicview' => 1,'dvlr2' => 255),
+'userco_reguser_id' => array('req' => 0, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
+'userco_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_co_timestamp','placeholder' => '_auto'),
+'userco_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_co_lock','basicview' => 0),
+    ),
+);
 $Datatables_headers = '
 <!-- Datatables -->   
 <link href="assets/gentela/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -119,7 +145,7 @@ $Switchery_headers = '
 <!-- Switchery -->
 <link href="assets/gentela/vendors/switchery/dist/switchery.min.css" rel="stylesheet">';
 
-if($page == 'dash' && $action == 'no' && $id == 0){
+if($page == 'dash' && $action == 'no' && $id == 0 && $user['user_usertype_id'] == 1){
 	$header_code = $header_code . $Datatables_headers; 
 	$footer_code_end = $footer_code_end . $Datatables_footers; 	
 }
@@ -127,12 +153,31 @@ if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $
     $header_code = $header_code . $Switchery_headers; 
     $footer_code_st = $footer_code_st . $validatin_footers;  
 }
-
-if(in_array($user['user_usertype_id'],array(2,3,4))) {
+/*if($page == 'dash' && $action == 'view' && $id <> 0 ){
+    $header_code = $header_code . $Datatables_headers; 
+    $footer_code_end = $footer_code_end . $Datatables_footers;  
+}*/
+if($page == 'userco' && $action == 'add'){
+    $header_code = $header_code . $Switchery_headers; 
+    $footer_code_st = $footer_code_st . $validatin_footers;  
+}
+if(in_array($user['user_usertype_id'],array(2))) {
     $entity['allowdel'] = false;
     $entity['allowlock'] = false;  
-    $entity['allowadd'] = false;     
+    $entity['allowadd'] = false; 
+    $entity['tablefields']['co_lock']['readonly'] = true;   
+
 }
 if(in_array($user['user_usertype_id'],array(3,4))) {
-    $entity['allowedit'] = false;    
+    $entity['allowedit'] = false; 
+    $entity['allowdel'] = false;
+    $entity['allowlock'] = false;  
+    $entity['allowadd'] = false; 
+}
+
+if(in_array($user['user_usertype_id'],array(3,4))) {
+    $subentity['allowview'] = false; 
+    $subentity['allowdel'] = false;
+    $subentity['allowlock'] = false;  
+    $subentity['allowadd'] = false; 
 }

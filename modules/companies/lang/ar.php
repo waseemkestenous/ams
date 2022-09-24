@@ -24,3 +24,30 @@ define('_tel_ex', 'مثال : +201234567890');
 define('_co_address', 'العنوان');
 define('_co_notes', 'ملاحظات');
 
+define('_usercompanieslist', 'قائمة المستخدمين للشركة');
+
+define('_view_usercompany', 'معاينة سماحية دخول المستخدم للشركة');
+define('_del_usercompany', 'حذف سماحية دخول المستخدم للشركة');
+define('_add_new_usercompany', 'أضافة سماحية دخول مستخدم للشركة');
+
+define('_userco_id', 'الكود');
+define('_userco_lock', 'حالة الايقاف');
+define('_userco_timestamp', 'توقيت التسجيل');
+
+define('_user', 'اسم المستخدم');
+define('_co', 'اسم الشركة');
+define('_notes', 'ملاحظات');
+
+
+
+
+
+
+
+
+
+
+
+
+
+

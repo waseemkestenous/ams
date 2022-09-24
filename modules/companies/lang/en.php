@@ -24,3 +24,16 @@ define('_tel_ex', 'Ex : +201234567890');
 define('_co_address', 'Address');
 define('_co_notes', 'Notes');
 
+define('_usercompanieslist', 'Users Company List');
+
+define('_view_usercompany', 'View Company User Access');
+define('_del_usercompany', 'Delete Company User Access');
+define('_add_new_usercompany', 'Add New Company User Access');
+
+define('_userco_id', 'Code');
+define('_userco_lock', 'Locking Status');
+define('_userco_timestamp', 'Reg. Time');
+
+define('_user', 'Name');
+define('_co', 'Campany Name');
+define('_notes', 'Notes');

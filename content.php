@@ -23,19 +23,19 @@ if(in_array($mod, $modules)) {
 }
 
 if($not_load_error) { 
-    print_open_xpanel_container('Modules Required');
+    print_open_xpanel_container('Modules Required',false,'error');
     echo $not_load_error; 
     print_close_xpanel_container();      
 }
 
 if($debug['print_sql']) { 
-    print_open_xpanel_container('SQL Query List',0);
+    print_open_xpanel_container('SQL Query List',false,'sql');
     echo "List : " . $sqltxt; 
     print_close_xpanel_container();         
 }
 
 if($debug['print_headers']) { 
-    print_open_xpanel_container('Server Headers Data',0);
+    print_open_xpanel_container('Server Headers Data',false,'headers');
     foreach ($_SERVER as $header => $value) {
         echo "$header: $value <br />\n";
     }

@@ -1,6 +1,8 @@
 <?php
 $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
 
+$actionlist = array('view','no','add','edit','del','lock','unlock');
+
 if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
     foreach (array_keys($usertype) as $key) {
         if($user['user_usertype_id'] > $key) 
@@ -8,8 +10,6 @@ if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $
                 unset($usertype[$key]); 
     }
 }
-
-$actionlist = array('view','dash','add','edit','del','lock','unlock');
 
 $entity = array(
     'page' => 81,
@@ -124,7 +124,7 @@ $Switchery_headers = '
 <!-- Switchery -->
 <link href="assets/gentela/vendors/switchery/dist/switchery.min.css" rel="stylesheet">';
 
-if($page == 'dash' && $action == 'no' && $id == 0){
+if($page == 'dash' && $action == 'no' && $id == 0 && $user['user_usertype_id'] == 1){
 	$header_code = $header_code . $Datatables_headers; 
 	$footer_code_end = $footer_code_end . $Datatables_footers; 	
 }
@@ -142,4 +142,8 @@ if($id == 1) {
     $entity['tablefields']['user_usertype_id']['readonly'] = true;  
     $entity['tablefields']['user_lock']['readonly'] = true;       
 }
-
+if($id == $currentuserid) {
+    $entity['allowdel'] = false;
+    $entity['allowlock'] = false;    
+    $entity['tablefields']['user_lock']['readonly'] = true;       
+}

@@ -1,7 +1,9 @@
 <?php
 function check_perms(){
 	global $user, $mod, $mods;
-	if(!in_array($user['user_usertype_id'],$mods[$mod]['allowed_usertype_id'])) header("Location:index.php");
+	if(!in_array($user['user_usertype_id'],$mods[$mod]['allowed_usertype_id'])) {
+		header("Location:index.php");die();
+	}
 }
 function build_menu($menux, $menuy,$title, $link = '', $icon ='', $type = 'sub',$perm = 1) {
 	global $menu, $user, $allowed_usertype_id;
@@ -230,7 +232,7 @@ function convert_title_list($records, $title) {
 	}
 	return $list;
 }
-function print_open_xpanel_container($title, $status = true) {
+function print_open_xpanel_container($title, $status = true,$divid = 'main') {
 	if($status) {
 		$dir = 'up'; 
 		$style = 'block';
@@ -238,7 +240,7 @@ function print_open_xpanel_container($title, $status = true) {
 		$dir = 'down';
 		$style = 'none';
 	}
-	echo "<div class='col-md-12 col-sm-12 col-xs-12'> \n";
+	echo "<div id='" . $divid . "' class='col-md-12 col-sm-12 col-xs-12'> \n";
     echo "<div class='x_panel'> \n";
 	echo "<div class='x_title'> \n";
 	echo "<h2>". T($title) . "</h2> \n";
@@ -270,7 +272,7 @@ function print_save_btn_gro($cancellink = ''){
 	echo "<div class='col-md-6 col-sm-6 offset-md-3'> \n";
 	print_btn('_save', 'submit', 'primary');
 	print_btn('_reset', 'reset', 'info');
-	if(!empty($cancellink)) print_lbtn($cancellink, '_cancel', '', 'dark');
+	if(!empty($cancellink)) print_lbtn($cancellink, '_cancel', '', 'secondary');
 	echo "</div> \n";
 	echo "</div> \n";
 }
@@ -279,11 +281,19 @@ function print_delete_btn_gro($cancellink = ''){
 	echo "<div class='form-group'> \n";
 	echo "<div class='col-md-6 col-sm-6 offset-md-3'> \n";
 	print_btn('_confirm_delete', 'submit', 'danger');
-	if(!empty($cancellink)) print_lbtn($cancellink, '_cancel', '', 'dark');
+	if(!empty($cancellink)) print_lbtn($cancellink, '_cancel', '', 'secondary');
 	echo "</div> \n";
 	echo "</div> \n";
 }
-function print_cancel_btn_gro($cancellink, $text = '_cancel', $class = 'dark'){
+function print_goback_btn_gro($cancellink = ''){
+
+	echo "<div class='form-group'> \n";
+	echo "<div class='col-md-6 col-sm-6 offset-md-3'> \n";
+	if(!empty($cancellink)) print_lbtn($cancellink, '_cancel', '', 'secondary');
+	echo "</div> \n";
+	echo "</div> \n";
+}
+function print_cancel_btn_gro($cancellink, $text = '_cancel', $class = 'secondary'){
 
 	echo "<div class='form-group'> \n";
 	echo "<div class='col-md-6 col-sm-6 offset-md-3'> \n";
@@ -323,11 +333,11 @@ function print_data_record($entity,$data) {
         if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt));
     }
 }
-function print_data_table($entity,$data,$allow, $with_opts = false) {
-	global $mod, $page, $action, $id;
-
-	$page_link = "?mod=" . $mod . "&page=" . $page;
-
+function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $denyview = null, $denyedit = null, $denydel = null, $denylock = null) {
+	if(!isset($denyview))$denyview = array();
+	if(!isset($denyedit))$denyedit = array();
+	if(!isset($denydel))$denydel = array();
+	if(!isset($denylock))$denylock = array();
 	echo "<table id=\"datatable-buttons\" class=\"table table-striped table-bordered\" style=\"width:100%\"> \n";
 	echo "<thead> \n";
 	echo "<tr> \n";
@@ -367,11 +377,12 @@ function print_data_table($entity,$data,$allow, $with_opts = false) {
 						$ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
 
 						$records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
-						$list = convert_title_list($records, $properties['titlename']);
+						$list[$field] = convert_title_list($records, $properties['titlename']);//var_dump($list['userco_co_id']);echo "<br>";
 	                    $getjoin[$field] = False;
 	                }
-	                if(isset($list[$value[$field]])) 
-	                	$txt = $list[$value[$field]]; 
+	                //echo $field. ":" .$list[$field][$value[$field]]."<br>";
+	                if(isset($list[$field][$value[$field]])) 
+	                	$txt = $list[$field][$value[$field]]; 
 	                else 
 	                	$txt = 'N/A';
 	            } else if(isset($properties['type']) && $properties['type'] == 'list') {
@@ -393,16 +404,16 @@ function print_data_table($entity,$data,$allow, $with_opts = false) {
 	    if($with_opts) {
 		    if($allow['edit'] || $allow['lock'] || $allow['del'] || $allow['view']) {
 		        echo "<td class='opts'> \n";
-			    if($allow['view']) {
+			    if($allow['view'] && !in_array($id, $denyview)) {
 			        print_lbtn($page_link . "&id=" . $id . "&action=view", '_view', '_view_record', 'info', 'eye'); 
 			    }
-		        if($allow['edit']) {
+		        if($allow['edit'] && !in_array($id, $denyedit)) {
 		        	print_lbtn($page_link . "&id=" . $id . "&action=edit", '_edit', '_edit_record', 'primary', 'pencil');  
 		        }
-		        if($allow['del']) {
+		        if($allow['del'] && !in_array($id, $denydel)) {
 		        	print_lbtn($page_link . "&id=" . $id . "&action=del", '_delete', '_del_record', 'danger', 'trash-can');
 		        }
-		        if($allow['lock']) {
+		        if($allow['lock'] && !in_array($id, $denylock)) {
 		            if($value[$entity['lockname']]) {  
 		                print_lbtn($page_link . "&id=" . $id . "&action=unlock&rel=1", '_unlock', '_unlock_record', 'success', 'lock-open');  
 		            } else {
@@ -417,16 +428,11 @@ function print_data_table($entity,$data,$allow, $with_opts = false) {
 	echo"</tbody> \n";
 	echo"</table> \n";
 }
-function print_del_record($entity,$data,$form_code, $check_opts = false) {
-	global $mod, $page, $action, $id;
-
-	$action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action;	
-	$cancelaction = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view";	
-
+function print_del_record($key,$title,$data,$form_code,$action,$cancelaction) {
 	print_open_form($action);
 	print_input_hidden('form_code', $form_code);
 	print_text('_delete_confirm_msg','del_msg');
-	print_textbox($entity['titlename'], $entity['tablefields'][$entity['titlename']]['title'], $data[$entity['titlename']]);
+	print_textbox($key, $title, $data[$key]);
 	print_text('_delete_note_msg','note_msg');
 	print_ln_solid();
 	print_delete_btn_gro($cancelaction);
@@ -435,11 +441,7 @@ function print_del_record($entity,$data,$form_code, $check_opts = false) {
 function print_text($msg, $class = ''){
 	echo "<span class='" . $class . "'><strong>".T($msg) . "</strong></span><br>";
 }
-function print_add_record($entity,$data,$form_code, $with_opts = false) {
-	global $mod, $page, $action, $id;
-	//var_dump($data);
-	$action = "?mod=" . $mod . "&page=" . $page . "&action=" . $action;	
-	$cancelaction = "?mod=" . $mod . "&page=" . $page;
+function print_add_record($entity,$data,$form_code,$action,$cancelaction) {
 	print_open_form($action);
 	print_input_hidden('form_code', $form_code);
 	foreach ($entity['tablefields'] as $field => $properties) {
@@ -492,11 +494,7 @@ function print_add_record($entity,$data,$form_code, $with_opts = false) {
 	print_save_btn_gro($cancelaction);
     print_close_form();
 }
-function print_edit_record($entity,$data,$form_code, $with_opts = false) {
-	global $mod, $page, $action, $id;
-	//var_dump($data);
-	$action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action;	
-	$cancelaction = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view";
+function print_edit_record($entity,$data,$form_code,$action,$cancelaction) {
 	print_open_form($action);
 	print_input_hidden('form_code', $form_code);
 	foreach ($entity['tablefields'] as $field => $properties) {
@@ -838,6 +836,26 @@ function check_edit_lock_field($value, $lock, &$fields, &$fields_temp){
         $fields_temp[$lock] = $_POST[$lock];
     }
 }
+function check_add_field($field, $entity , &$fields, &$fields_temp, &$check, &$checkerror){
+    $valln = strlen($_POST[$field]);
+    $fields[$field] = $_POST[$field];
+    $fields_temp[$field] = $_POST[$field];
+    if(isset($entity['tablefields'][$field]['dvlr2']) && ($valln > $entity['tablefields'][$field]['dvlr2'])) {
+        $check = false; 
+        $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_length_error');
+    }
+}
+function check_edit_field($field, $value, $entity, &$fields, &$fields_temp, &$check, &$checkerror){
+    if(isset($_POST[$field]) && ($_POST[$field] <> $value)) {
+        $valln = strlen($_POST[$field]);
+        $fields[$field] = $_POST[$field];
+        $fields_temp[$field] = $_POST[$field];      
+        if(isset($entity['tablefields'][$field]['dvlr2']) && ($valln > $entity['tablefields'][$field]['dvlr2'])) {
+            $check = false; 
+            $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_length_error');
+        }
+    }
+}
 function check_length_add_field($field, $entity , &$fields, &$fields_temp, &$check, &$checkerror){
     if(isset($_POST[$field])) {
         $valln = strlen($_POST[$field]);
@@ -859,14 +877,14 @@ function check_length_edit_field($field, $value, $entity, &$fields, &$fields_tem
         $fields_temp[$field] = $_POST[$field];      
         if(!($valln >= $entity['tablefields']['user_name']['dvlr1'] && $valln <= $entity['tablefields']['user_name']['dvlr2'])) {
             $check = false; 
-            $checkerror[] = T($entity['tablefields']['user_name']['title']) . " : " . T('_length_error');
+            $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_length_error');
         }
     }
 }
 function check_exist_add_field($field, $entity, &$fields, &$fields_temp, &$check, &$checkerror){
     if(isset($_POST[$field])) {
         $fields[$field] = $_POST[$field];
-        $fields_temp[$field] = $_POST[$field];       
+        $fields_temp[$field] = $_POST[$field]; 
         $exist = check_record_exist($entity['tablename'], array($field => $_POST[$field]));
         if($exist) {
             $check = false; $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_exist_error');
