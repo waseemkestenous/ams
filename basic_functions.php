@@ -1,4 +1,22 @@
 <?php
+function encrypturl($txt){
+    if(empty($txt)) return "";
+    $code = base64_encode($txt);
+    $code = base64_encode($code);
+    return $code;
+}
+function decrypturl($code){
+    $txt = base64_decode($code);
+    $txt = base64_decode($txt);
+    $params = explode("&", $txt); //var_dump($params);echo "<br>";
+    foreach ($params as $param) {
+        $param = explode("=", $param);//var_dump($param);echo "<br>";
+        if(isset($param[1])) $_GET[$param[0]] = $param[1];
+    }
+    unset($_GET['hash']);
+    return $txt;
+}
+
 function log_request() {
     global $conn;
     

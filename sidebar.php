@@ -1,8 +1,8 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
+<?php if(!isset($currentuserid)) header("Location:index.php"); ?>
 <div class="col-md-3 left_col menu_fixed">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="?page=home" class="site_title"><i class="fa fa-chart-line"></i> <span><?php echo $co; ?></span></a>
+            <a href="index.php" class="site_title"><i class="fa fa-chart-line"></i> <span><?php echo $co; ?></span></a>
         </div>
 
         <div class="clearfix"></div>
@@ -18,7 +18,6 @@
             </div>
         </div>
         <!-- /menu profile quick info -->
-
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
@@ -70,10 +69,10 @@ foreach ($menu as $key => $value) {
             <a data-toggle="tooltip" data-placement="top" title="<?php echo _fullscreen; ?>">
                 <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="<?php echo _lock; ?>" href="?action=lockscreen">
+            <a data-toggle="tooltip" data-placement="top" title="<?php echo _lock; ?>" href="<?php echo "index.php?hash=". encrypturl("action=lockscreen"); ?>">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="<?php echo _logout; ?>" href="?action=logout">
+            <a data-toggle="tooltip" data-placement="top" title="<?php echo _logout; ?>" href="<?php echo "index.php?hash=". encrypturl("action=logout"); ?>">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
         </div>

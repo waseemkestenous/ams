@@ -1,4 +1,4 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
+<?php if(!isset($currentuserid)) header("Location:index.php"); ?>
 <li role="presentation" class="nav-item dropdown open">
     <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
         <i class="fa fa-envelope-o"></i>

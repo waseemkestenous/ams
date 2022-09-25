@@ -18,6 +18,8 @@ if(isset($_SESSION["login"]) && $_SESSION["login"] <> "LOGIN_ERROR") {
     $session_exist = false;
 }
 
+if(isset($_GET['hash'])) $url = decrypturl($_GET['hash']);
+
 if($session_exist) {
     // include requird functions
     include "functions.php";
@@ -54,7 +56,7 @@ if($session_exist) {
     $allowed_usertype_id = array_keys($usertype);
     
     $menu = array();
-    build_menu(1,0,T('_home'),'?page=list','home','item',0);
+    build_menu(1,0,T('_home'),'page=list','home','item',0);
 
     $modules = scandir('modules');
     unset($modules[0]);
@@ -65,7 +67,7 @@ if($session_exist) {
     if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
     
     $related_tables = array();
-
+    $homecode = array();
     foreach ($modules as $value) {
         $req_modules = array();
         
@@ -76,6 +78,10 @@ if($session_exist) {
             include "modules/" . $value . "/basic_lang/" . $lang . ".php";
         else if(file_exists("modules/" . $value . "/basic_lang/en.php")) 
             include "modules/" . $value . "/basic_lang/en.php";
+
+        // include module func file
+        if(file_exists("modules/" . $value . "/functions.php")) 
+            include "modules/" . $value . "/functions.php";
 
         $var_file_path = 'modules/' . $value . '/var.php';
         if(file_exists($var_file_path)) 
@@ -89,12 +95,14 @@ if($session_exist) {
         if(file_exists($menu_file_path)) 
             include($menu_file_path);
     }
+
     if($action == "logout") {
         include "logout.php";
     } else {
         $header_code = "";
         $footer_code_st = "";
         $footer_code_end = "";
+        
         if(in_array($mod, $modules)) {
             $current_modulename = $mod;
             
@@ -103,10 +111,7 @@ if($session_exist) {
                 include "modules/" . $current_modulename . "/lang/" . $lang . ".php";
             else if(file_exists("modules/" . $current_modulename . "/lang/en.php")) 
                 include "modules/" . $current_modulename . "/lang/en.php";
-            
-            // include module func file
-            if(file_exists("modules/" . $current_modulename . "/functions.php")) 
-                include "modules/" . $current_modulename . "/functions.php";
+        
             
             if(isset($_GET['id'])) $id = $_GET['id']; else $id = 0;
             // include module basic file
@@ -116,9 +121,7 @@ if($session_exist) {
             
             if(!in_array($action, $actionlist)) $action = 'no';
         }
-        foreach ($modules as $value) {                
-
-        }
+        
         include "header.php";
         include "sidebar.php";
         include "top.php";

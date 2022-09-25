@@ -2,6 +2,7 @@
 if(!isset($currentuserid)) header("Location:index.php");
 $menux = $moduleid;
 $menuy = $moduleid;
-
-build_menu($menux ,$menuy,T('_accounting'),null,'calculator','gro');
-build_menu($menux ,$menuy,T('_accounting'),'?mod=accounting&page=summary');
+if(isset($_SESSION['co_id'])){
+	build_menu($menux ,$menuy,T('_accounting'),null,'calculator','gro');
+	build_menu($menux ,$menuy,T('_accounting'),'mod=accounting&page=summary');
+}

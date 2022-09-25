@@ -12,8 +12,8 @@ if(isset($_POST['username']) && isset($_POST['pass'])){
 }
 // redirect
 if($_SESSION["login"] <> "LOGIN_ERROR" ) {
-    header("Location: ?page=home");
+    header("Location:index.php");
 } else {
-    header("Location:?action=login");
+    header("Location:index.php?hash=". encrypturl("action=login"));
 }
 die();

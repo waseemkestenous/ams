@@ -1,7 +1,7 @@
 <?php
 $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
 
-$actionlist = array('view','no','add','edit','del','lock','unlock');
+$actionlist = array('space','view','no','add','edit','del','lock','unlock');
 
 $entity = array(
     'page' => 71,
@@ -39,6 +39,7 @@ $subentity = array(
     'tablename' => 'usercompanies',
     'idname' => 'userco_id',
     'titlename' => 'user_name',
+    'pfkname' => 'userco_co_id',
     'lockname' => 'userco_lock',
     'pagetitle' => '_usercompanieslist',
     'editpagetitle' => '_edit_usercompany',
@@ -54,6 +55,7 @@ $subentity = array(
     'tablefields' => array(
 'userco_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_userco_id','placeholder' => '_auto','basicview' => 0),
 'userco_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user'),
+'user_name' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_user','basicview' => 0,'label' => 1),
 'userco_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0),
 'userco_notes' => array('req' => 0, 'type' => 'text', 'title' => '_notes','basicview' => 1,'dvlr2' => 255),
 'userco_reguser_id' => array('req' => 0, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
@@ -61,6 +63,7 @@ $subentity = array(
 'userco_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_co_lock','basicview' => 0),
     ),
 );
+
 $Datatables_headers = '
 <!-- Datatables -->   
 <link href="assets/gentela/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -69,6 +72,7 @@ $Datatables_headers = '
 <link href="assets/gentela/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="assets/gentela/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 ';
+
 $Datatables_footers = '
 <!-- Datatables -->
 <script src="assets/gentela/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -109,6 +113,7 @@ $validatin_pass_footers = '
 
     }
 </script>';
+
 $validatin_footers = '
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="assets/gentela/vendors/validator/multifield.js"></script>
@@ -161,6 +166,7 @@ if($page == 'userco' && $action == 'add'){
     $header_code = $header_code . $Switchery_headers; 
     $footer_code_st = $footer_code_st . $validatin_footers;  
 }
+
 if(in_array($user['user_usertype_id'],array(2))) {
     $entity['allowdel'] = false;
     $entity['allowlock'] = false;  
@@ -168,14 +174,13 @@ if(in_array($user['user_usertype_id'],array(2))) {
     $entity['tablefields']['co_lock']['readonly'] = true;   
 
 }
-if(in_array($user['user_usertype_id'],array(3,4))) {
+if(!in_array($user['user_usertype_id'],array(1,2))) {
     $entity['allowedit'] = false; 
     $entity['allowdel'] = false;
     $entity['allowlock'] = false;  
     $entity['allowadd'] = false; 
 }
-
-if(in_array($user['user_usertype_id'],array(3,4))) {
+if(!in_array($user['user_usertype_id'],array(1,2))) {
     $subentity['allowview'] = false; 
     $subentity['allowdel'] = false;
     $subentity['allowlock'] = false;  

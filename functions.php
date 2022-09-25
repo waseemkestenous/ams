@@ -11,6 +11,7 @@ function build_menu($menux, $menuy,$title, $link = '', $icon ='', $type = 'sub',
 	if(!in_array($user['user_usertype_id'], $allowed_usertype_id) && $perm){
 		return;
 	} else {
+		$link = "index.php?hash=" . encrypturl($link);
 		if($type == 'item') {
 			$menu[$menux]['id'] = $menux;		
 			$menu[$menux]['link'] = $link;
@@ -303,34 +304,36 @@ function print_cancel_btn_gro($cancellink, $text = '_cancel', $class = 'secondar
 }
 function print_data_record($entity,$data) {
 	foreach ($entity['tablefields'] as $field => $properties) {
-        if(isset($properties['type']) && $properties['type'] == 'fkey') {
-            if(!isset($getjoin[$field])) $getjoin[$field] = True;
-            if($getjoin[$field]) {
+		if(!(isset($properties['label']) && $properties['label'])) {
+	        if(isset($properties['type']) && $properties['type'] == 'fkey') {
+	            if(!isset($getjoin[$field])) $getjoin[$field] = True;
+	            if($getjoin[$field]) {
 
-                $tablename =$properties['entityname'];// Required
-                $key = $properties['pkey'];//Optional
-                $fields = array($properties['pkey'],$properties['titlename']);//Optional
-                $conditions = array();//Optional
-                $orderfields = array();//Optional
-                $ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
+	                $tablename =$properties['entityname'];// Required
+	                $key = $properties['pkey'];//Optional
+	                $fields = array($properties['pkey'],$properties['titlename']);//Optional
+	                $conditions = array();//Optional
+	                $orderfields = array();//Optional
+	                $ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
 
-                $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
-                $list = convert_title_list($records, $properties['titlename']);
-                $getjoin[$field] = False;
-            }
-            if(isset($list[$data[$field]])) 
-                $txt = $list[$data[$field]]; 
-            else 
-                $txt = 'N/A';
-        } else if(isset($properties['type']) &&($properties['type'] == 'list' || $properties['type'] == 'yesno')) {
-            if(isset($properties['array'][$data[$field]])) 
-                $txt = $properties['array'][$data[$field]]; 
-            else 
-                $txt = 'N/A';
-        } else {
-            $txt = $data[$field];
-        }
-        if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt));
+	                $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
+	                $list = convert_title_list($records, $properties['titlename']);
+	                $getjoin[$field] = False;
+	            }
+	            if(isset($list[$data[$field]])) 
+	                $txt = $list[$data[$field]]; 
+	            else 
+	                $txt = 'N/A';
+	        } else if(isset($properties['type']) &&($properties['type'] == 'list' || $properties['type'] == 'yesno')) {
+	            if(isset($properties['array'][$data[$field]])) 
+	                $txt = $properties['array'][$data[$field]]; 
+	            else 
+	                $txt = 'N/A';
+	        } else {
+	            $txt = $data[$field];
+	        }
+	        if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt));
+	    }
     }
 }
 function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $denyview = null, $denyedit = null, $denydel = null, $denylock = null) {
@@ -359,7 +362,8 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 		if($value[$entity['lockname']]) $lock_rec_css = " class='locked'"; else $lock_rec_css = "";
 	    echo "<tr" . $lock_rec_css . "> \n";
 		if($allow['view']) {
-			$txt = "<a href=\"" . $page_link . "&id=" . $id . "&action=view\">" . $id . "</a> \n";
+			$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");
+			$txt = "<a href=\"" . $link . "\">" . $id . "</a> \n";
 		} else $txt = $id;
 	    echo "<td class='data'>" . $txt . "</td> \n"; 
 	    foreach ($entity['tablefields'] as $field => $properties) {
@@ -395,7 +399,8 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 	            }
 	            if(isset($properties['link']) && $properties['link']) {
 	            	if($allow['view']) {
-	            		$txt = "<a href=\"" . $page_link . "&id=" . $id . "&action=view\">" . $txt . "</a> \n";
+	            		$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");
+	            		$txt = "<a href=\"" . $link . "\">" . $txt . "</a> \n";
 	            	}
 	            }
 	            echo "<td class='data'>" . $txt . "</td> \n";
@@ -405,19 +410,24 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 		    if($allow['edit'] || $allow['lock'] || $allow['del'] || $allow['view']) {
 		        echo "<td class='opts'> \n";
 			    if($allow['view'] && !in_array($id, $denyview)) {
-			        print_lbtn($page_link . "&id=" . $id . "&action=view", '_view', '_view_record', 'info', 'eye'); 
+			    	$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");
+			        print_lbtn($link, '_view', '_view_record', 'info', 'eye'); 
 			    }
 		        if($allow['edit'] && !in_array($id, $denyedit)) {
-		        	print_lbtn($page_link . "&id=" . $id . "&action=edit", '_edit', '_edit_record', 'primary', 'pencil');  
+		        	$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=edit");
+		        	print_lbtn($link, '_edit', '_edit_record', 'primary', 'pencil');  
 		        }
 		        if($allow['del'] && !in_array($id, $denydel)) {
-		        	print_lbtn($page_link . "&id=" . $id . "&action=del", '_delete', '_del_record', 'danger', 'trash-can');
+		        	$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=del");
+		        	print_lbtn($link, '_delete', '_del_record', 'danger', 'trash-can');
 		        }
 		        if($allow['lock'] && !in_array($id, $denylock)) {
 		            if($value[$entity['lockname']]) {  
-		                print_lbtn($page_link . "&id=" . $id . "&action=unlock&rel=1", '_unlock', '_unlock_record', 'success', 'lock-open');  
+		            	$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=unlock&rel=1");
+		                print_lbtn($link, '_unlock', '_unlock_record', 'success', 'lock-open');  
 		            } else {
-		                print_lbtn($page_link . "&id=" . $id . "&action=lock&rel=1", '_lock', '_lock_record', 'dark', 'lock');
+		            	$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=lock&rel=1");
+		                print_lbtn($link, '_lock', '_lock_record', 'dark', 'lock');
 		            }
 		        }
 		        echo"</td> \n";
@@ -875,7 +885,7 @@ function check_length_edit_field($field, $value, $entity, &$fields, &$fields_tem
         $valln = strlen($_POST[$field]);
         $fields[$field] = $_POST[$field];
         $fields_temp[$field] = $_POST[$field];      
-        if(!($valln >= $entity['tablefields']['user_name']['dvlr1'] && $valln <= $entity['tablefields']['user_name']['dvlr2'])) {
+        if(!($valln >= $entity['tablefields'][$field]['dvlr1'] && $valln <= $entity['tablefields'][$field]['dvlr2'])) {
             $check = false; 
             $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_length_error');
         }

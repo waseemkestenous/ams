@@ -4,6 +4,8 @@ if(!isset($currentuserid)){
 }
 check_perms();
 
+echo '<script>document.getElementById("link-' . $entity['page'] . '").classList.add("current-page");</script>';
+
 if(isset($subentity['allowview'])) $suballow['view'] = $subentity['allowview']; else $suballow['view'] = False;
 if(isset($subentity['allowedit'])) $suballow['edit'] = $subentity['allowedit']; else $suballow['edit'] = False;
 if(isset($subentity['allowadd'])) $suballow['add'] = $subentity['allowadd']; else $suballow['add'] = False;
@@ -32,23 +34,32 @@ if($action == 'lock') {
 	}
     $records = get_records('usercompanies_view', '', array('co_id'), array('userco_user_id'=> $currentuserid,'co_lock' => 0));
     $mycos = convert_title_list($records, 'co_id');
-    if(!in_array($data['userco_co_id'],$mycos)){
+    if(!in_array($data['userco_co_id'],$mycos) && $user['user_usertype_id'] <> 1){
         header("Location:index.php");die();
     }
     if($data['userco_user_id'] == $currentuserid) {
         header("Location:index.php");
         die();
     }
-    if($data['user_user_id'] <> $currentuserid && $user['user_usertype_id'] <> 1 ) {
-        header("Location:index.php");
-        die();
-    } 
-	upd_record($subentity['tablename'], array($subentity['lockname'] => $act), array($subentity['idname'] => $id));
-	if($rel == 0) {
-        header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view#userslist");die();
+    if($user['user_usertype_id'] <> 1 ) {
+        $pid = $data['user_user_id'];
+        while($pid == 0) {
+            if($pid <> $currentuserid) {
+                $pid = get_user_parent($pid);
+            } else {
+                header("Location:index.php");
+                die(); 
+            } 
+        }
     }
-	if($rel == 1) {
-        header("Location:?mod=" . $mod . "&page=dash&id=". $data['userco_co_id'] ."&action=view#userslist");die();
+	upd_record($subentity['tablename'], array($subentity['lockname'] => $act), array($subentity['idname'] => $id));
+    if($rel == 0) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view") ."#userslist";
+        header("Location:" . $link);die();
+    }
+    if($rel == 1) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $data['userco_co_id'] ."&action=view") ."#userslist";
+        header("Location:" . $link);die();   
     }
 } else if($action == 'unlock') {
     $act = 0;
@@ -71,23 +82,32 @@ if($action == 'lock') {
     }
     $records = get_records('usercompanies_view', '', array('co_id'), array('userco_user_id'=> $currentuserid,'co_lock' => 0));
     $mycos = convert_title_list($records, 'co_id');
-    if(!in_array($data['userco_co_id'],$mycos)){
+    if(!in_array($data['userco_co_id'],$mycos) && $user['user_usertype_id'] <> 1){
         header("Location:index.php");die();
     }
     if($data['userco_user_id'] == $currentuserid) {
         header("Location:index.php");
         die();
     }
-    if($data['user_user_id'] <> $currentuserid && $user['user_usertype_id'] <> 1 ) {
-        header("Location:index.php");
-        die();
-    }   
+    if($user['user_usertype_id'] <> 1 ) {
+        $pid = $data['user_user_id'];
+        while($pid == 0) {
+            if($pid <> $currentuserid) {
+                $pid = get_user_parent($pid);
+            } else {
+                header("Location:index.php");
+                die(); 
+            } 
+        }
+    }  
     upd_record($subentity['tablename'], array($subentity['lockname'] => $act), array($subentity['idname'] => $id));
     if($rel == 0) {
-        header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view#userslist");die();
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view") ."#userslist";
+        header("Location:" . $link);die();
     }
     if($rel == 1) {
-        header("Location:?mod=" . $mod . "&page=dash&id=". $data['userco_co_id'] ."&action=view#userslist");die();
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $data['userco_co_id'] ."&action=view") ."#userslist";
+        header("Location:" . $link);die();   
     }
 }else if($action == 'view'){
     if(!$suballow['view']){    
@@ -107,7 +127,7 @@ if($action == 'lock') {
     }
     $records = get_records('usercompanies_view', '', array('co_id'), array('userco_user_id'=> $currentuserid,'co_lock' => 0));
     $mycos = convert_title_list($records, 'co_id');
-    if(!in_array($data['userco_co_id'],$mycos)){
+    if(!in_array($data['userco_co_id'],$mycos) && $user['user_usertype_id'] <> 1){
         header("Location:index.php");die();
     }
     if($data['userco_user_id'] == $currentuserid) {
@@ -124,25 +144,29 @@ if($action == 'lock') {
     }  
     print_open_xpanel_container($subentity['viewpagetitle']);
     if($suballow['edit'] || $suballow['lock'] || $suballow['del']) {
-    	$link = "?mod=" . $mod . "&page=" . $page . "&id=" . $id;
-	    if($suballow['edit']) {
-	    	print_lbtn($link . "&action=edit", T('_edit'), T('_edit_record'), 'primary', 'pencil');  
-	    }
-	    if($suballow['lock']) {
-	        if($data[$subentity['lockname']]) {  
-	            print_lbtn($link . "&action=unlock", T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
-	        } else {
-	            print_lbtn($link . "&action=lock", T('_lock'), T('_lock_record'), 'dark', 'lock');
-	        }
-	    }
-	    if($suballow['del']) {
-	    	print_lbtn($link . "&action=del", T('_delete'), T('_del_record'), 'danger', 'trash-can');
-	    }
+        if($suballow['edit']) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=edit");
+            print_lbtn($link, T('_edit'), T('_edit_record'), 'primary', 'pencil');  
+        }
+        if($suballow['lock']) {
+            if($data[$subentity['lockname']]) {  
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=unlock");
+                print_lbtn($link, T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
+            } else {
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=lock");
+                print_lbtn($link, T('_lock'), T('_lock_record'), 'dark', 'lock');
+            }
+        }
+        if($suballow['del']) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=del");
+            print_lbtn($link, T('_delete'), T('_del_record'), 'danger', 'trash-can');
+        }
     	print_ln_solid();
     }
     print_data_record($subentity, $data);
     print_ln_solid();
-    print_goback_btn_gro("?mod=" . $mod . "&page=dash&id=" . $data['userco_co_id'] . "&action=view#userslist");
+    $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $data[$subentity['pfkname']] . "&action=view") . "#userslist";
+    print_goback_btn_gro($link);
     print_close_xpanel_container();
 
 }else if($action == 'del'){
@@ -163,17 +187,24 @@ if($action == 'lock') {
     }
     $records = get_records('usercompanies_view', '', array('co_id'), array('userco_user_id'=> $currentuserid,'co_lock' => 0));
     $mycos = convert_title_list($records, 'co_id');
-    if(!in_array($data['userco_co_id'],$mycos)){
+    if(!in_array($data['userco_co_id'],$mycos) && $user['user_usertype_id'] <> 1){
         header("Location:index.php");die();
     }
     if($data['userco_user_id'] == $currentuserid) {
         header("Location:index.php");
         die();
     }
-    if(($data['user_user_id'] <> $currentuserid) && ($user['user_usertype_id'] <> 1) ) {
-        header("Location:index.php");
-        die();
-    } 
+    if($user['user_usertype_id'] <> 1 ) {
+        $pid = $data['user_user_id'];
+        while($pid == 0) {
+            if($pid <> $currentuserid) {
+                $pid = get_user_parent($pid);
+            } else {
+                header("Location:index.php");
+                die(); 
+            } 
+        }
+    }
     if(isset($_POST) && !empty($_POST)) {
         $check = true;
         $checkerror =array();
@@ -182,10 +213,12 @@ if($action == 'lock') {
             //check record tables relations
             $check = check_record_relation($subentity['tablename'], $id, $check);
             if($check) {
-                confirm_del($subentity['tablename'], array($key => $id), 'index.php?mod=' . $mod . '&page=dash&id='. $data['userco_co_id'] .'&action=view#userslist');
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $data[$subentity['pfkname']] ."&action=view") . "#userslist";
+                confirm_del($subentity['tablename'], array($key => $id), $link);
             }
         } else {
-            expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+            expire_form($link);
             die();
         }
     }
@@ -194,12 +227,13 @@ if($action == 'lock') {
     print_open_xpanel_container($subentity['delpagetitle']);
       
     if(!isset($check)){
-        $action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action;  
-        print_del_record($subentity['titlename'],'_user',$data,$form_code,$action,"javascript:history.go(-1)");
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action);
+        $cancellink = "javascript:history.go(-1)";
+        print_del_record($subentity['titlename'],$subentity['tablefields'][$subentity['titlename']]['title'],$data,$form_code,$link,$cancellink);
     }
     else {
         print_alert('danger', $checkerror);
-        $cancellink = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view"; 
+        $cancellink = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=" . $id . "&action=view");
         print_lbtn($cancellink, '_go_back', '', 'info');
     }
     print_close_xpanel_container();
@@ -216,13 +250,19 @@ if($action == 'lock') {
     $conditions = array('userco_user_id'=> $currentuserid,'co_lock' => 0); 
     $records = get_records($tablename, $key, $fields, $conditions);
     $mycos = convert_title_list($records, 'co_id');
-    if(!in_array($id,$mycos)){
+    if(!in_array($id,$mycos) && $user['user_usertype_id'] <> 1){
         header("Location:index.php");die();
     }
     $lock = $subentity['lockname'];//Optional
     $data = array();
-    
-    $records = get_records('users', 'user_id', array('user_id','user_name'), array('user_user_id'=>$currentuserid,'user_lock' => 0));
+    if($user['user_usertype_id'] == 1) {
+        $records = get_records('users', 'user_id', array('user_id','user_name','user_usertype_id'), array('user_lock' => 0));
+        foreach ($records as $ind => $value) {
+            if($value['user_usertype_id'] == 1)unset($records[$ind]);
+        }
+    } else {
+        $records = get_records('users', 'user_id', array('user_id','user_name'), array('user_user_id'=>$currentuserid,'user_lock' => 0));
+    }
     $myusers = convert_title_list($records, 'user_name');
     $records = get_records('usercompanies', 'userco_id', array('userco_id','userco_user_id'), array('userco_co_id'=>$id));
     $cousers = convert_title_list($records, 'userco_user_id');
@@ -259,12 +299,14 @@ if($action == 'lock') {
             check_add_lock_field($lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             if($check) {
-                $link = "?mod=" . $mod . "&page=dash&id=". $id . "&action=view#userslist";
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $id . "&action=view") . "#userslist";
                 confirm_add($subentity['tablename'], $fields, $link);
             }
         } else {
-            expire_form('index.php?mod=' . $mod . '&page=' . $page.'&action=add');
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=". $id . "&action=add");
+            expire_form($link);
             die();
+
         }
     }
 
@@ -272,9 +314,9 @@ if($action == 'lock') {
 
     print_open_xpanel_container($subentity['addpagetitle']);
     print_alert('danger', $checkerror); 
-    $action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action; 
-    $cancelaction = "?mod=" . $mod . "&page=dash&id=". $id . "&action=view#userslist";
-    print_add_record($subentity,$data,$form_code,$action,$cancelaction);
+    $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action);
+    $cancelaction = "index.php?hash=". encrypturl("mod=" . $mod . "&page=dash&id=". $id . "&action=view") . "#userslist";
+    print_add_record($subentity,$data,$form_code,$link,$cancelaction);
     print_close_xpanel_container();
 
 }

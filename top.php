@@ -1,4 +1,4 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
+<?php if(!isset($currentuserid)) header("Location:index.php"); ?>
 <!-- top navigation -->
 <div class="top_nav">
     <div class="nav_menu">
@@ -19,7 +19,7 @@
                             <span><?php echo T('_settings'); ?></span>
                         </a>
                         <a class="dropdown-item"  href="javascript:;"><?php echo T('_help'); ?></a>-->
-                        <a class="dropdown-item"  href="?action=logout"><i class="fa fa-sign-out pull-right"></i><?php echo T('_logout'); ?></a>
+                        <a class="dropdown-item"  href="<?php echo "index.php?hash=". encrypturl("action=logout"); ?>"><i class="fa fa-sign-out pull-right"></i><?php echo T('_logout'); ?></a>
                     </div>
                 </li>
 

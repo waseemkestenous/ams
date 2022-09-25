@@ -48,6 +48,7 @@ $Datatables_headers = '
 <link href="assets/gentela/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="assets/gentela/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 ';
+
 $Datatables_footers = '
 <!-- Datatables -->
 <script src="assets/gentela/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -88,6 +89,7 @@ $validatin_pass_footers = '
 
     }
 </script>';
+
 $validatin_footers = '
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="assets/gentela/vendors/validator/multifield.js"></script>

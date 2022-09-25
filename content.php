@@ -1,8 +1,7 @@
-<?php 
-if(!isset($currentuserid)) header("Location:index.php");
+<?php if(!isset($currentuserid)) header("Location:index.php");
 echo "<!-- page content -->";
-echo "<div class=\"right_col\" role=\"main\">";
-echo "<div class=\"\">";
+echo "<div class=\"right_col\" role=\"main\"> \n";
+echo "<div class=\"\"> \n";
 
 $not_load_error = false;
 if(in_array($mod, $modules)) {
@@ -30,18 +29,28 @@ if($not_load_error) {
 
 if($debug['print_sql']) { 
     print_open_xpanel_container('SQL Query List',false,'sql');
-    echo "List : " . $sqltxt; 
+    echo "<div style='direction: ltr; color:#000; text-align:left;'><b>List : " . $sqltxt . "</b></div> \n"; 
     print_close_xpanel_container();         
 }
 
 if($debug['print_headers']) { 
     print_open_xpanel_container('Server Headers Data',false,'headers');
     foreach ($_SERVER as $header => $value) {
+        echo "<div style='direction: ltr;color:#000; text-align:left;'><b>";
         echo "$header: $value <br />\n";
+        echo "</b></div> \n";
     }
     print_close_xpanel_container();         
 }
 
+if($debug['print_vars']) { 
+    print_open_xpanel_container('Variables Printing',false,'print');
+    if(isset($url)) 
+        echo "<div style='direction: ltr;color:#000; text-align:left;'><b>URL Parameters : " . $url . "</b></div> \n";
+    if(isset($_SESSION['co_id'])) 
+        echo "<div style='direction: ltr;color:#000; text-align:left;'><b>SESSION-co_id : " . $_SESSION['co_id'] . "</b></div> \n";
+    print_close_xpanel_container();         
+}
 echo " </div>";
 echo "</div>";
 echo "<!-- /page content -->";

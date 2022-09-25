@@ -1,7 +1,21 @@
-<?php if(!isset($currentuserid)) header("Location:index.php?page=home"); ?>
-<script>
-document.getElementById("link-1").classList.add("current-page");
-</script>
+<?php if(!isset($currentuserid)) header("Location:index.php"); ?>
+
+<?php
+echo '<script>'."\n";
+if(isset($_SESSION['co_id'])) { 
+    if(($user['user_usertype_id'] == 1) || (isset($cocount) && $cocount)) {
+        echo 'document.getElementById("link-1").classList.add("current-page");'."\n";  
+    } else {
+        echo 'document.getElementById("gro-1").classList.add("active");'."\n";
+        echo 'document.getElementById("ulgro-1").style = "display:block;"'."\n";
+        echo 'document.getElementById("link-Co-' . $_SESSION['co_id'] . '").classList.add("current-page");'."\n";
+    }
+} else {
+    echo 'document.getElementById("link-1").classList.add("current-page");'."\n";  
+}
+echo '</script>'."\n";
+?>
+
 <!-- top tiles -->
 <div class="row tile_count">
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -36,3 +50,7 @@ document.getElementById("link-1").classList.add("current-page");
     </div>
 </div> 
 <!-- /top tiles -->
+<?php
+foreach ($homecode as $value) {
+     eval($value);
+ } 

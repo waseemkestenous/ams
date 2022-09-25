@@ -4,6 +4,8 @@ if(!isset($currentuserid)){
 }
 check_perms();
 
+echo '<script>document.getElementById("link-' . $entity['page'] . '").classList.add("current-page");</script>';
+
 if(isset($entity['allowview'])) $allow['view'] = $entity['allowview']; else $allow['view'] = False;
 if(isset($entity['allowedit'])) $allow['edit'] = $entity['allowedit']; else $allow['edit'] = False;
 if(isset($entity['allowadd'])) $allow['add'] = $entity['allowadd']; else $allow['add'] = False;
@@ -15,7 +17,23 @@ if(isset($subentity['allowedit'])) $suballow['edit'] = $subentity['allowedit']; 
 if(isset($subentity['allowadd'])) $suballow['add'] = $subentity['allowadd']; else $suballow['add'] = False;
 if(isset($subentity['allowdel'])) $suballow['del'] = $subentity['allowdel']; else $suballow['del'] = False;
 if(isset($subentity['allowlock'])) $suballow['lock'] = $subentity['allowlock']; else $suballow['lock'] = False;
-
+if($action == 'space') {
+    if(!$allow['view']){    
+        header("Location:index.php");die();
+    }
+    $tablename = 'usercompanies_view';// Required
+    $key = 'co_id';//Optional
+    if($user['user_usertype_id'] == 1) $conditions = array(); 
+    else $conditions = array('userco_user_id'=>$currentuserid, 'userco_lock'=> 0, 'co_lock'=> 0); 
+    $tablefields = array('co_id','co_name');
+    $data = get_records($tablename, $key, $tablefields, $conditions);
+    if(empty($data)) {
+        header("Location:index.php");
+        die();
+    }
+    $_SESSION["co_id"] = $id; 
+    header("Location:index.php");die();
+} else 
 if($action == 'no') {
     if(!$allow['view']){    
         header("Location:index.php");die();
@@ -30,11 +48,11 @@ if($action == 'no') {
 
     print_open_xpanel_container($entity['pagetitle']);
     if($allow['add']) {
-        $link = "?mod=" . $mod . "&page=" . $page;
-        print_lbtn($link . "&action=add", '_add', '_add_record', 'success', 'plus',''); 
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&action=add");
+        print_lbtn($link, '_add', '_add_record', 'success', 'plus',''); 
         print_ln_solid();
     }
-    $page_link = "?mod=" . $mod . "&page=dash";
+    $page_link = "mod=" . $mod . "&page=dash";
     print_data_table ($entity, $data,$allow,$page_link, 1);
     print_close_xpanel_container();
 } else if($action == 'lock') {
@@ -59,11 +77,13 @@ if($action == 'no') {
 	}
 
 	upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
-	if($rel == 0) {
-        header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");die();
+    if($rel == 0) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+        header("Location:" . $link);die();
     }
-	if($rel == 1) {
-        header("Location:?mod=" . $mod . "&page=" . $page);die();
+    if($rel == 1) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+        header("Location:" . $link);die();   
     }
 } else if($action == 'unlock') {
     $act = 0;
@@ -87,11 +107,13 @@ if($action == 'no') {
 	}
 
 	upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
-	if($rel == 0) {
-        header("Location:?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");die();
+    if($rel == 0) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+        header("Location:" . $link);die();
     }
-	if($rel == 1) {
-        header("Location:?mod=" . $mod . "&page=" . $page);die();
+    if($rel == 1) {
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+        header("Location:" . $link);die();   
     }
 }else if($action == 'view'){
     if(!$allow['view']){    
@@ -112,25 +134,33 @@ if($action == 'no') {
     }
     print_open_xpanel_container($entity['viewpagetitle']);
     if($allow['edit'] || $allow['lock'] || $allow['del']) {
-    	$link = "?mod=" . $mod . "&page=" . $page . "&id=" . $id;
-	    if($allow['edit']) {
-	    	print_lbtn($link . "&action=edit", T('_edit'), T('_edit_record'), 'primary', 'pencil');  
-	    }
-	    if($allow['lock']) {
-	        if($data[$entity['lockname']]) {  
-	            print_lbtn($link . "&action=unlock", T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
-	        } else {
-	            print_lbtn($link . "&action=lock", T('_lock'), T('_lock_record'), 'dark', 'lock');
-	        }
-	    }
-	    if($allow['del']) {
-	    	print_lbtn($link . "&action=del", T('_delete'), T('_del_record'), 'danger', 'trash-can');
-	    }
+        if($allow['edit']) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=edit");
+            print_lbtn($link, T('_edit'), T('_edit_record'), 'primary', 'pencil');  
+        }
+        if($allow['lock']) {
+            if($data[$entity['lockname']]) {  
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=unlock");
+                print_lbtn($link, T('_unlock'), T('_unlock_record'), 'success', 'lock-open');  
+            } else {
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=lock");
+                print_lbtn($link, T('_lock'), T('_lock_record'), 'dark', 'lock');
+            }
+        }
+        if($allow['del']) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=del");
+            print_lbtn($link, T('_delete'), T('_del_record'), 'danger', 'trash-can');
+        }
+        if($user['user_usertype_id'] == 1) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=space");
+            print_lbtn($link, T('_select'), T('_select_workspace'), 'warning', 'hat-cowboy'); 
+        }
     	print_ln_solid();
     }
     print_data_record($entity, $data);
     print_ln_solid();
-    print_goback_btn_gro('?mod=' . $mod . '&page=' . $page);
+    $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+    print_goback_btn_gro($link);
     print_close_xpanel_container();
 
     //----------------subentity-----------------
@@ -143,7 +173,7 @@ if($action == 'no') {
     	$conditions = array('userco_co_id'=> $id); 
         $data = get_records($tablename, $key, $tablefields, $conditions);
         print_open_xpanel_container($subentity['pagetitle'],true,'userslist');
-        $page_link = "?mod=" . $mod . "&page=userco";
+        $page_link = "mod=" . $mod . "&page=userco";
         $with_opts = true;
         $denyview =array();
         $denyedit =array();
@@ -154,9 +184,17 @@ if($action == 'no') {
                 $denydel[] = $ind;
                 $denylock[] = $ind;
             }
-            if($value['user_user_id'] <> $currentuserid && $user['user_usertype_id'] <> 1 ) {
-                $denydel[] = $ind;
-                $denylock[] = $ind;
+
+            if($user['user_usertype_id'] <> 1 ) {
+                $pid = $value['user_user_id'];
+                while($pid == 0) {
+                    if($pid <> $currentuserid) {
+                        $pid = get_user_parent($pid);
+                    } else {
+                        $denydel[] = $ind;
+                        $denylock[] = $ind; 
+                    } 
+                }
             }
             if($value['user_lock']) {
                 $denylock[] = $ind;
@@ -164,8 +202,8 @@ if($action == 'no') {
             }            
         }
         if($suballow['add']) {
-            $link = "?mod=" . $mod . "&page=userco&id=" . $id;
-            print_lbtn($link . "&action=add", '_add', '_add_record', 'success', 'plus','sm'); 
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=userco&id=" . $id . "&action=add");
+            print_lbtn($link, '_add', '_add_record', 'success', 'plus',''); 
             print_ln_solid();
         }
         print_data_table ($subentity, $data,$suballow,$page_link, $with_opts,$denyview,$denyedit,$denydel,$denylock);
@@ -194,10 +232,12 @@ if($action == 'no') {
             //check record tables relations
             $check = check_record_relation($entity['tablename'], $id, $check);
             if($check) {
-                confirm_del($entity['tablename'], array($key => $id), 'index.php?mod=' . $mod . '&page=' . $page);
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+                confirm_del($entity['tablename'], array($key => $id), $link);
             }
         } else {
-            expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
+            expire_form($link);
             die();
         }
     }
@@ -206,12 +246,13 @@ if($action == 'no') {
     print_open_xpanel_container($entity['delpagetitle']);
        
     if(!isset($check)){
-        $action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action;  
-        print_del_record($entity['titlename'],$entity['tablefields'][$entity['titlename']]['title'],$data,$form_code,$action,"javascript:history.go(-1)");
+        $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action);
+        $cancellink = "javascript:history.go(-1)";
+        print_del_record($entity['titlename'],$entity['tablefields'][$entity['titlename']]['title'],$data,$form_code,$link,$cancellink);
     }
     else {
         print_alert('danger', $checkerror);
-        $cancellink = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view";
+        $cancellink = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
         print_lbtn($cancellink, '_go_back', '', 'info');
     }
     print_close_xpanel_container();
@@ -252,10 +293,12 @@ if($action == 'no') {
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             if($check) {
-                confirm_edit($entity['tablename'], $fields, array($key => $id), 'index.php?mod='.$mod.'&page='.$page.'&id='.$id.'&action=view');
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page. "&id=" .$id . "&action=view");
+                confirm_edit($entity['tablename'], $fields, array($key => $id), $link);
             }
         } else {
-            expire_form('index.php?mod=' . $mod . '&page=' . $page . '&id=' . $id . '&action=view');
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page. "&id=" .$id . "&action=view");
+            expire_form($link);
             die();
         }
     }
@@ -263,9 +306,9 @@ if($action == 'no') {
     $form_code = create_form_code();
     print_open_xpanel_container($entity['editpagetitle']);
     print_alert('danger', $checkerror);
-    $action = "?mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=" . $action;  
+    $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page. "&id=" .$id . "&action=" . $action);
     $cancelaction = "javascript:history.go(-1)";
-    print_edit_record($entity, $data,$form_code,$action,$cancelaction);
+    print_edit_record($entity, $data,$form_code,$link,$cancelaction);
     print_close_xpanel_container();
 }else if($action == 'add'){
     if(!$allow['add']){    
@@ -294,10 +337,12 @@ if($action == 'no') {
             check_add_lock_field($lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             if($check) {
-                confirm_add($entity['tablename'], $fields, 'index.php?mod=' . $mod . '&page=' . $page);
+                $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+                confirm_add($entity['tablename'], $fields, $link);
             }
         } else {
-            expire_form('index.php?mod=' . $mod . '&page=' . $page.'&action=add');
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&action=add");
+            expire_form($link);
             die();
         }
     }
@@ -306,8 +351,8 @@ if($action == 'no') {
 
     print_open_xpanel_container($entity['addpagetitle']);
     print_alert('danger', $checkerror); 
-    $action = "?mod=" . $mod . "&page=" . $page . "&action=" . $action; 
-    $cancelaction = "javascript:history.go(-1)";
-    print_add_record($entity,$data,$form_code,$action,$cancelaction);
+    $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&action=" . $action);
+    $cancelaction = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page);
+    print_add_record($entity,$data,$form_code,$link,$cancelaction);
     print_close_xpanel_container();
 }

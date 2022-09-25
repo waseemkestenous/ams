@@ -37,7 +37,7 @@ define('_userco_timestamp', 'توقيت التسجيل');
 define('_user', 'اسم المستخدم');
 define('_co', 'اسم الشركة');
 define('_notes', 'ملاحظات');
-
+define('_select', 'تحديد');
 
 
 
