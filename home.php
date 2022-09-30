@@ -1,18 +1,8 @@
-<?php if(!isset($currentuserid)) header("Location:index.php"); ?>
+<?php if(!isset($currentuserid)) header("Location:index.php");
 
-<?php
 echo '<script>'."\n";
-if(isset($_SESSION['co_id'])) { 
-    if(($user['user_usertype_id'] == 1) || (isset($cocount) && $cocount)) {
-        echo 'document.getElementById("link-1").classList.add("current-page");'."\n";  
-    } else {
-        echo 'document.getElementById("gro-1").classList.add("active");'."\n";
-        echo 'document.getElementById("ulgro-1").style = "display:block;"'."\n";
-        echo 'document.getElementById("link-Co-' . $_SESSION['co_id'] . '").classList.add("current-page");'."\n";
-    }
-} else {
-    echo 'document.getElementById("link-1").classList.add("current-page");'."\n";  
-}
+echo 'link = document.getElementById("link-home");' . "\n";
+echo 'if(link) { link.classList.add("current-page"); }' . "\n";
 echo '</script>'."\n";
 ?>
 

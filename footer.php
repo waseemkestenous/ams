@@ -18,6 +18,11 @@
         <!-- Custom Theme Scripts -->
         <script src="assets/gentela/build/js/custom.js"></script>
         <?php echo $footer_code_end; ?>
+        <?php 
+        foreach ($footer_code as $value) {
+            eval($value);
+        } 
+        ?>
     </body>
 </html>
 <?php

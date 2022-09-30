@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
 <head>
+    <?php echo $header_code_st; ?>
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -31,7 +32,12 @@ if(isset($rtl) && $rtl) {
     <!-- Custom Theme Style -->
     <link href="assets/gentela/build/css/custom<?php  echo $ltr; ?>.css" rel="stylesheet">
     <!--===============================================================================================-->
-    <?php echo $header_code; ?>
+    <?php echo $header_code_end; ?>
+    <?php 
+    foreach ($header_code as $value) {
+        eval($value);
+    }
+    ?> 
 </head>
 <body class="nav-md">
     <div class="container body">

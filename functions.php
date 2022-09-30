@@ -359,7 +359,7 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 	echo "<tbody> \n";
 
 	foreach ($data as $id => $value) {
-		if($value[$entity['lockname']]) $lock_rec_css = " class='locked'"; else $lock_rec_css = "";
+		if(isset($entity['lockname']) && isset($value[$entity['lockname']]) && $value[$entity['lockname']]) $lock_rec_css = " class='locked'"; else $lock_rec_css = "";
 	    echo "<tr" . $lock_rec_css . "> \n";
 		if($allow['view']) {
 			$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");

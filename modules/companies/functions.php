@@ -33,3 +33,19 @@ function print_workspace_selector(){
 	echo '</div>';
 	echo '</div>';
 }*/
+function modify_home_menu(){
+	global $user, $mod;
+	
+	if(isset($_SESSION['co_id']) && $mod == 'home') { 
+		echo '<script>'."\n";
+		echo 'link = document.getElementById("gro-home");' . "\n";
+        echo 'if(link) { link.classList.add("active"); }'."\n";
+		
+		echo 'link = document.getElementById("ulgro-home");' . "\n";
+		echo 'if(link) { link.style = "display:block;" }'."\n";
+		
+		echo 'link = document.getElementById("link-Co-' . $_SESSION['co_id'] . '");' . "\n";
+        echo 'if(link) { link.classList.add("current-page"); }'."\n";
+	    echo '</script>'."\n";
+	}
+}

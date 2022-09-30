@@ -1,4 +1,2 @@
 <?php
-$moduleid = 11;
-$modulename ='stores';
-$req_modules = array('users','companies');
+$req_modules = array('companies');

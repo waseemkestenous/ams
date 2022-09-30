@@ -10,7 +10,7 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="assets/gentela/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<?php echo $user['user_profile_pic']; ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span><?php echo T('_welcome'); ?>,</span>
@@ -24,35 +24,37 @@
                 <!--<h3>General</h3>-->
                 <ul class="nav side-menu">
 <?php 
-ksort($menu);
-foreach ($menu as $key => $value) {
-    if(isset($value['type']) && $value['type'] == 'gro') {
-        echo '<li id="gro-' . $key . '">'." \n";
-            echo '<a>';
-                echo '<i class="fa fa-' . $value['icon']  . '"></i>';
-                echo $value['title'];
-                echo '<span class="fa fa-chevron-down"></span>';
-            echo '</a>'." \n";
-            echo '<ul id="ulgro-' . $key . '" class="nav child_menu" style="display: none;">'." \n";
-            foreach ($value['submenu'] as $subkey => $subvalue) {   
-                echo '<li id="link-' . $subkey . '">'." \n";
-                    echo '<a href="' . $subvalue['link']  . '">';
+foreach ($menusort as $value) {
+    if(isset($menu[$value])){
+        if(isset($menu[$value]['type']) && $menu[$value]['type'] == 'gro') {
+            echo '<li id="gro-' . $value . '">'." \n";
+                echo '<a>';
+                    echo '<i class="fa fa-' . $menu[$value]['icon']  . '"></i>';
+                    echo $menu[$value]['title'];
+                    echo '<span class="fa fa-chevron-down"></span>';
+                echo '</a>'." \n";
+                echo '<ul id="ulgro-' . $value . '" class="nav child_menu" style="display: none;">'." \n";
+                if(!empty($menu[$value]['submenu']))
+                    foreach ($menu[$value]['submenu'] as $subkey => $subvalue) {   
+                        echo '<li id="link-' . $subkey . '">'." \n";
+                        echo '<a href="' . $subvalue['link']  . '">';
                         echo '<i class="fa"></i>';
                         echo $subvalue['title'];
                         echo '<span class="fa"></span>';
-                    echo '</a>'." \n";
-                echo '</li>'." \n";
-            }
-            echo '</ul>'." \n";
-        echo '</li>'." \n";
-    } else {
-        echo '<li id="link-' . $key . '">'." \n";
-        echo '<a href="' . $value['link']  . '">';
-        echo '<i class="fa fa-' . $value['icon']  . '"></i>';
-        echo $value['title'];
-        echo '</a>';
-        echo '<span class="fa"></span>';
-        echo '</li>'." \n";
+                        echo '</a>'." \n";
+                        echo '</li>'." \n";
+                    }
+                echo '</ul>'." \n";
+            echo '</li>'." \n";
+        } else {
+            echo '<li id="link-' . $value . '">'." \n";
+            echo '<a href="' . $menu[$value]['link']  . '">';
+            echo '<i class="fa fa-' . $menu[$value]['icon']  . '"></i>';
+            echo $menu[$value]['title'];
+            echo '</a>';
+            echo '<span class="fa"></span>';
+            echo '</li>'." \n";
+        }
     }
 }
 ?>

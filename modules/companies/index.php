@@ -4,7 +4,10 @@ if(!isset($currentuserid)){
 }
 check_perms();
 
-echo '<script>document.getElementById("link-' . $entity['page'] . '").classList.add("current-page");</script>';
+echo '<script>'."\n";
+echo 'link = document.getElementById("link-' . $mod . '");' . "\n";
+echo 'if(link) { link.classList.add("current-page"); }' . "\n";
+echo '</script>'."\n";
 
 if(isset($entity['allowview'])) $allow['view'] = $entity['allowview']; else $allow['view'] = False;
 if(isset($entity['allowedit'])) $allow['edit'] = $entity['allowedit']; else $allow['edit'] = False;
@@ -17,6 +20,12 @@ if(isset($subentity['allowedit'])) $suballow['edit'] = $subentity['allowedit']; 
 if(isset($subentity['allowadd'])) $suballow['add'] = $subentity['allowadd']; else $suballow['add'] = False;
 if(isset($subentity['allowdel'])) $suballow['del'] = $subentity['allowdel']; else $suballow['del'] = False;
 if(isset($subentity['allowlock'])) $suballow['lock'] = $subentity['allowlock']; else $suballow['lock'] = False;
+
+if(isset($subentity2['allowview'])) $suballow2['view'] = $subentity2['allowview']; else $suballow2['view'] = False;
+if(isset($subentity2['allowedit'])) $suballow2['edit'] = $subentity2['allowedit']; else $suballow2['edit'] = False;
+if(isset($subentity2['allowadd'])) $suballow2['add'] = $subentity2['allowadd']; else $suballow2['add'] = False;
+if(isset($subentity2['allowdel'])) $suballow2['del'] = $subentity2['allowdel']; else $suballow2['del'] = False;
+if(isset($subentity2['allowlock'])) $suballow2['lock'] = $subentity2['allowlock']; else $suballow2['lock'] = False;
 if($action == 'space') {
     if(!$allow['view']){    
         header("Location:index.php");die();
@@ -164,7 +173,7 @@ if($action == 'no') {
     print_close_xpanel_container();
 
     //----------------subentity-----------------
-    if($subentity['allowview'] ){
+    if($suballow['view'] ){
         $tablename = 'companyusers_view';// Required
         $key = 'userco_id';//Optional
         if(isset($subentity['tablefields'])) $tablefields = array_keys($subentity['tablefields']); else $tablefields = Null;
@@ -207,6 +216,30 @@ if($action == 'no') {
             print_ln_solid();
         }
         print_data_table ($subentity, $data,$suballow,$page_link, $with_opts,$denyview,$denyedit,$denydel,$denylock);
+        print_close_xpanel_container();
+    }
+    //----------------subentity2-----------------
+    if($suballow2['view'] ){
+        $tablename = 'enabledmodules_view';// Required
+        $key = 'comodule_id';//Optional
+        if(isset($subentity2['tablefields'])) $tablefields = array_keys($subentity2['tablefields']); else $tablefields = Null;
+        $tablefields[] = 'module_lock'; 
+        $conditions = array('comodule_co_id'=> $id); 
+        $data = get_records($tablename, $key, $tablefields, $conditions);
+        print_open_xpanel_container($subentity2['pagetitle'],true,'moduleslist');
+        $page_link = "mod=" . $mod . "&page=comodule";
+
+        foreach ($data as $ind => $value) {
+            if($value['module_lock']) {
+                $data[$ind]['comodule_lock'] = 1;
+            }            
+        }
+        if($suballow2['add']) {
+            $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=comodule&id=" . $id . "&action=add");
+            print_lbtn($link, '_add', '_add_record', 'success', 'plus',''); 
+            print_ln_solid();
+        }
+        print_data_table ($subentity2, $data,$suballow2,$page_link,true);
         print_close_xpanel_container();
     }
 }else if($action == 'del'){
@@ -325,7 +358,7 @@ if($action == 'no') {
         if($exist) {
             //check name length
             check_length_add_field('co_name', $entity , $fields, $fields_temp, $check, $checkerror);
-
+            check_exist_add_field('co_name', $entity, $fields, $fields_temp, $check, $checkerror);
             check_add_field('co_email', $subentity, $fields, $fields_temp, $check, $checkerror);
             check_add_field('co_tel', $subentity, $fields, $fields_temp, $check, $checkerror);
             check_add_field('co_address', $subentity, $fields, $fields_temp, $check, $checkerror);

@@ -1,41 +1,31 @@
 <?php
 $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
+$basictype = array(0 => '_not_basic', 1 => '_basic',2 => '_not_set');
 
 $actionlist = array('view','no','add','edit','del','lock','unlock');
 
-if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
-    foreach (array_keys($usertype) as $key) {
-        if($user['user_usertype_id'] > $key) 
-            if($user['user_usertype_id'] <> 1 ) 
-                unset($usertype[$key]); 
-    }
-}
 
 $entity = array(
-    'tablename' => 'users',
-    'idname' => 'user_id',
-    'titlename' => 'user_username',
-    'lockname' => 'user_lock',
-    'pagetitle' => '_userslist',
-    'editpagetitle' => '_edit_user',
-    'addpagetitle' => '_add_new_user',
-    'delpagetitle' => '_del_user', 
-    'viewpagetitle' => '_view_user', 
-    'lockpagetitle' => '_lock_user',  
+    'tablename' => 'modules',
+    'idname' => 'module_id',
+    'titlename' => 'module_name',
+    'lockname' => 'module_lock',
+    'pagetitle' => '_moduleslist',
+    'editpagetitle' => '_edit_module',
+    'addpagetitle' => '_add_new_module',
+    'delpagetitle' => '_del_module', 
+    'viewpagetitle' => '_view_module', 
+    'lockpagetitle' => '_lock_module',  
     'allowview' => True,    
     'allowedit' => True,
     'allowadd' => True,
     'allowdel' => True,    
     'allowlock' => True,
     'tablefields' => array(
-    	'user_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_user_id','placeholder' => '_auto','basicview' => 0),
-        'user_name' => array('req' => 1, 'type' => 'text', 'title' => '_user_name','placeholder' => '_user_name_ex','link' => 1,'dvlr1' => 5,'dvlr2' => 30),
-        'user_username' => array('req' => 1, 'type' => 'text', 'title' => '_user_username','unique' => 1,'placeholder' => '_user_username_ex','link' => 1,'dvlr1' => 4,'dvlr2' => 30),
-        'user_password' => array('req' => 1, 'type' => 'password', 'title' => '_user_password','basicview' => 0,'dvlr1' => 8,'dvlr2' => 30),
-        'user_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
-        'user_usertype_id' => array('req' => 1, 'type' => 'list', 'array' => $usertype, 'title' => '_user_type'), 
-        'user_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_user_timestamp','placeholder' => '_auto'),
-        'user_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_user_lock','basicview' => 0),
+    	'module_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_module_id','placeholder' => '_auto','basicview' => 0),
+        'module_name' => array('req' => 1, 'type' => 'text', 'title' => '_module_name','unique' => 1,'placeholder' => '_module_name_ex','link' => 1,'dvlr1' => 4,'dvlr2' => 30),
+        'module_basic' => array('req' => 0, 'type' => 'yesno', 'array' => $basictype,'readonly' => 0, 'title' => '_module_basic','basicview' => 0),
+        'module_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_module_lock','basicview' => 0),
     ),
 );
 
@@ -67,27 +57,6 @@ $Datatables_footers = '
 <script src="assets/gentela/vendors/pdfmake/build/vfs_fonts.js"></script>
 ';
 
-$validatin_pass_footers = '
-<!-- Javascript functions -->
-<script>
-    function hideshow(){
-        var password = document.getElementById("user_password");
-        var slash = document.getElementById("slash");
-        var eye = document.getElementById("eye");
-        
-        if(password.type === "password"){
-            password.type = "text";
-            slash.style.display = "block";
-            eye.style.display = "none";
-        }
-        else{
-            password.type = "password";
-            slash.style.display = "none";
-            eye.style.display = "block";
-        }
-
-    }
-</script>';
 
 $validatin_footers = '
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -131,20 +100,12 @@ if($page == 'dash' && $action == 'no' && $id == 0 && $user['user_usertype_id'] =
 }
 if($page == 'dash' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
     $header_code_end = $header_code_end . $Switchery_headers; 
-    $footer_code_st = $footer_code_st . $validatin_pass_footers;  
     $footer_code_st = $footer_code_st . $validatin_footers;  
 }
 
-if($id == 1) {
+if($currentuserid <> 1) {
+    $entity['allowadd'] = false;
+    $entity['allowedit'] = false;   
     $entity['allowdel'] = false;
-    $entity['allowlock'] = false;   
-    if($currentuserid <> 1) $entity['allowedit'] = false;      
-    $entity['tablefields']['user_username']['readonly'] = true;
-    $entity['tablefields']['user_usertype_id']['readonly'] = true;  
-    $entity['tablefields']['user_lock']['readonly'] = true;       
-}
-if($id == $currentuserid) {
-    $entity['allowdel'] = false;
-    $entity['allowlock'] = false;    
-    $entity['tablefields']['user_lock']['readonly'] = true;       
+    $entity['allowlock'] = false;        
 }

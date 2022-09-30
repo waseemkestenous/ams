@@ -1,10 +1,10 @@
 <?php 
-if(!isset($currentuserid)) header("Location:index.php");
-$menux = $moduleid;
-$menuy = $moduleid;
+if(!isset($currentuserid)) {
+    header("Location:index.php");die();
+}
+
 if(isset($_SESSION['co_id'])){
-	build_menu($menux ,$menuy,T('_suppliers_and_clients'),null,'users','gro');
-	build_menu($menux ,$menuy,T('_suppliers'),'mod=contacts&page=suppliers');
-	$menuy++;
-	build_menu($menux ,$menuy,T('_clients'),'mod=contacts&page=clients');
+	$menux = $modulename;
+	$menuy = '';	
+	build_menu($menux ,$menuy,T('_contacts'),'mod=' . $modulename,'address-card','item');
 }

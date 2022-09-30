@@ -39,8 +39,16 @@ define('_co', 'اسم الشركة');
 define('_notes', 'ملاحظات');
 define('_select', 'تحديد');
 
+define('_companymoduleslist', 'قائمة الوحدات النمطية للشركة');
 
+define('_view_companymodule', 'معاينة الوحدة النمططية');
+define('_del_companymodule', 'حذف الوحدة النمطية');
+define('_edit_companymodule', 'تعديل الوحدة النمطية');
+define('_add_new_companymodule', 'أضافة وحدة نمطية');
 
+define('_comodule_id', 'الكود');
+define('_module_name', 'اسم الوحدة النمطية');
+define('_menu_order', 'ترتيب القائمة');
 
 
 

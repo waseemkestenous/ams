@@ -42,7 +42,7 @@ if($session_exist) {
 
     $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
     $user = $records[$currentuserid]; //var_dump($records);
-
+    $user['user_profile_pic'] = 'assets/gentela/production/images/user.png';
     $tablename = 'usertypes'; //Required
     $key = 'usertype_id'; //Optional
     $fields = array(); //Optional
@@ -56,52 +56,105 @@ if($session_exist) {
     $allowed_usertype_id = array_keys($usertype);
     
     $menu = array();
-    build_menu(1,0,T('_home'),'page=list','home','item',0);
+    build_menu('home',0,T('_home'),'page=list','home','item',0);
+    $menusort[0] = 'home';
 
     $modules = scandir('modules');
     unset($modules[0]);
     unset($modules[1]);
 
-    if (isset($_GET['mod']) && in_array($_GET['mod'], $modules)) $mod = $_GET['mod']; else $mod = 'home';
-    if (isset($_GET['page'])) $page = $_GET['page']; else $page = 'dash';
-    if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
-    
     $related_tables = array();
     $homecode = array();
-    foreach ($modules as $value) {
+    $header_code = array(); 
+    $header_code_st = "";
+    $header_code_end = "";
+    $footer_code = array();    
+    $footer_code_st = "";
+    $footer_code_end = "";
+    
+    $enabledmodules = array();
+
+    $basicmodules = get_records('modules', 'module_name',array(),array('module_basic' => 1,'module_lock' => 0)); 
+    $basicmodulesorder = 10000;
+    foreach ($basicmodules as $ind => $value) {
+        $basicmodules[$ind]['comodule_order'] = $basicmodulesorder;
+        $basicmodulesorder++;
+    }
+    //var_dump($basicmodules);
+
+    foreach ($basicmodules as $modulename => $value) {
         $req_modules = array();
         
         $allowed_usertype_id = array_keys($usertype);
-        
+
         // load module basic lang files
-        if(file_exists("modules/" . $value . "/basic_lang/" . $lang . ".php")) 
-            include "modules/" . $value . "/basic_lang/" . $lang . ".php";
-        else if(file_exists("modules/" . $value . "/basic_lang/en.php")) 
-            include "modules/" . $value . "/basic_lang/en.php";
+        if(file_exists("modules/" . $modulename . "/basic_lang/" . $lang . ".php")) 
+            include "modules/" . $modulename . "/basic_lang/" . $lang . ".php";
+        else if(file_exists("modules/" . $modulename . "/basic_lang/en.php")) 
+            include "modules/" . $modulename . "/basic_lang/en.php";
 
         // include module func file
-        if(file_exists("modules/" . $value . "/functions.php")) 
-            include "modules/" . $value . "/functions.php";
+        if(file_exists("modules/" . $modulename . "/functions.php")) 
+            include "modules/" . $modulename . "/functions.php";
 
-        $var_file_path = 'modules/' . $value . '/var.php';
+        $var_file_path = 'modules/' . $modulename . '/var.php';
         if(file_exists($var_file_path)) 
             include($var_file_path);
 
-        $mods[$modulename]['id'] = $moduleid;
         $mods[$modulename]['req_modules'] = $req_modules;
         $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
 
-        $menu_file_path = 'modules/' . $value . '/menu.php';
+        $menu_file_path = 'modules/' . $modulename . '/menu.php';
         if(file_exists($menu_file_path)) 
             include($menu_file_path);
     }
 
+    foreach ($enabledmodules as $modulename => $value) {
+        $req_modules = array();
+        
+        $allowed_usertype_id = array_keys($usertype);
+
+        // load module basic lang files
+        if(file_exists("modules/" . $modulename . "/basic_lang/" . $lang . ".php")) 
+            include "modules/" . $modulename . "/basic_lang/" . $lang . ".php";
+        else if(file_exists("modules/" . $modulename . "/basic_lang/en.php")) 
+            include "modules/" . $modulename . "/basic_lang/en.php";
+
+        // include module func file
+        if(file_exists("modules/" . $modulename . "/functions.php")) 
+            include "modules/" . $modulename . "/functions.php";
+
+        $var_file_path = 'modules/' . $modulename . '/var.php';
+        if(file_exists($var_file_path)) 
+            include($var_file_path);
+
+        $mods[$modulename]['req_modules'] = $req_modules;
+        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
+
+        $menu_file_path = 'modules/' . $modulename . '/menu.php';
+        if(file_exists($menu_file_path)) 
+            include($menu_file_path);
+    }
+
+    $enabledmodules = array_merge($enabledmodules, $basicmodules);
+
+    foreach ($enabledmodules as $ind => $value) {
+        $menusort[$value['comodule_order']] = $ind;
+    }
+    ksort($menusort);   
+    //var_dump($menusort);
+
+    if (isset($_GET['mod']) && isset($enabledmodules[$_GET['mod']])) $mod = $_GET['mod']; else $mod = 'home';
+    if (isset($_GET['page'])) $page = $_GET['page']; else $page = 'dash';
+    if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
+    
+
+
+
+
     if($action == "logout") {
         include "logout.php";
     } else {
-        $header_code = "";
-        $footer_code_st = "";
-        $footer_code_end = "";
         
         if(in_array($mod, $modules)) {
             $current_modulename = $mod;

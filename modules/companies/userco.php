@@ -4,7 +4,10 @@ if(!isset($currentuserid)){
 }
 check_perms();
 
-echo '<script>document.getElementById("link-' . $entity['page'] . '").classList.add("current-page");</script>';
+echo '<script>'."\n";
+echo 'link = document.getElementById("link-' . $mod . '");' . "\n";
+echo 'if(link) { link.classList.add("current-page"); }' . "\n";
+echo '</script>'."\n";
 
 if(isset($subentity['allowview'])) $suballow['view'] = $subentity['allowview']; else $suballow['view'] = False;
 if(isset($subentity['allowedit'])) $suballow['edit'] = $subentity['allowedit']; else $suballow['edit'] = False;
@@ -238,9 +241,6 @@ if($action == 'lock') {
     }
     print_close_xpanel_container();
 }else if($action == 'add'){
-    if(!$suballow['add']){    
-        header("Location:index.php");die();
-    }
     if(!$suballow['add']){    
         header("Location:index.php");die();
     }

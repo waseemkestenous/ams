@@ -49,6 +49,8 @@ if($debug['print_vars']) {
         echo "<div style='direction: ltr;color:#000; text-align:left;'><b>URL Parameters : " . $url . "</b></div> \n";
     if(isset($_SESSION['co_id'])) 
         echo "<div style='direction: ltr;color:#000; text-align:left;'><b>SESSION-co_id : " . $_SESSION['co_id'] . "</b></div> \n";
+    echo "<div style='direction: ltr;color:#000; text-align:left;'><b>";
+    echo "</b></div> \n";
     print_close_xpanel_container();         
 }
 echo " </div>";

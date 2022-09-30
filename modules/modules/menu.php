@@ -5,4 +5,4 @@ if(!isset($currentuserid)) {
 
 $menux = $modulename;
 $menuy = '';	
-build_menu($menux, $menuy, '_users_managment','mod=' . $modulename,'user-lock','item');
+build_menu($menux ,$menuy,T('_modules'),'mod=' . $modulename,'file-code','item');

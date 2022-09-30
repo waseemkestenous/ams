@@ -21,8 +21,7 @@ if($action == 'no') {
     }
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
-    if($user['user_usertype_id'] == 1) $conditions = array();
-    else $conditions = array('user_user_id' => $currentuserid);
+    $conditions = array();
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
     $data = get_records($tablename, $key, $tablefields, $conditions);
     print_open_xpanel_container($entity['pagetitle']);
@@ -36,12 +35,15 @@ if($action == 'no') {
     $denyview =array();
     $denyedit =array();
     $denydel =array();
-    $denylock =array();
-    if($currentuserid <> 1) $denyedit[] = 1;
-    $denydel[] = 1;   
-    $denylock[] = 1;  
-    $denydel[] = $currentuserid;   
-    $denylock[] = $currentuserid;
+    $denylock =array();  
+
+    foreach ($data as $ind => $value) {
+        if($value['module_name'] == 'modules') {
+            $denyedit[] = $ind;
+            $denydel[] = $ind;   
+            $denylock[] = $ind;           
+          }
+    }  
 
     print_data_table ($entity, $data,$allow,$page_link,$with_opts,$denyview,$denyedit,$denydel,$denylock);
     print_close_xpanel_container();
@@ -57,14 +59,15 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
+    $conditions = array($key => $id);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");die();
     }
-
+    if($data['module_name'] == 'modules') {
+        header("Location:index.php");die();     
+    }
     upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
     if($rel == 0) {
         $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
@@ -86,14 +89,15 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
+    $conditions = array($key => $id);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");die();
     }
-
+    if($data['module_name'] == 'modules') {
+        header("Location:index.php");die();     
+    }
     upd_record($entity['tablename'], array($entity['lockname'] => $act), array($entity['idname'] => $id));
     if($rel == 0) {
         $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . $page . "&id=" . $id . "&action=view");
@@ -110,12 +114,16 @@ if($action == 'no') {
     $tablename = $entity['tablename'];// Required
     $key = $entity['idname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
+    $conditions = array($key => $id);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");die();
+    }
+    if($data['module_name'] == 'modules') {
+        $allow['edit']= false;   
+        $allow['del'] = false;
+        $allow['lock'] = false;        
     }
     print_open_xpanel_container($entity['viewpagetitle']);
     if($allow['edit'] || $allow['lock'] || $allow['del']) {
@@ -151,22 +159,20 @@ if($action == 'no') {
     $key = $entity['idname'];//Optional
     $title = $entity['titlename'];//Optional
     $tablefields = array($key,$title);
-    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
+    $conditions = array($key => $id);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");die();
+    }
+    if($data['module_name'] == 'modules') {
+        header("Location:index.php");die();     
     }
     if(isset($_POST) && !empty($_POST)) {
         $check = true;
         $checkerror =array();
         $exist = check_form();
         if($exist) {
-            if($data['user_id'] == 1) {
-                $check = false; 
-                $checkerror[] =T('_delete_not_allow_error');             
-            }
             //check record tables relations
             $check = check_record_relation($entity['tablename'], $id, $check);
             if($check) {
@@ -202,12 +208,14 @@ if($action == 'no') {
     $key = $entity['idname'];//Optional
     $lock = $entity['lockname'];//Optional
     if(isset($entity['tablefields'])) $tablefields = array_keys($entity['tablefields']); else $tablefields = Null;
-    if($user['user_usertype_id'] == 1) $conditions = array($key => $id);
-    else $conditions = array($key => $id,'user_user_id' => $currentuserid);
+    $conditions = array($key => $id);
     $data = get_records($tablename, $key, $tablefields, $conditions);
     $data = $data[$id];
     if(empty($data)) {
         header("Location:index.php");die();
+    }
+    if($data['module_name'] == 'modules') {
+        header("Location:index.php");die();     
     }
     $check = true;
     $checkerror = array();
@@ -216,16 +224,10 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
-            check_length_edit_field('user_name', $data['user_name'], $entity, $fields, $fields_temp, $check, $checkerror);
-            //check username if alreadt existed if changed
-            check_exist_edit_field('user_username', $data['user_username'], $entity, $fields, $fields_temp, $check, $checkerror);
-            //check username length  if changed
-            check_length_edit_field('user_username', $data['user_username'], $entity, $fields, $fields_temp, $check, $checkerror);
-            //check password strength if changed
-            check_length_edit_password('user_password', $data['user_password'], $entity, $fields, $fields_temp, $check, $checkerror);
-            //check user type selection.
-            check_select_edit_field('user_usertype_id', $data['user_usertype_id'], $entity, $fields, $fields_temp, $check, $checkerror);
+            check_exist_edit_field('module_name', $data['module_name'], $entity, $fields, $fields_temp, $check, $checkerror);
+            check_length_edit_field('module_name', $data['module_name'], $entity, $fields, $fields_temp, $check, $checkerror);
+            //check field basic if changed
+            check_edit_lock_field($data['module_basic'],'module_basic', $fields, $fields_temp);
             //check field lock if changed
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
@@ -261,18 +263,10 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
-            check_length_add_field('user_name', $entity , $fields, $fields_temp, $check, $checkerror);
-            //check username length 
-            check_length_add_field('user_username', $entity , $fields, $fields_temp, $check, $checkerror);
-            //check username if alreadt existed
-            check_exist_add_field('user_username', $entity, $fields, $fields_temp, $check, $checkerror);
-            //check password strength if changed
-            check_length_add_password('user_password', $entity, $fields, $fields_temp, $check, $checkerror);
-            //check user parent selection.
-            add_default_field('user_user_id', $entity , $fields, $fields_temp);
-            //check user type selection.
-            check_select_add_field('user_usertype_id', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_length_add_field('module_name', $entity , $fields, $fields_temp, $check, $checkerror);
+            check_exist_add_field('module_name', $entity, $fields, $fields_temp, $check, $checkerror);
+            //check field basic if changed               
+            check_add_lock_field('module_basic', $fields, $fields_temp);
             //check field lock if changed               
             check_add_lock_field($lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
