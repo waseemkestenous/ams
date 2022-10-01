@@ -397,6 +397,7 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 	            } else {
 	            	$txt = $value[$field];
 	            }
+	            $txt = T($txt);
 	            if(isset($properties['link']) && $properties['link']) {
 	            	if($allow['view']) {
 	            		$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");
@@ -455,31 +456,30 @@ function print_add_record($entity,$data,$form_code,$action,$cancelaction) {
 	print_open_form($action);
 	print_input_hidden('form_code', $form_code);
 	foreach ($entity['tablefields'] as $field => $properties) {
+		if(isset($properties['readonly'])) $readonly = $properties['readonly']; else $readonly = 0;
+		if(!$readonly) {
+		    $title = $properties['title'];
+		    if(isset($data[$field])) {
+		    	$value = $data[$field]; 
+		    }else {
+		    	if(in_array($properties['type'], array("fkey", "list", "number", "yesno")))
+		    		if(isset($properties['default'])) $value = $properties['default']; else $value = 0; 
+		    	else 
+		    		$value = '';
+		    }
+		    if(isset($properties['req'])) $required = $properties['req']; else $required = 0;
+		    if(isset($properties['type'])) $type = $properties['type']; else $type = 'text';
+		    if(isset($properties['placeholder'])) $placeholder = $properties['placeholder']; else $placeholder = '';
 
-	    $title = $properties['title'];
-	    if(isset($data[$field])) {
-	    	$value = $data[$field]; 
-	    }else {
-	    	if(in_array($properties['type'], array("fkey", "list", "number", "yesno")))
-	    		if(isset($properties['default'])) $value = $properties['default']; else $value = 0; 
-	    	else 
-	    		$value = '';
-	    }
-	    if(isset($properties['readonly'])) $readonly = $properties['readonly']; else $readonly = 0;
-	    if(isset($properties['req'])) $required = $properties['req']; else $required = 0;
-	    if(isset($properties['type'])) $type = $properties['type']; else $type = 'text';
-	    if(isset($properties['placeholder'])) $placeholder = $properties['placeholder']; else $placeholder = '';
-
-	    if(isset($properties['dvlr1'])) $dvlr1 = $properties['dvlr1']; else $dvlr1 = '';
-	    if(isset($properties['dvlr2'])) $dvlr2 = $properties['dvlr2']; else $dvlr2 = '';
-	    if(isset($properties['dvw'])) $dvw = $properties['dvw']; else $dvw = '';
-	    if(isset($properties['dvmn'])) $dvmn = $properties['dvmn']; else $dvmn = '';
-	    if(isset($properties['dvmx'])) $dvmx = $properties['dvmx']; else $dvmx = '';
-	    if(isset($properties['dvl'])) $dvl = $properties['dvl']; else $dvl = '';
-	    if(isset($properties['class'])) $class = $properties['class']; else $class = '';
-	    if(isset($properties['pattern'])) $pattern = $properties['pattern']; else $pattern = '';
+		    if(isset($properties['dvlr1'])) $dvlr1 = $properties['dvlr1']; else $dvlr1 = '';
+		    if(isset($properties['dvlr2'])) $dvlr2 = $properties['dvlr2']; else $dvlr2 = '';
+		    if(isset($properties['dvw'])) $dvw = $properties['dvw']; else $dvw = '';
+		    if(isset($properties['dvmn'])) $dvmn = $properties['dvmn']; else $dvmn = '';
+		    if(isset($properties['dvmx'])) $dvmx = $properties['dvmx']; else $dvmx = '';
+		    if(isset($properties['dvl'])) $dvl = $properties['dvl']; else $dvl = '';
+		    if(isset($properties['class'])) $class = $properties['class']; else $class = '';
+		    if(isset($properties['pattern'])) $pattern = $properties['pattern']; else $pattern = '';
 	    
-	    if(!$readonly) {
 		    if(isset($properties['type']) && $properties['type'] == 'fkey') {
 				$tablename = $properties['entityname'];// Required
 				$key = $properties['pkey'];//Optional
@@ -508,40 +508,42 @@ function print_edit_record($entity,$data,$form_code,$action,$cancelaction) {
 	print_open_form($action);
 	print_input_hidden('form_code', $form_code);
 	foreach ($entity['tablefields'] as $field => $properties) {
+		if(isset($properties['readonly'])) $readonly = $properties['readonly']; else $readonly = 0;
+		if(!$readonly) {    
+		    $title = $properties['title'];
+		    $value = $data[$field];
+		    if(isset($properties['req'])) $required = $properties['req']; else $required = 0;
+		    if(isset($properties['type'])) $type = $properties['type']; else $type = 'text';
+		    if(isset($properties['placeholder'])) $placeholder = $properties['placeholder']; else $placeholder = '';
 
-	    $title = $properties['title'];
-	    $value = $data[$field];
-	    if(isset($properties['readonly'])) $readonly = $properties['readonly']; else $readonly = 0;
-	    if(isset($properties['req'])) $required = $properties['req']; else $required = 0;
-	    if(isset($properties['type'])) $type = $properties['type']; else $type = 'text';
-	    if(isset($properties['placeholder'])) $placeholder = $properties['placeholder']; else $placeholder = '';
+		    if(isset($properties['dvlr1'])) $dvlr1 = $properties['dvlr1']; else $dvlr1 = '';
+		    if(isset($properties['dvlr2'])) $dvlr2 = $properties['dvlr2']; else $dvlr2 = '';
+		    if(isset($properties['dvw'])) $dvw = $properties['dvw']; else $dvw = '';
+		    if(isset($properties['dvmn'])) $dvmn = $properties['dvmn']; else $dvmn = '';
+		    if(isset($properties['dvmx'])) $dvmx = $properties['dvmx']; else $dvmx = '';
+		    if(isset($properties['dvl'])) $dvl = $properties['dvl']; else $dvl = '';
+		    if(isset($properties['class'])) $class = $properties['class']; else $class = '';
+		    if(isset($properties['pattern'])) $pattern = $properties['pattern']; else $pattern = '';
+		
+		    if(isset($properties['pkey'])) {
+				$tablename = $properties['entityname'];// Required
+				$key = $properties['pkey'];//Optional
+				$fields = array($properties['pkey'],$properties['titlename']);//Optional
 
-	    if(isset($properties['dvlr1'])) $dvlr1 = $properties['dvlr1']; else $dvlr1 = '';
-	    if(isset($properties['dvlr2'])) $dvlr2 = $properties['dvlr2']; else $dvlr2 = '';
-	    if(isset($properties['dvw'])) $dvw = $properties['dvw']; else $dvw = '';
-	    if(isset($properties['dvmn'])) $dvmn = $properties['dvmn']; else $dvmn = '';
-	    if(isset($properties['dvmx'])) $dvmx = $properties['dvmx']; else $dvmx = '';
-	    if(isset($properties['dvl'])) $dvl = $properties['dvl']; else $dvl = '';
-	    if(isset($properties['class'])) $class = $properties['class']; else $class = '';
-	    if(isset($properties['pattern'])) $pattern = $properties['pattern']; else $pattern = '';
-	    if(isset($properties['pkey'])) {
-			$tablename = $properties['entityname'];// Required
-			$key = $properties['pkey'];//Optional
-			$fields = array($properties['pkey'],$properties['titlename']);//Optional
-
-	        $records = get_records($tablename, $key, $fields);
-			$list = convert_title_list($records, $properties['titlename']);
-	        print_select($field,$title,$value,$list,$readonly,$required,$class);
-	    } else if(isset($properties['type']) && $properties['type'] == 'list') {
-			$list = $properties['array'];
-	        print_select($field,$title,$value,$list,$readonly,$required,$class);
-	    } else if(isset($properties['type']) && $properties['type'] == 'yesno') {
-	    	$list = $properties['array'];
-	        print_checkbox($field,$title,$value,$list,$readonly,$required,$class);
-	    } else {
-	    	if(isset($properties['type']) && $properties['type'] == 'password') $required = 0;
-	        print_textbox($field,$title,$value,$readonly,$required,$type,$placeholder,$dvlr1,$dvlr2,$dvw,$dvmn,$dvmx,$dvl, $class, $pattern);
-	    }
+		        $records = get_records($tablename, $key, $fields);
+				$list = convert_title_list($records, $properties['titlename']);
+		        print_select($field,$title,$value,$list,$readonly,$required,$class);
+		    } else if(isset($properties['type']) && $properties['type'] == 'list') {
+				$list = $properties['array'];
+		        print_select($field,$title,$value,$list,$readonly,$required,$class);
+		    } else if(isset($properties['type']) && $properties['type'] == 'yesno') {
+		    	$list = $properties['array'];
+		        print_checkbox($field,$title,$value,$list,$readonly,$required,$class);
+		    } else {
+		    	if(isset($properties['type']) && $properties['type'] == 'password') $required = 0;
+		        print_textbox($field,$title,$value,$readonly,$required,$type,$placeholder,$dvlr1,$dvlr2,$dvw,$dvmn,$dvmx,$dvl, $class, $pattern);
+		    }
+		}
     }
 	print_ln_solid();
 	print_save_btn_gro($cancelaction);

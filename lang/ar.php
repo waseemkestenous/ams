@@ -50,4 +50,6 @@ define('_length_error','عدد الاحرف غير مناسب');
 define('_exist_error','لايمكنك استخدام قيمة مستخدمة مسبقاً');
 define('_required_error','يجب عليك ادخل البيانات بشكل صحيح');
 
+define('_reg_user','اسم المستخدم المسجل');
+
 

@@ -316,7 +316,7 @@ if($action == 'no') {
         if($exist) {
             //check name length if changed
             check_length_edit_field('co_name', $data['co_name'], $entity, $fields, $fields_temp, $check, $checkerror);
-
+            check_exist_edit_field('co_name', $data['co_name'], $entity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('co_email', $data['co_email'], $entity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('co_tel', $data['co_tel'], $entity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('co_address', $data['co_address'], $entity, $fields, $fields_temp, $check, $checkerror);
@@ -359,10 +359,10 @@ if($action == 'no') {
             //check name length
             check_length_add_field('co_name', $entity , $fields, $fields_temp, $check, $checkerror);
             check_exist_add_field('co_name', $entity, $fields, $fields_temp, $check, $checkerror);
-            check_add_field('co_email', $subentity, $fields, $fields_temp, $check, $checkerror);
-            check_add_field('co_tel', $subentity, $fields, $fields_temp, $check, $checkerror);
-            check_add_field('co_address', $subentity, $fields, $fields_temp, $check, $checkerror);
-            check_add_field('co_notes', $subentity, $fields, $fields_temp, $check, $checkerror);
+            check_add_field('co_email', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_add_field('co_tel', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_add_field('co_address', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_add_field('co_notes', $entity, $fields, $fields_temp, $check, $checkerror);
 
             //check user parent selection.
             add_default_field('co_user_id', $entity , $fields, $fields_temp);
