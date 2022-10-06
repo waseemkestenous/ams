@@ -49,3 +49,8 @@ define('_select_error','You must select from Input List');
 define('_length_error','Data Length not Correct');
 define('_exist_error','The record already exist.');
 define('_required_error','You must enter data by correctly Way.');
+
+define('_reg_user','Registrator User');
+
+define('_add_error','There is an error while adding new record.');
+define('_edit_error','There is an error while editing the record.');

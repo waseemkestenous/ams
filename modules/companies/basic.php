@@ -20,12 +20,12 @@ $entity = array(
     'allowdel' => True,    
     'allowlock' => True,
     'tablefields' => array(
-'co_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_co_id','placeholder' => '_auto','basicview' => 0),
+'co_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_co_id','placeholder' => '_auto','basicview' => 0, 'label' => 1),
 'co_name' => array('req' => 1, 'type' => 'text', 'title' => '_co_name','placeholder' => '_co_name_ex','link' => 1,'dvlr1' => 5,'dvlr2' => 30),
 
 'co_email' => array('req' => 0, 'type' => 'email', 'title' => '_co_email','placeholder' => '_email_ex','dvlr1' => 5,'dvlr2' => 30),
 'co_tel' => array('req' => 0, 'type' => 'tel', 'title' => '_co_tel','placeholder' => '_tel_ex','dvlr1' => 5,'dvlr2' => 30),
-'co_address' => array('req' => 0, 'type' => 'textarea', 'title' => '_co_address'),
+'co_address' => array('req' => 0, 'type' => 'textarea', 'title' => '_co_address','basicview' => 0),
 'co_notes' => array('req' => 0, 'type' => 'textarea', 'title' => '_co_notes','basicview' => 0),
 
 'co_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
@@ -52,11 +52,11 @@ $subentity = array(
     'allowdel' => True,    
     'allowlock' => True,
     'tablefields' => array(
-'userco_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_userco_id','placeholder' => '_auto','basicview' => 0),
-'userco_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user'),
+'userco_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_userco_id','placeholder' => '_auto','basicview' => 0, 'label' => 1),
+'userco_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user','link' => 1),
 'user_name' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_user','basicview' => 0,'label' => 1),
-'userco_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0),
-'userco_notes' => array('req' => 0, 'type' => 'text', 'title' => '_notes','basicview' => 1,'dvlr2' => 255),
+'userco_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0, 'label' => 1),
+'userco_notes' => array('req' => 0, 'type' => 'textarea', 'title' => '_notes','basicview' => 1,'dvlr2' => 255),
 'userco_reguser_id' => array('req' => 0, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_user_parent','default' => $currentuserid),
 'userco_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_co_timestamp','placeholder' => '_auto'),
 'userco_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_co_lock','basicview' => 0),
@@ -80,10 +80,10 @@ $subentity2 = array(
     'allowdel' => True,    
     'allowlock' => false,   
     'tablefields' => array(
-'comodule_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_comodule_id','placeholder' => '_auto','basicview' => 0),
-'comodule_module_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'module_id','titlename' => 'module_name','entityname' => 'modules', 'title' => '_module_name'),
+'comodule_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_comodule_id','placeholder' => '_auto','basicview' => 0, 'label' => 1),
+'comodule_module_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'module_id','titlename' => 'module_name','entityname' => 'modules', 'title' => '_module_name','link' => 1),
 'module_name' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_module_name','basicview' => 0,'label' => 1),
-'comodule_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0),
+'comodule_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_co','basicview' => 0, 'label' => 1),
 'comodule_order' => array('req' => 1, 'type' => 'number', 'title' => '_menu_order','dvmn' => 1,'dvmx' => 9999),
     ),
 );

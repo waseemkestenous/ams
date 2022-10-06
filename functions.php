@@ -332,7 +332,7 @@ function print_data_record($entity,$data) {
 	        } else {
 	            $txt = $data[$field];
 	        }
-	        if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt));
+	        if($properties['type'] != 'password') print_textbox($field, $properties['title'], T($txt),1,0,$properties['type']);
 	    }
     }
 }
@@ -344,7 +344,7 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 	echo "<table id=\"datatable-buttons\" class=\"table table-striped table-bordered\" style=\"width:100%\"> \n";
 	echo "<thead> \n";
 	echo "<tr> \n";
-	echo "<th style=\"width: 1%\">#</th> \n";
+	//echo "<th style=\"width: 1%\">#</th> \n";
 
 	foreach ($entity['tablefields'] as $properties) {
 	    if(isset($properties['basicview'])) $basicview = $properties['basicview']; else $basicview = true;
@@ -361,11 +361,11 @@ function print_data_table($entity,$data,$allow,$page_link, $with_opts = false, $
 	foreach ($data as $id => $value) {
 		if(isset($entity['lockname']) && isset($value[$entity['lockname']]) && $value[$entity['lockname']]) $lock_rec_css = " class='locked'"; else $lock_rec_css = "";
 	    echo "<tr" . $lock_rec_css . "> \n";
-		if($allow['view']) {
+		/*if($allow['view']) {
 			$link = "index.php?hash=". encrypturl($page_link . "&id=" . $id . "&action=view");
 			$txt = "<a href=\"" . $link . "\">" . $id . "</a> \n";
 		} else $txt = $id;
-	    echo "<td class='data'>" . $txt . "</td> \n"; 
+	    echo "<td class='data'>" . $txt . "</td> \n"; */
 	    foreach ($entity['tablefields'] as $field => $properties) {
 	        if(isset($properties['basicview'])) $basicview = $properties['basicview']; else $basicview = 'text';
 	        if($basicview) {
@@ -893,11 +893,11 @@ function check_length_edit_field($field, $value, $entity, &$fields, &$fields_tem
         }
     }
 }
-function check_exist_add_field($field, $entity, &$fields, &$fields_temp, &$check, &$checkerror){
+function check_exist_add_field($field, $entity, &$fields, &$fields_temp, &$check, &$checkerror,$filter = array()){
     if(isset($_POST[$field])) {
         $fields[$field] = $_POST[$field];
         $fields_temp[$field] = $_POST[$field]; 
-        $exist = check_record_exist($entity['tablename'], array($field => $_POST[$field]));
+        $exist = check_record_exist($entity['tablename'], array_merge($filter, array($field => $_POST[$field])));
         if($exist) {
             $check = false; $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_exist_error');
         }
@@ -906,11 +906,11 @@ function check_exist_add_field($field, $entity, &$fields, &$fields_temp, &$check
         $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_required_error');
     }
 }
-function check_exist_edit_field($field, $value, $entity, &$fields, &$fields_temp, &$check, &$checkerror){
+function check_exist_edit_field($field, $value, $entity, &$fields, &$fields_temp, &$check, &$checkerror,$filter = array()){
     if(isset($_POST[$field]) && ($_POST[$field] <> $value)) {
 	    $fields[$field] = $_POST[$field];
         $fields_temp[$field] = $_POST[$field];    
-	    $exist = check_record_exist($entity['tablename'], array($field => $_POST[$field]));
+	    $exist = check_record_exist($entity['tablename'], array_merge($filter, array($field => $_POST[$field])));
         if($exist) {
             $check = false; 
             $checkerror[] = T($entity['tablefields'][$field]['title']) . " : " . T('_exist_error');

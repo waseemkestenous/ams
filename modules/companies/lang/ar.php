@@ -49,13 +49,3 @@ define('_add_new_companymodule', 'أضافة وحدة نمطية');
 define('_comodule_id', 'الكود');
 define('_module_name', 'اسم الوحدة النمطية');
 define('_menu_order', 'ترتيب القائمة');
-
-
-
-
-
-
-
-
-
-

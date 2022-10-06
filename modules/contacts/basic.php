@@ -3,7 +3,6 @@ $locktype = array(0 => '_not_locked', 1 => '_locked',2 => '_not_set');
 
 $actionlist = array('view','no','add','edit','del','lock','unlock');
 
-
 $entity = array(
     'tablename' => 'contacts',
     'idname' => 'contact_id',
@@ -21,17 +20,18 @@ $entity = array(
     'allowdel' => True,    
     'allowlock' => True,
     'tablefields' => array(
-    	'contact_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_contact_id','placeholder' => '_auto','basicview' => 0),
+    	'contact_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_contact_id','placeholder' => '_auto','basicview' => 0, 'label' => 1),
         'contact_name' => array('req' => 1, 'type' => 'text', 'title' => '_contact_name','placeholder' => '_contact_name_ex','link' => 1,'dvlr1' => 5,'dvlr2' => 30),
 
         'contact_tel' => array('req' => 0, 'type' => 'tel', 'title' => '_contact_tel','placeholder' => '_tel_ex','dvlr1' => 5,'dvlr2' => 30),        
         'contact_email' => array('req' => 0, 'type' => 'email', 'title' => '_contact_email','placeholder' => '_email_ex','dvlr1' => 5,'dvlr2' => 30),
-        'contact_address' => array('req' => 0, 'type' => 'textarea', 'title' => '_contact_address'),
-
+        'contact_address' => array('req' => 0, 'type' => 'textarea', 'title' => '_contact_address','basicview' => 0),
+        
         'contact_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_contact_co','basicview' => 0,'default' => $_SESSION['co_id'],'label'=>1),
-        'contact_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_reg_user','basicview' => 0,'default' => $currentuserid),
+
+        'contact_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_reg_user','default' => $currentuserid),
         'contact_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_contact_timestamp','placeholder' => '_auto'),
-        'contact_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_user_lock','basicview' => 0),
+        'contact_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_contact_lock','basicview' => 0),
     ),
 );
 

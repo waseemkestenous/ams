@@ -8,7 +8,7 @@ define('_del_module', 'Delete Module');
 define('_lock_module', 'Lock Module');
 
 define('_module_id', 'Code');
-define('_Module_name', 'Name');
+define('_module_name', 'Name');
 define('_module_name_ex', 'Ex: contacts');
 
 define('_module_lock', 'Locked');

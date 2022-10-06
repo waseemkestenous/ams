@@ -37,3 +37,15 @@ define('_userco_timestamp', 'Reg. Time');
 define('_user', 'Name');
 define('_co', 'Campany Name');
 define('_notes', 'Notes');
+define('_select', 'Select');
+
+define('_companymoduleslist', 'Company Module List');
+
+define('_view_companymodule', 'View Company Module');
+define('_del_companymodule', 'Delete Company Module');
+define('_edit_companymodule', 'Edit Company Module');
+define('_add_new_companymodule', 'Add Company Module');
+
+define('_comodule_id', 'Code');
+define('_module_name', 'Module Name');
+define('_menu_order', 'Menu Order');

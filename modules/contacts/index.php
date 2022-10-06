@@ -201,14 +201,11 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
             check_length_edit_field('contact_name', $data['contact_name'], $entity, $fields, $fields_temp, $check, $checkerror);
-            check_exist_edit_field('contact_name', $data['contact_name'], $entity, $fields, $fields_temp, $check, $checkerror);
+            check_exist_edit_field('contact_name', $data['contact_name'], $entity, $fields, $fields_temp, $check, $checkerror,array('contact_co_id' => $_SESSION['co_id']));
             check_edit_field('contact_email', $data['contact_email'], $entity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('contact_tel', $data['contact_tel'], $entity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('contact_address', $data['contact_address'], $entity, $fields, $fields_temp, $check, $checkerror);
-
-            //check field lock if changed
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             //if edit correctly save data and redirect to rec view else stay in editing form with passing the post data.
@@ -243,17 +240,14 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
             check_length_add_field('contact_name', $entity , $fields, $fields_temp, $check, $checkerror);
-            check_exist_add_field('contact_name', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_exist_add_field('contact_name', $entity, $fields, $fields_temp, $check, $checkerror,array('contact_co_id' => $_SESSION['co_id']));        
             check_add_field('contact_email', $entity, $fields, $fields_temp, $check, $checkerror);
             check_add_field('contact_tel', $entity, $fields, $fields_temp, $check, $checkerror);
             check_add_field('contact_address', $entity, $fields, $fields_temp, $check, $checkerror);
-            //check co selection.
+
             add_default_field('contact_co_id', $entity , $fields, $fields_temp);
-            //check user selection.
             add_default_field('contact_user_id', $entity , $fields, $fields_temp);
-            //check field lock if changed               
             check_add_lock_field($lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             //if edit correctly save data and redirect to rec view else stay in editing form with passing the post data.

@@ -22,7 +22,7 @@ $entity = array(
     'allowdel' => True,    
     'allowlock' => True,
     'tablefields' => array(
-    	'module_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_module_id','placeholder' => '_auto','basicview' => 0),
+    	'module_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_module_id','placeholder' => '_auto','basicview' => 0, 'label' => 1),
         'module_name' => array('req' => 1, 'type' => 'text', 'title' => '_module_name','unique' => 1,'placeholder' => '_module_name_ex','link' => 1,'dvlr1' => 4,'dvlr2' => 30),
         'module_basic' => array('req' => 0, 'type' => 'yesno', 'array' => $basictype,'readonly' => 0, 'title' => '_module_basic','basicview' => 0),
         'module_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_module_lock','basicview' => 0),
