@@ -1,5 +1,5 @@
 <?php
-define('_jobslist', 'Jobs List');
+define('_jobslist', 'قائمة الوظائف');
 
 define('_view_job', 'معاينة بيانات وظيفة');
 define('_add_new_job', 'أضافة وظيفة جديدة');

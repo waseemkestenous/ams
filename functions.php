@@ -773,7 +773,7 @@ function check_record_relation($tablename, $id, $check){
             $exist = check_record_exist($ind, array($value[$tablename] => $id));
             if(isset($exist) && $exist) {
                 $check = false; 
-                $checkerror[] = T('_record_related_to_table') . ' : ' . $ind;
+                $checkerror[] = T('_record_related_to_table') . ' : ' . T($ind);
             }
         }
     }

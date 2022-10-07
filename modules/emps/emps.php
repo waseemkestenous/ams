@@ -162,7 +162,7 @@ if($action == 'no') {
         $exist = check_form();
         if($exist) {
             //check record tables relations
-            $check = check_record_relation($empsentity['tablename'], $id, $check);
+            $check = check_record_relation('emps', $id, $check);
             if($check) {
                 $link = "index.php?hash=". encrypturl("mod=" . $mod . "&page=" . 'emps');
                 confirm_del('emps', array($key => $id), $link);

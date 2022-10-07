@@ -5,3 +5,8 @@ define('_items','بيانات الاصناف');
 define('_stock','المخزون');
 define('_categories','التصنيفات');
 define('_losses','مفقودات واهلاكات');
+
+// tables name
+define('stores','المخازن');
+define('categories','التصنيفات');
+define('items','الاصناف');

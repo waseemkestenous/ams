@@ -9,7 +9,7 @@ if(isset($_SESSION['co_id'])){
 	build_menu($menux , $menuy,T('_stores_managment'),null,'cubes-stacked','gro');
 
 	$menuy = $modulename . '-stores';
-	build_menu($menux , $menuy ,T('_stores'),'mod=' . $modulename);	
+	build_menu($menux , $menuy ,T('_stores'),'mod=' . $modulename . '&page=stores');	
 	$menuy = $modulename . '-cats';
 	build_menu($menux , $menuy,T('_categories'),'mod=' . $modulename . '&page=cats');
 	$menuy = $modulename . '-items';
