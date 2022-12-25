@@ -819,6 +819,7 @@ function confirm_add($tablename, $fields, $redirect){
         else 
             echo 'alert("'.T('_rec_action_error_msg').'");';
     }
+
     echo 'location.replace("'.$redirect.'");';
     echo '</script>';
 }

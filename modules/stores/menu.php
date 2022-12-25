@@ -12,6 +12,10 @@ if(isset($_SESSION['co_id'])){
 	build_menu($menux , $menuy ,T('_stores'),'mod=' . $modulename . '&page=stores');	
 	$menuy = $modulename . '-cats';
 	build_menu($menux , $menuy,T('_categories'),'mod=' . $modulename . '&page=cats');
+	$menuy = $modulename . '-units';
+	build_menu($menux , $menuy,T('_units'),'mod=' . $modulename . '&page=units');
+	$menuy = $modulename . '-pricetypes';
+	build_menu($menux , $menuy,T('_pricetypes'),'mod=' . $modulename . '&page=pricetypes');
 	$menuy = $modulename . '-items';
 	build_menu($menux , $menuy,T('_items'),'mod=' . $modulename . '&page=items');
 	$menuy = $modulename . '-losses';

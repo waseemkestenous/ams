@@ -207,11 +207,9 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
             check_length_edit_field('cat_name', $data['cat_name'], $catsentity, $fields, $fields_temp, $check, $checkerror);
             check_exist_edit_field('cat_name', $data['cat_name'], $catsentity, $fields, $fields_temp, $check, $checkerror);
-            check_add_field('cat_notes', $catsentity, $fields, $fields_temp, $check, $checkerror);
-            //check field lock if changed
+            check_edit_field('cat_notes', $data['cat_notes'], $catsentity, $fields, $fields_temp, $check, $checkerror);
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
             update_data($fields_temp, $data);
             //if edit correctly save data and redirect to rec view else stay in editing form with passing the post data.

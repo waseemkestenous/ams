@@ -25,7 +25,7 @@ define('_view_cat', 'View Category');
 define('_add_newcat', 'Add New Category');
 define('_edit_cat', 'Edit Category');
 define('_del_cat', 'Delete Category');
-define('_lock_cat', 'ايقاف تصنيف');
+define('_lock_cat', 'Lock Category');
 
 define('_cat_id', 'Code');
 define('_cat_name', 'Category Name');
@@ -35,3 +35,24 @@ define('_cat_notes', 'Notes');
 define('_cat_lock', 'Locking Status');
 
 define('_cat_timestamp', 'Reg. Time');
+
+define('_itemslist', 'Items List');
+
+define('_view_item', 'View Item');
+define('_add_newitem', 'Add New Item');
+define('_edit_item', 'Edit Item');
+define('_del_item', 'Delete Item');
+define('_lock_item', 'Lock Item');
+
+define('_item_id', 'Code');
+define('_item_name', 'Item Name');
+define('_item_name_ex', 'Ex. : General');
+define('_item_notes', 'Notes');
+
+define('_item_lock', 'Locking Status');
+
+define('_item_timestamp', 'Reg. Time');
+
+define('_item_unit_name', 'Main Unit');
+define('_item_cat_name', 'Category');
+define('_item_req', 'Request Limit');
