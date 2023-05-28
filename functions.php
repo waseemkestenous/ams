@@ -462,7 +462,7 @@ function print_add_record($entity,$data,$form_code,$action,$cancelaction) {
 		    if(isset($data[$field])) {
 		    	$value = $data[$field]; 
 		    }else {
-		    	if(in_array($properties['type'], array("fkey", "list", "number", "yesno")))
+		    	if(in_array($properties['type'], array("fkey", "list", "number", "yesno","date","time")))
 		    		if(isset($properties['default'])) $value = $properties['default']; else $value = 0; 
 		    	else 
 		    		$value = '';

@@ -226,6 +226,8 @@ if($action == 'no') {
             check_edit_field('contact_address', $data['contact_address'], $empsentity, $fields, $fields_temp, $check, $checkerror);
             
             check_select_edit_field('emp_job_id', $data['emp_job_id'], $empsentity, $fields2, $fields_temp, $check, $checkerror);
+            check_select_edit_field('emp_dept_id', $data['emp_dept_id'], $empsentity, $fields2, $fields_temp, $check, $checkerror); 
+            check_edit_field('emp_salary', $data['emp_salary'], $empsentity, $fields2, $fields_temp, $check, $checkerror);          
             check_edit_field('emp_notes', $data['emp_notes'], $empsentity, $fields2, $fields_temp, $check, $checkerror);
             check_edit_lock_field($data[$lock],$lock, $fields2, $fields_temp);
             $edit = true;
@@ -294,6 +296,8 @@ if($action == 'no') {
             add_default_field('contact_co_id', $empsentity , $fields, $fields_temp);
             $empsentity['tablename'] = 'emps';
             check_select_add_field('emp_job_id', $empsentity, $fields2, $fields_temp, $check, $checkerror);
+            check_select_add_field('emp_dept_id', $empsentity, $fields2, $fields_temp, $check, $checkerror);
+            check_add_field('emp_salary', $empsentity, $fields2, $fields_temp, $check, $checkerror);
             check_add_field('emp_notes', $empsentity, $fields2, $fields_temp, $check, $checkerror);   
             add_default_field('emp_user_id', $empsentity , $fields2, $fields_temp);
             check_add_lock_field($lock, $fields2, $fields_temp);
@@ -364,6 +368,8 @@ if($action == 'no') {
         if($exist) {
             check_select_add_field('emp_contact_id', $entity, $fields, $fields_temp, $check, $checkerror);
             check_select_add_field('emp_job_id', $entity, $fields, $fields_temp, $check, $checkerror);
+            check_select_add_field('emp_dept_id', $empsentity, $fields2, $fields_temp, $check, $checkerror);
+            check_add_field('emp_salary', $empsentity, $fields2, $fields_temp, $check, $checkerror);
             check_add_field('emp_notes', $entity, $fields, $fields_temp, $check, $checkerror); 
             add_default_field('emp_co_id', $entity , $fields, $fields_temp);
             add_default_field('emp_user_id', $entity , $fields, $fields_temp);
