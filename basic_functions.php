@@ -5,18 +5,22 @@ function encrypturl($txt){
     $code = base64_encode($code);
     return $code;
 }
-function decrypturl($code){
+function decryptcode($code){
     $txt = base64_decode($code);
     $txt = base64_decode($txt);
+    return $txt;
+}
+function decrypturl($url){
+    $txt = decryptcode($url);
     $params = explode("&", $txt); //var_dump($params);echo "<br>";
     foreach ($params as $param) {
         $param = explode("=", $param);//var_dump($param);echo "<br>";
         if(isset($param[1])) $_GET[$param[0]] = $param[1];
     }
     unset($_GET['hash']);
+
     return $txt;
 }
-
 function log_request() {
     global $conn;
     
@@ -24,7 +28,19 @@ function log_request() {
     if(!isset($_SERVER['QUERY_STRING'])) $_SERVER['QUERY_STRING'] = '';
     if(!isset($_SERVER['HTTP_REFERER'])) $_SERVER['HTTP_REFERER'] = '';
     if(!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
-
+    $param = explode("=", $_SERVER['QUERY_STRING']);
+    if(isset($param[0]) && $param[0] == 'hash') {
+        $_SERVER['QUERY_STRING'] = decryptcode($param[1]);
+    }
+    unset($param);
+    $param = explode("?", $_SERVER['HTTP_REFERER']);
+    if(isset($param[1])){
+        $param2 = explode("=", $param[1]);
+        if(isset($param2[0]) && $param2[0] == 'hash') {
+            $_SERVER['HTTP_REFERER'] = $param[0] . '?' . decryptcode($param2[1]);
+        }
+ 
+    }
     $sql = "INSERT INTO `logs` (`REMOTE_ADDR`, `QUERY_STRING`, `HTTP_REFERER`, `HTTP_USER_AGENT`) VALUES ('" . addslashes($_SERVER['REMOTE_ADDR']) . "', '" . addslashes($_SERVER['QUERY_STRING']) . "', '" . addslashes($_SERVER['HTTP_REFERER']) . "', '" . addslashes($_SERVER['HTTP_USER_AGENT']) . "');";
 
     $conn->query($sql);
@@ -33,7 +49,6 @@ function log_request() {
     
     return true;
 }
-
 function user_login($user, $pass) {
     global $conn;
 
@@ -50,7 +65,6 @@ function user_login($user, $pass) {
     
     return $userid;
 }
-
 function user_log($sessionid,$activity) {
     global $conn;
     global $currenttime;
@@ -63,7 +77,6 @@ function user_log($sessionid,$activity) {
 
     return true;
 }
-
 function check_session_open_by_info($sessioninfo) {
     global $conn;
     
@@ -81,7 +94,6 @@ function check_session_open_by_info($sessioninfo) {
 
     return $open;
 }
-
 function open_session($userid) {
     global $conn;
     global $currenttimestamp;
@@ -99,7 +111,6 @@ function open_session($userid) {
 
     return $row;
 }
-
 function update_session_by_sessioninfo($sessioninfo) {
     global $conn;
     global $currenttime;
@@ -113,7 +124,6 @@ function update_session_by_sessioninfo($sessioninfo) {
     else 
         return false;
 }
-
 function get_session_by_info($sessioninfo) {
     global $conn;
 
@@ -126,7 +136,6 @@ function get_session_by_info($sessioninfo) {
 
     return $row;
 }
-
 function get_session_by_id($sessionid) {
     global $conn;
 
@@ -139,7 +148,6 @@ function get_session_by_id($sessionid) {
 
     return $row;
 }
-
 function close_session_by_sessionid($sessionid) {
     global $conn;
 
@@ -151,14 +159,12 @@ function close_session_by_sessionid($sessionid) {
 
     return true;
 }
-
 function close_expire_sessions() {
     global $conn;
     global $session_timeout;
     global $lastactivite_timeout;    
     global $currenttimestamp;
 
-    $date = new DateTime();
     $lastactivite = date("Y-m-d H:i:s",$currenttimestamp-$lastactivite_timeout);
     $lastsession = date("Y-m-d H:i:s",$currenttimestamp-$session_timeout);
 
@@ -170,7 +176,6 @@ function close_expire_sessions() {
 
     return true;
 }
-
 function close_session_by_userid($userid) {
     global $conn;
     
@@ -182,7 +187,6 @@ function close_session_by_userid($userid) {
 
     return true;
 }
-
 function close_session_by_sessioninfo($sessioninfo) {
     global $conn;
     
@@ -194,13 +198,11 @@ function close_session_by_sessioninfo($sessioninfo) {
 
     return true;
 }
-
 function log_sql($sql = '') {
     global $sqltxt;
 
     $sqltxt = $sqltxt . "<br>" . "SQL : " . $sql;
 }
-
 function T($text){
     if(!empty($text) && defined($text)) {
         eval('$text = ' . $text .';'); 

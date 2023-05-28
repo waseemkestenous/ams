@@ -1,58 +1,50 @@
 <?php
 ob_start();
 session_start();
-$date = new DateTime();
-$currenttimestamp = $date->getTimestamp();
+$currentdate = getdate();
+$currenttimestamp = $currentdate[0];
 $currenttime = date("Y-m-d H:i:s", $currenttimestamp);
 
 include "config.php";
 include "lang/" . $lang . ".php";
 include "basic_functions.php";
-log_request();
-// close any expired sessions
-close_expire_sessions();
-if(isset($_SESSION["login"]) && $_SESSION["login"] <> "LOGIN_ERROR") {
-   // check current user session opened 
-    $session_exist = check_session_open_by_info($_SESSION["login"]);
-} else{
-    $session_exist = false;
-}
 
 if(isset($_GET['hash'])) $url = decrypturl($_GET['hash']);
+
+// Log SERVER Global variable 
+log_request();
+
+// close any expired sessions in DB
+close_expire_sessions();
+
+// check if there is current Session and it's expiration
+if(isset($_SESSION["login"]) && $_SESSION["login"] <> "LOGIN_ERROR") {
+   // check current user session expiration 
+    $session_exist = check_session_open_by_info($_SESSION["login"]);
+} else
+    $session_exist = false;
 
 if($session_exist) {
     // include requird functions
     include "functions.php";
 
     close_expire_forms();
-    
-    // get current user id using open user session info
     update_session_by_sessioninfo($_SESSION["login"]);
+    
     $session = get_session_by_info($_SESSION["login"]);
-    if(!empty($session)) $currentuserid = $session["session_user_id"]; else die();
+    
+    if(!empty($session)) 
+        $currentuserid = $session["session_user_id"]; 
+    else 
+        die();
     
     // get current user using current userid
-
-    $tablename = 'users'; //Required
-    $key = 'user_id'; //Optional
-    $fields = array(); //Optional
-    $conditions = array('user_id' => $currentuserid); //Optional
-    $orderfields = array(); //Optional
-    $ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
-
-    $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype);
-    $user = $records[$currentuserid]; //var_dump($records);
+    $records = get_records('users', 'user_id', array(), array('user_id' => $currentuserid));
+    $user = $records[$currentuserid]; 
     $user['user_profile_pic'] = 'assets/gentela/production/images/user.png';
-    $tablename = 'usertypes'; //Required
-    $key = 'usertype_id'; //Optional
-    $fields = array(); //Optional
-    $conditions = array(); //Optional
-    $orderfields = array(); //Optional
-    $ordertype = ''; //Optional - VALUES # '', 'ASC', 'DESC'
 
-    $records = get_records($tablename, $key, $fields, $conditions, $orderfields, $ordertype); 
-    $usertype = convert_title_list($records, 'usertype_title'); //var_dump($usertype);
-    
+    $records = get_records('usertypes', 'usertype_id'); 
+    $usertype = convert_title_list($records, 'usertype_title');
     $allowed_usertype_id = array_keys($usertype);
     
     $menu = array();
@@ -148,10 +140,6 @@ if($session_exist) {
     if (isset($_GET['page'])) $page = $_GET['page']; else $page = 'dash';
     if(isset($_GET['action'])) $action = $_GET['action']; else $action = 'no';
     
-
-
-
-
     if($action == "logout") {
         include "logout.php";
     } else {
@@ -181,7 +169,6 @@ if($session_exist) {
         include "content.php";
         include "footer.php";
     }
-
 } else {
     if(isset($_GET['action']) and $_GET['action'] == "check") {
         include "check.php";
