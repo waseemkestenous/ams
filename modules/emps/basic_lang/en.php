@@ -4,6 +4,7 @@ define('_emps','Employees Info.');
 define('_jobs','Jobs');
 define('_depts','Depts');
 define('_holidays','Holidays');
+define('_checkins','Checkins');
 
 define('_employees','Employees');
 
@@ -12,3 +13,4 @@ define('jobs','Jobs');
 define('emps','Employees');
 define('depts','Departements');
 define('holidays','Holidays');
+define('checkins','Checkins');

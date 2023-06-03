@@ -6,6 +6,35 @@ $actionlist = array('view','no','add','edit','del','lock','unlock','addfrmcontac
 $records = get_records('companyusers_view', 'userco_user_id', array('userco_user_id','user_name'), array('userco_co_id' => $_SESSION['co_id'], 'user_usertype_id' => 4)); 
 $userslist = convert_title_list($records, 'user_name'); //var_dump($userslist);
 
+$checkinsentity = array(
+    'tablename' => 'checkins',
+    'idname' => 'checkin_id',
+    'titlename' => 'checkin_timein',
+    'lockname' => 'checkin_lock',
+    'pagetitle' => '_checkinslist',
+    'editpagetitle' => '_edit_checkin',
+    'addpagetitle' => '_add_new_checkin',
+    'delpagetitle' => '_del_checkin', 
+    'viewpagetitle' => '_view_checkin', 
+    'lockpagetitle' => '_lock_checkin',  
+    'allowview' => True,    
+    'allowedit' => True,
+    'allowadd' => True,
+    'allowdel' => True,    
+    'allowlock' => True,
+    'tablefields' => array(
+    	'checkin_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_checkin_id','placeholder' => '_auto','basicview' => 0),
+        'checkin_emp_id' => array('req' => 1, 'type' => 'fkey','readonly' => 0, 'pkey' => 'emp_id','titlename' => 'contact_name','entityname' => 'empcontact_view', 'title' => '_emp_name','basicview' => 1),
+        'checkin_timein' => array('req' => 1, 'type' => 'text', 'title' => 'checkin_timein','default' => date("Y-m-d", $currenttimestamp)),
+        'checkin_timeout' => array('req' => 1, 'type' => 'text', 'title' => 'checkin_timeout','default' => date("Y-m-d", $currenttimestamp)),
+        'checkin_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_checkin_co','basicview' => 0,'default' => $_SESSION['co_id'],'label'=>1),
+        'checkin_notes' => array('req' => 0, 'type' => 'textarea', 'title' => '_checkin_notes','basicview' => 0),
+        'checkin_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_reg_user','default' => $currentuserid,'basicview' => 0),
+        'checkin_timestamp' => array('req' => 0, 'type' => 'text','readonly' => 1, 'title' => '_checkin_timestamp','placeholder' => '_auto','basicview' => 0),
+        'checkin_lock' => array('req' => 0, 'type' => 'yesno', 'array' => $locktype,'readonly' => 0, 'title' => '_checkin_lock','basicview' => 1),
+    ),
+);
+
 $holidaysentity = array(
     'tablename' => 'holidays',
     'idname' => 'holiday_id',
@@ -277,6 +306,15 @@ if($page == 'holidays' && $action == 'no' && $id == 0 && $user['user_usertype_id
     $footer_code_end = $footer_code_end . $Datatables_footers;  
 }
 if($page == 'holidays' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
+    $header_code_end = $header_code_end . $Switchery_headers; 
+    $footer_code_st = $footer_code_st . $validatin_pass_footers;  
+    $footer_code_st = $footer_code_st . $validatin_footers;  
+}
+if($page == 'checkins' && $action == 'no' && $id == 0 && $user['user_usertype_id'] == 1){
+    $header_code_end = $header_code_end . $Datatables_headers; 
+    $footer_code_end = $footer_code_end . $Datatables_footers;  
+}
+if($page == 'checkins' && (($action == 'edit' && $id <> 0) || ($action == 'add' && $id == 0))){
     $header_code_end = $header_code_end . $Switchery_headers; 
     $footer_code_st = $footer_code_st . $validatin_pass_footers;  
     $footer_code_st = $footer_code_st . $validatin_footers;  

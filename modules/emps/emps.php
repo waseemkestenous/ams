@@ -271,7 +271,6 @@ if($action == 'no') {
     $lock = $empsentity['lockname'];//Optional
     $data = array();
 
-
     $records = get_records('jobs', 'job_id', array('job_id','job_name'), array('job_co_id' => $_SESSION['co_id'],'job_lock' => false));
     $jobs = convert_title_list($records, 'job_name');
     $empsentity['tablefields']['emp_job_id'] = array('req' => 1, 'type' => 'list', 'array' => $jobs, 'title' => '_emp_job');

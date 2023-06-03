@@ -93,12 +93,12 @@ if($session_exist) {
         if(file_exists($var_file_path)) 
             include($var_file_path);
 
-        $mods[$modulename]['req_modules'] = $req_modules;
-        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
-
         $menu_file_path = 'modules/' . $modulename . '/menu.php';
         if(file_exists($menu_file_path)) 
             include($menu_file_path);
+
+        $mods[$modulename]['req_modules'] = $req_modules;
+        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
     }
 
     foreach ($enabledmodules as $modulename => $value) {
@@ -120,12 +120,13 @@ if($session_exist) {
         if(file_exists($var_file_path)) 
             include($var_file_path);
 
-        $mods[$modulename]['req_modules'] = $req_modules;
-        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
-
         $menu_file_path = 'modules/' . $modulename . '/menu.php';
         if(file_exists($menu_file_path)) 
             include($menu_file_path);
+
+        $mods[$modulename]['req_modules'] = $req_modules;
+        $mods[$modulename]['allowed_usertype_id'] = $allowed_usertype_id; 
+        
     }
 
     $enabledmodules = array_merge($enabledmodules, $basicmodules);

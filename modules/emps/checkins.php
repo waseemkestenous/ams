@@ -201,6 +201,11 @@ if($action == 'no') {
     if(empty($data)) {
         header("Location:index.php");die();
     }
+
+    $records = get_records('empcontact_view', 'emp_id', array('emp_id','contact_name'), array('contact_co_id' => $_SESSION['co_id'],'emp_lock' => false));
+    $emps = convert_title_list($records, 'contact_name');
+    $checkinsentity['tablefields']['checkin_emp_id'] = array('req' => 1, 'type' => 'list', 'array' => $emps, 'title' => '_emp_name');
+
     $check = true;
     $checkerror = array();
     $fields = array();
@@ -208,11 +213,9 @@ if($action == 'no') {
     if(isset($_POST) && !empty($_POST)) {
         $exist = check_form();
         if($exist) {
-            //check name length if changed
-            check_length_edit_field('checkin_name', $data['checkin_name'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
-            check_exist_edit_field('checkin_name', $data['checkin_name'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
-            //var_dump($data['checkin_date']);
-            check_edit_field('checkin_date', $data['checkin_date'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
+            check_select_add_field('checkin_emp_id', $checkinsentity, $fields, $fields_temp, $check, $checkerror);
+            check_edit_field('checkin_timein', $data['checkin_timein'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
+            check_edit_field('checkin_timeout', $data['checkin_timeout'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
             check_edit_field('checkin_notes', $data['checkin_notes'], $checkinsentity, $fields, $fields_temp, $check, $checkerror);
             //check field lock if changed
             check_edit_lock_field($data[$lock],$lock, $fields, $fields_temp);
@@ -242,6 +245,10 @@ if($action == 'no') {
     }
     $lock = $checkinsentity['lockname'];//Optional
     $data = array();
+    
+    $records = get_records('empcontact_view', 'emp_id', array('emp_id','contact_name'), array('contact_co_id' => $_SESSION['co_id'],'emp_lock' => false));
+    $emps = convert_title_list($records, 'contact_name');
+    $checkinsentity['tablefields']['checkin_emp_id'] = array('req' => 1, 'type' => 'list', 'array' => $emps, 'title' => '_emp_name');
     
     $check = true;
     $checkerror = array();

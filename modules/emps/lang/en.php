@@ -87,3 +87,18 @@ define('_addfrmcontact', 'Add From Contacts');
 define('_dept_manager_user_name', 'Department Manager User Name');
 define('_dept_assistant_manager_user_name', 'Department Manager Assistant User Name');
 define('_holiday_date', 'Date');
+
+define('_checkinslist', 'Checkins List');
+
+define('_view_checkin', 'View Checkin Info.');
+define('_add_new_checkin', 'Add New Checkin');
+define('_edit_checkin', 'Edit Checkin Info.');
+define('_del_checkin', 'Delete Checkin');
+define('_lock_checkin', 'Lock Checkin');
+
+define('_checkin_id', 'Code');
+define('checkin_timein', 'Check In');
+define('checkin_timeout', 'Check Out');
+define('_checkin_lock', 'Status');
+define('_checkin_timestamp', 'Reg. Time');
+define('_checkin_notes', 'Notes');

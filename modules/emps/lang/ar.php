@@ -87,3 +87,18 @@ define('_addfrmcontact', 'أضافة من جهة اتصال');
 define('_dept_manager_user_name', 'اسم مستخدم مدير القسم');
 define('_dept_assistant_manager_user_name', 'اسم مستخدم نائب مدير القسم');
 define('_holiday_date', 'التاريخ');
+
+define('_checkinslist', 'قائمة سجلات الحضور والانصراف');
+
+define('_view_checkin', 'معاينة بيانات سجل حضور وانصراف');
+define('_add_new_checkin', 'أضافة سجل حضور وانصراف جديد');
+define('_edit_checkin', 'تعديل بيانات سجل حضور وانصراف');
+define('_del_checkin', 'حذف سجل حضور وانصراف');
+define('_lock_checkin', 'ايقاف سجل حضور وانصراف');
+
+define('_checkin_id', 'الكود');
+define('checkin_timein', 'توقيت الحضور');
+define('checkin_timeout', 'توقيت الانصراف');
+define('_checkin_lock', 'صحة السجل');
+define('_checkin_timestamp', 'توقيت التسجيل');
+define('_checkin_notes', 'ملاحظات');
