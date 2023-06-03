@@ -25,7 +25,7 @@ $holidaysentity = array(
     'tablefields' => array(
     	'holiday_id' => array('req' => 1, 'type' => 'pkey','readonly' => 1, 'title' => '_holiday_id','placeholder' => '_auto','basicview' => 0),
         'holiday_name' => array('req' => 1, 'type' => 'text', 'title' => '_holiday_name','placeholder' => '_holiday_name_ex','link' => 1,'dvlr1' => 4,'dvlr2' => 50),
-        'holiday_date' => array('req' => 1, 'type' => 'date', 'title' => '_holiday_date','default' => date("m/d/Y", $currenttimestamp)),
+        'holiday_date' => array('req' => 1, 'type' => 'date', 'title' => '_holiday_date','default' => date("Y-m-d", $currenttimestamp)),
         'holiday_co_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'co_id','titlename' => 'co_name','entityname' => 'companies', 'title' => '_holiday_co','basicview' => 0,'default' => $_SESSION['co_id'],'label'=>1),
         'holiday_notes' => array('req' => 0, 'type' => 'textarea', 'title' => '_holiday_notes','basicview' => 0),
         'holiday_user_id' => array('req' => 1, 'type' => 'fkey','readonly' => 1, 'pkey' => 'user_id','titlename' => 'user_name','entityname' => 'users', 'title' => '_reg_user','default' => $currentuserid),

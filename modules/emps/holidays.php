@@ -252,6 +252,7 @@ if($action == 'no') {
             //check name length if changed
             check_length_add_field('holiday_name', $holidaysentity , $fields, $fields_temp, $check, $checkerror);
             check_add_field('holiday_name', $holidaysentity, $fields, $fields_temp, $check, $checkerror);
+            check_add_field('holiday_date', $holidaysentity, $fields, $fields_temp, $check, $checkerror); 
             check_add_field('holiday_notes', $holidaysentity, $fields, $fields_temp, $check, $checkerror); 
             //check co selection.
             add_default_field('holiday_co_id', $holidaysentity , $fields, $fields_temp);

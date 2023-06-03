@@ -15,4 +15,6 @@ if(isset($_SESSION['co_id'])){
 	build_menu($menux ,$menuy,T('_jobs'),'mod=' . $modulename . '&page=jobs');
 	$menuy = $modulename . '-' . 'holidays';
 	build_menu($menux ,$menuy,T('_holidays'),'mod=' . $modulename . '&page=holidays');
+	$menuy = $modulename . '-' . 'checkins';
+	build_menu($menux ,$menuy,T('checkins'),'mod=' . $modulename . '&page=checkins');
 }
