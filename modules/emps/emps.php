@@ -274,6 +274,10 @@ if($action == 'no') {
     $records = get_records('jobs', 'job_id', array('job_id','job_name'), array('job_co_id' => $_SESSION['co_id'],'job_lock' => false));
     $jobs = convert_title_list($records, 'job_name');
     $empsentity['tablefields']['emp_job_id'] = array('req' => 1, 'type' => 'list', 'array' => $jobs, 'title' => '_emp_job');
+    $records = get_records('departments', 'dept_id', array('dept_id','dept_name'), array('dept_co_id' => $_SESSION['co_id'],'dept_lock' => false));
+    $depts = convert_title_list($records, 'dept_name');
+    $empsentity['tablefields']['emp_dept_id'] = array('req' => 1, 'type' => 'list', 'array' => $depts, 'title' => '_emp_dept');
+    
     $empsentity['tablefields']['contact_user_id'] = $empsentity['tablefields']['emp_user_id'];
 
     $check = true;
